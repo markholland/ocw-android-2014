@@ -9,6 +9,10 @@ import android.util.Log;
 import java.util.Map;
 import java.util.Set;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
+
 /**
  * Created by markholland on 12/08/14.
  */
@@ -143,11 +147,11 @@ public class TestDb extends AndroidTestCase {
     static ContentValues createTrackValues() {
         ContentValues trackValues = new ContentValues();
 
-        trackValues.put(trackEntry.COLUMN_TRACK_ID, TEST_TRACK_ID);
-        trackValues.put(trackEntry.COLUMN_TITLE, TEST_TRACK_TITLE);
-        trackValues.put(trackEntry.COLUMN_DESCRIPTION, TEST_TRACK_DESCRIPTION);
-        trackValues.put(trackEntry.COLUMN_COLOR, TEST_TRACK_COLOR);
-        trackValues.put(trackEntry.COLUMN_EXCERPT, TEST_TRACK_EXCERPT);
+        trackValues.put(TrackEntry.COLUMN_TRACK_ID, TEST_TRACK_ID);
+        trackValues.put(TrackEntry.COLUMN_TITLE, TEST_TRACK_TITLE);
+        trackValues.put(TrackEntry.COLUMN_DESCRIPTION, TEST_TRACK_DESCRIPTION);
+        trackValues.put(TrackEntry.COLUMN_COLOR, TEST_TRACK_COLOR);
+        trackValues.put(TrackEntry.COLUMN_EXCERPT, TEST_TRACK_EXCERPT);
 
         return trackValues;
     }
@@ -155,14 +159,14 @@ public class TestDb extends AndroidTestCase {
     static ContentValues createSpeakerValues() {
         ContentValues speakerValues = new ContentValues();
 
-        speakerValues.put(speakerEntry.COLUMN_SPEAKER_ID, TEST_SPEAKER_ID);
-        speakerValues.put(speakerEntry.COLUMN_FULLNAME, TEST_SPEAKER_FULLNAME);
-        speakerValues.put(speakerEntry.COLUMN_AFFILIATION, TEST_SPEAKER_AFFILIATION);
-        speakerValues.put(speakerEntry.COLUMN_BIOGRAPHY, TEST_SPEAKER_BIOGRAPHY);
-        speakerValues.put(speakerEntry.COLUMN_WEBSITE, TEST_SPEAKER_WEBSITE);
-        speakerValues.put(speakerEntry.COLUMN_TWITTER, TEST_SPEAKER_TWITTER);
-        speakerValues.put(speakerEntry.COLUMN_IDENTICA, TEST_SPEAKER_IDENTICA);
-        speakerValues.put(speakerEntry.COLUMN_BLOG_URL, TEST_SPEAKER_BLOG_URL);
+        speakerValues.put(SpeakerEntry.COLUMN_SPEAKER_ID, TEST_SPEAKER_ID);
+        speakerValues.put(SpeakerEntry.COLUMN_FULLNAME, TEST_SPEAKER_FULLNAME);
+        speakerValues.put(SpeakerEntry.COLUMN_AFFILIATION, TEST_SPEAKER_AFFILIATION);
+        speakerValues.put(SpeakerEntry.COLUMN_BIOGRAPHY, TEST_SPEAKER_BIOGRAPHY);
+        speakerValues.put(SpeakerEntry.COLUMN_WEBSITE, TEST_SPEAKER_WEBSITE);
+        speakerValues.put(SpeakerEntry.COLUMN_TWITTER, TEST_SPEAKER_TWITTER);
+        speakerValues.put(SpeakerEntry.COLUMN_IDENTICA, TEST_SPEAKER_IDENTICA);
+        speakerValues.put(SpeakerEntry.COLUMN_BLOG_URL, TEST_SPEAKER_BLOG_URL);
 
         return speakerValues;
     }
