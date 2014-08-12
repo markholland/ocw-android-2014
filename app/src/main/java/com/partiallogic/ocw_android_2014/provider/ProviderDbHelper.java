@@ -14,7 +14,7 @@ import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
  */
 public class ProviderDbHelper extends SQLiteOpenHelper {
 
-    private final String LOG_TAG = getClass().getSimpleName();
+    private static final String LOG_TAG = ProviderDbHelper.class.getSimpleName();
 
     private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "ocw.db";

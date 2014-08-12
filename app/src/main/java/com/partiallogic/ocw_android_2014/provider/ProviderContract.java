@@ -105,7 +105,7 @@ public final class ProviderContract {
             return CONTENT_URI;
         }
 
-        public static Uri BuildTrackByIdUri(long id) {
+        public static Uri buildTrackByIdUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
