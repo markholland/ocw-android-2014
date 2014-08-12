@@ -6,12 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderDbHelper;
+
 import java.util.Map;
 import java.util.Set;
-
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 
 /**
  * Created by markholland on 12/08/14.

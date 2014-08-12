@@ -36,7 +36,7 @@ public final class ProviderContract {
 
         public static final String TABLE_NAME = "event";
 
-        public static final String COLUMN_EVENT_ID = "id";
+        public static final String COLUMN_EVENT_ID = "event_id";
 
         public static final String COLUMN_TITLE = "title";
 
@@ -91,7 +91,7 @@ public final class ProviderContract {
 
         public static final String TABLE_NAME = "track";
 
-        public static final String COLUMN_TRACK_ID = "id";
+        public static final String COLUMN_TRACK_ID = "track_id";
 
         public static final String COLUMN_TITLE = "title";
 
@@ -124,7 +124,7 @@ public final class ProviderContract {
 
         public static final String TABLE_NAME = "speaker";
 
-        public static final String COLUMN_SPEAKER_ID = "id";
+        public static final String COLUMN_SPEAKER_ID = "speaker_id";
 
         public static final String COLUMN_FULLNAME = "fullname";
 
