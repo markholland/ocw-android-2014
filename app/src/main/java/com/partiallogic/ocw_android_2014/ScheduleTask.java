@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import com.partiallogic.ocw_android_2014.net.JsonController;
 import com.partiallogic.ocw_android_2014.net.ServiceClient;
+import com.partiallogic.ocw_android_2014.obj.Schedule;
+import com.partiallogic.ocw_android_2014.obj.Speaker;
+import com.partiallogic.ocw_android_2014.obj.Track;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public class ScheduleTask extends AsyncTask<Void, Void, Void> {
                 mContext);
 
         Speaker speaker = JsonController.getInstance().getSpeakerById(ServiceClient.getInstance(),
-                mContext,"1");
+                mContext, "1");
 
         Schedule schedule = JsonController.getInstance().getSchedule(ServiceClient.getInstance(),
                 mContext);

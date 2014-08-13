@@ -7,7 +7,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.partiallogic.ocw_android_2014.Track;
+import com.partiallogic.ocw_android_2014.obj.Track;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;

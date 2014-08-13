@@ -3,12 +3,12 @@ package com.partiallogic.ocw_android_2014.net;
 import android.content.Context;
 import android.util.Log;
 
-import com.partiallogic.ocw_android_2014.EventItem;
-import com.partiallogic.ocw_android_2014.Schedule;
-import com.partiallogic.ocw_android_2014.Speaker;
-import com.partiallogic.ocw_android_2014.SpeakerData;
-import com.partiallogic.ocw_android_2014.Track;
-import com.partiallogic.ocw_android_2014.TrackData;
+import com.partiallogic.ocw_android_2014.obj.EventItem;
+import com.partiallogic.ocw_android_2014.obj.Schedule;
+import com.partiallogic.ocw_android_2014.obj.Speaker;
+import com.partiallogic.ocw_android_2014.obj.SpeakerData;
+import com.partiallogic.ocw_android_2014.obj.Track;
+import com.partiallogic.ocw_android_2014.obj.TrackData;
 
 import java.util.ArrayList;
 import java.util.List;

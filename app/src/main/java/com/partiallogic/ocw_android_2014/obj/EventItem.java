@@ -1,4 +1,4 @@
-package com.partiallogic.ocw_android_2014;
+package com.partiallogic.ocw_android_2014.obj;
 
 import com.google.gson.annotations.SerializedName;
 

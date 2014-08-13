@@ -1,4 +1,4 @@
-package com.partiallogic.ocw_android_2014;
+package com.partiallogic.ocw_android_2014.obj;
 
 /**
  * Created by markholland on 13/08/14.
