@@ -17,13 +17,13 @@ public class MyColor {
         this.b = b;
     }
 
-    public int getColor() {
+    public String getColor() {
 
         Double auxR = r*10;
         Double auxG = g*10;
         Double auxB = b*10;
 
-        return Color.argb(127, auxR.intValue(), auxG.intValue(), auxB.intValue());
+        return ""+Color.argb(127, auxR.intValue(), auxG.intValue(), auxB.intValue());
     }
 
     public Double getR() {

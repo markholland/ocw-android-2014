@@ -48,15 +48,11 @@ public class Track {
         this.description = description;
     }
 
-    public MyColor getColor() {
-        return color;
-    }
-
     public void setColor(MyColor color) {
         this.color = color;
     }
 
-    public int getIntColor() {
+    public String getStringColor() {
         return this.color.getColor();
     }
 
@@ -75,7 +71,7 @@ public class Track {
         str += this.id + "\n" +
                 this.title + "\n" +
                 this.description + "\n" +
-                getIntColor() + "\n" +
+                getStringColor() + "\n" +
                 this.excerpt;
 
         return str;

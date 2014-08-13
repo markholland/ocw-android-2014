@@ -2,19 +2,17 @@ package com.partiallogic.ocw_android_2014;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.net.JsonController;
 import com.partiallogic.ocw_android_2014.net.ServiceClient;
+import com.partiallogic.ocw_android_2014.obj.Event;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
-import com.partiallogic.ocw_android_2014.obj.Speaker;
-import com.partiallogic.ocw_android_2014.obj.Track;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by markholland on 13/08/14.
@@ -32,48 +30,36 @@ public class ScheduleTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
 
-        List<Track> tracks = JsonController.getInstance().getTracks(ServiceClient.getInstance(),
-                mContext);
-
-        Speaker speaker = JsonController.getInstance().getSpeakerById(ServiceClient.getInstance(),
-                mContext, "1");
-
-        ContentValues speakerValues = new ContentValues();
-
-        speakerValues.put(SpeakerEntry.COLUMN_SPEAKER_ID, speaker.getId());
-        speakerValues.put(SpeakerEntry.COLUMN_FULLNAME, speaker.getFullname());
-        speakerValues.put(SpeakerEntry.COLUMN_AFFILIATION, speaker.getAffiliation());
-        speakerValues.put(SpeakerEntry.COLUMN_BIOGRAPHY, speaker.getBiography());
-        speakerValues.put(SpeakerEntry.COLUMN_WEBSITE, speaker.getWebsite());
-        speakerValues.put(SpeakerEntry.COLUMN_TWITTER, speaker.getTwitter());
-        speakerValues.put(SpeakerEntry.COLUMN_IDENTICA, speaker.getIdentica());
-        speakerValues.put(SpeakerEntry.COLUMN_BLOG_URL, speaker.getBlog_url());
-
-        Uri inserted = mContext.getContentResolver()
-                .insert(SpeakerEntry.CONTENT_URI, speakerValues);
-
-        Log.d(LOG_TAG, inserted.toString());
-
-        Cursor cursor = mContext.getContentResolver().query(
-                SpeakerEntry.buildSpeakerByIdUri(Long.parseLong(speaker.getId())),
-                null,
-                null,
-                null,
-                null
-        );
-
-        if(cursor.moveToFirst()){
-            Log.d(LOG_TAG, "Yep");
-        }
-
-
-
-
         Schedule schedule = JsonController.getInstance().getSchedule(ServiceClient.getInstance(),
                 mContext);
 
+        List<Event> events = schedule.getEvents();
 
+        Vector<ContentValues> cVVector = new Vector<ContentValues>(events.size());
 
+        for( Event event : events ) {
+            ContentValues eventValues = new ContentValues();
+
+            eventValues.put(EventEntry.COLUMN_EVENT_ID, event.getId());
+            eventValues.put(EventEntry.COLUMN_TITLE, event.getTitle());
+            eventValues.put(EventEntry.COLUMN_DESCRIPTION, event.getDescription());
+            eventValues.put(EventEntry.COLUMN_START_TIME, event.getStart_time());
+            eventValues.put(EventEntry.COLUMN_END_TIME, event.getEnd_time());
+            eventValues.put(EventEntry.COLUMN_ROOM_TITLE, event.getTrack_id());
+            eventValues.put(EventEntry.COLUMN_SPEAKER_ID, event.getSpeaker_idsAsString());
+
+            cVVector.add(eventValues);
+
+        }
+
+        if (cVVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[cVVector.size()];
+            cVVector.toArray(cvArray);
+            int rowsInserted = mContext.getContentResolver()
+                    .bulkInsert(EventEntry.CONTENT_URI, cvArray);
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of event data");
+        }
+        
         return null;
     }
 }

@@ -1,7 +1,6 @@
 package com.partiallogic.ocw_android_2014.net;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.obj.EventItem;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
@@ -53,8 +52,6 @@ public class JsonController {
     public List<Track> getTracks(ServiceClient serviceClient, Context con) {
         ApiClient client = serviceClient.getClient(con, ApiClient.class);
         List<TrackData> trackDataList = client.getTracks();
-        Log.d(LOG_TAG, "SIZE: "+ trackDataList.size());
-
         ArrayList<Track> tracks = new ArrayList<Track>();
 
         /*

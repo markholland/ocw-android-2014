@@ -56,8 +56,13 @@ public class MainActivity extends Activity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            ScheduleTask task = new ScheduleTask(getActivity());
-            task.execute();
+            TrackTask trackTask = new TrackTask(getActivity());
+            trackTask.execute();
+            ScheduleTask schedTask = new ScheduleTask(getActivity());
+            schedTask.execute();
+            SpeakerTask speakerTask = new SpeakerTask(getActivity());
+            speakerTask.execute("1");
+
         }
 
         @Override
