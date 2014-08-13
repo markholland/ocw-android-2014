@@ -21,4 +21,6 @@
             android:name=".provider.ScheduleProvider"/>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

@@ -1,7 +1,6 @@
 package com.partiallogic.ocw_android_2014;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 
 
 
@@ -52,6 +50,14 @@ public class MainActivity extends Activity {
     public static class PlaceholderFragment extends Fragment {
 
         public PlaceholderFragment() {
+        }
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+            ScheduleTask task = new ScheduleTask(getActivity());
+            task.execute();
         }
 
         @Override
