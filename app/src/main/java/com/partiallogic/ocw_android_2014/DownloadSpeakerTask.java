@@ -14,13 +14,13 @@ import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 /**
  * Created by markholland on 13/08/14.
  */
-public class SpeakerTask extends AsyncTask<String, Void, Void> {
+public class DownloadSpeakerTask extends AsyncTask<String, Void, Void> {
 
-    private final String LOG_TAG = SpeakerTask.class.getSimpleName();
+    private final String LOG_TAG = DownloadSpeakerTask.class.getSimpleName();
 
     private final Context mContext;
 
-    public SpeakerTask(Context context) {
+    public DownloadSpeakerTask(Context context) {
         mContext = context;
     }
 

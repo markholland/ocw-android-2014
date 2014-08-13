@@ -17,13 +17,13 @@ import java.util.Vector;
 /**
  * Created by markholland on 13/08/14.
  */
-public class ScheduleTask extends AsyncTask<Void, Void, Void> {
+public class DownloadScheduleTask extends AsyncTask<Void, Void, Void> {
 
-    private final String LOG_TAG = ScheduleTask.class.getSimpleName();
+    private final String LOG_TAG = DownloadScheduleTask.class.getSimpleName();
 
     private final Context mContext;
 
-    public ScheduleTask(Context context) {
+    public DownloadScheduleTask(Context context) {
         mContext = context;
     }
 
@@ -59,7 +59,7 @@ public class ScheduleTask extends AsyncTask<Void, Void, Void> {
                     .bulkInsert(EventEntry.CONTENT_URI, cvArray);
             Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of event data");
         }
-        
+
         return null;
     }
 }

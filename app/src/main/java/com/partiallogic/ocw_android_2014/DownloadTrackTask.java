@@ -16,13 +16,13 @@ import java.util.List;
 /**
  * Created by markholland on 13/08/14.
  */
-public class TrackTask extends AsyncTask<Void, Void, Void> {
+public class DownloadTrackTask extends AsyncTask<Void, Void, Void> {
 
-    private final String LOG_TAG = TrackTask.class.getSimpleName();
+    private final String LOG_TAG = DownloadTrackTask.class.getSimpleName();
 
     private final Context mContext;
 
-    public TrackTask(Context context) {
+    public DownloadTrackTask(Context context) {
         mContext = context;
     }
 
