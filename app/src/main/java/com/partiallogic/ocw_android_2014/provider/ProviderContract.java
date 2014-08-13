@@ -50,7 +50,16 @@ public final class ProviderContract {
 
         public static final String COLUMN_TRACK_ID = "track_id";
 
-        public static final String COLUMN_SPEAKER_IDS = "speaker_ids";
+        public static final String COLUMN_SPEAKER_ID = "speaker_ids";
+
+        public static final String ON_DATE = "date";
+
+        public static final String IN_ROOM = "room";
+
+        public static final String OF_TRACK = "track";
+
+        public static final String BY_SPEAKER = "speaker";
+
 
         public static Uri buildEventUri() {
             return CONTENT_URI;
@@ -61,19 +70,35 @@ public final class ProviderContract {
         }
 
         public static Uri buildEventByDateUri(String date) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_START_TIME, date).build();
+            return CONTENT_URI.buildUpon().appendPath(ON_DATE).appendPath(date).build();
         }
 
         public static Uri buildEventByRoomUri(String room) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_ROOM_TITLE, room).build();
+            return CONTENT_URI.buildUpon().appendPath(IN_ROOM).appendPath(room).build();
         }
 
         public static Uri buildEventByTrackUri(String track_id) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_TRACK_ID, track_id).build();
+            return CONTENT_URI.buildUpon().appendPath(OF_TRACK).appendPath(track_id).build();
         }
 
         public static Uri buildEventBySpeakerUri(String speaker_id) {
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_SPEAKER_IDS, speaker_id).build();
+            return CONTENT_URI.buildUpon().appendPath(BY_SPEAKER).appendPath(speaker_id).build();
+        }
+
+        public static String getStartTimeFromUri(Uri uri) {
+            return uri.getPathSegments().get(2);
+        }
+
+        public static String getRoomFromUri(Uri uri) {
+            return uri.getPathSegments().get(2);
+        }
+
+        public static String getTrackIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(2);
+        }
+
+        public static String getSpeakerIdFromUri(Uri uri) {
+            return uri.getPathSegments().get(2);
         }
 
     }

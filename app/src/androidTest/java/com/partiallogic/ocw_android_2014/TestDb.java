@@ -21,26 +21,25 @@ public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
-    private static final String TEST_EVENT_ID = "1";
-    private static final String TEST_EVENT_TITLE = "Test Event";
-    private static final String TEST_EVENT_DESCRIPTION = "A description of an event";
-    private static final String TEST_EVENT_START_TIME = "2014-06-24T10:00:00.000-07:00";
-    private static final String TEST_EVENT_END_TIME = "2014-06-24T11:00:00.000-07:00";
-    private static final String TEST_ROOM_TITLE = "Testing room";
-    private static final String TEST_TRACK_ID = "1";
-    private static final String TEST_SPEAKER_IDS = "1,2,3";
-    private static final String TEST_TRACK_TITLE = "Test Track";
-    private static final String TEST_TRACK_DESCRIPTION = "A description of a track";
-    private static final String TEST_TRACK_COLOR = "Blue";
-    private static final String TEST_TRACK_EXCERPT = "An excerpt of a track description";
-    private static final String TEST_SPEAKER_ID = "1";
-    private static final String TEST_SPEAKER_FULLNAME = "Mr. A. Speaker";
-    private static final String TEST_SPEAKER_AFFILIATION = "Testers inc.";
-    private static final String TEST_SPEAKER_BIOGRAPHY = "A biography all about the speaker";
-    private static final String TEST_SPEAKER_WEBSITE = "http://www.tester.com";
-    private static final String TEST_SPEAKER_TWITTER = "tester";
-    private static final String TEST_SPEAKER_IDENTICA = "tester";
-    private static final String TEST_SPEAKER_BLOG_URL = "http://www.tester.com/blog";
+    public static final String TEST_EVENT_ID = "1";
+    public static final String TEST_EVENT_TITLE = "Test Event";
+    public static final String TEST_EVENT_DESCRIPTION = "A description of an event";
+    public static final String TEST_EVENT_START_TIME = "2014-06-24T10:00:00.000-07:00";
+    public static final String TEST_EVENT_END_TIME = "2014-06-24T11:00:00.000-07:00";
+    public static final String TEST_ROOM_TITLE = "Testing room";
+    public static final String TEST_TRACK_ID = "1";
+    public static final String TEST_TRACK_TITLE = "Test Track";
+    public static final String TEST_TRACK_DESCRIPTION = "A description of a track";
+    public static final String TEST_TRACK_COLOR = "Blue";
+    public static final String TEST_TRACK_EXCERPT = "An excerpt of a track description";
+    public static final String TEST_SPEAKER_ID = "1";
+    public static final String TEST_SPEAKER_FULLNAME = "Mr. A. Speaker";
+    public static final String TEST_SPEAKER_AFFILIATION = "Testers inc.";
+    public static final String TEST_SPEAKER_BIOGRAPHY = "A biography all about the speaker";
+    public static final String TEST_SPEAKER_WEBSITE = "http://www.tester.com";
+    public static final String TEST_SPEAKER_TWITTER = "tester";
+    public static final String TEST_SPEAKER_IDENTICA = "tester";
+    public static final String TEST_SPEAKER_BLOG_URL = "http://www.tester.com/blog";
 
     public void testCreateDb() throws Throwable {
         mContext.deleteDatabase(ProviderDbHelper.DATABASE_NAME);
@@ -140,7 +139,7 @@ public class TestDb extends AndroidTestCase {
         EventValues.put(EventEntry.COLUMN_END_TIME, TEST_EVENT_END_TIME);
         EventValues.put(EventEntry.COLUMN_ROOM_TITLE, TEST_ROOM_TITLE);
         EventValues.put(EventEntry.COLUMN_TRACK_ID, TEST_TRACK_ID);
-        EventValues.put(EventEntry.COLUMN_SPEAKER_IDS, TEST_SPEAKER_IDS);
+        EventValues.put(EventEntry.COLUMN_SPEAKER_ID, TEST_SPEAKER_ID);
 
         return EventValues;
     }

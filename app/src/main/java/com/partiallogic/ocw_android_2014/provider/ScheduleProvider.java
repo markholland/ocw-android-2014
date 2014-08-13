@@ -40,13 +40,14 @@ public class ScheduleProvider extends ContentProvider{
         // ORDER ADDING TO URI MATCHER IS IMPORTANT
         matcher.addURI(authority, ProviderContract.PATH_EVENT, EVENT);
         matcher.addURI(authority, ProviderContract.PATH_EVENT + "/#", EVENT_WITH_ID);
-        matcher.addURI(authority, ProviderContract.PATH_EVENT + "/*", EVENT_WITH_DATE);
         matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.COLUMN_ROOM_TITLE + "/*", EVENT_WITH_ROOM);
+                EventEntry.ON_DATE + "/*", EVENT_WITH_DATE);
         matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.COLUMN_TRACK_ID + "/*", EVENT_WITH_TRACK);
+                EventEntry.IN_ROOM + "/*", EVENT_WITH_ROOM);
         matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.COLUMN_SPEAKER_IDS + "/*", EVENT_WITH_SPEAKER);
+                EventEntry.OF_TRACK + "/*", EVENT_WITH_TRACK);
+        matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
+                EventEntry.BY_SPEAKER + "/*", EVENT_WITH_SPEAKER);
 
         matcher.addURI(authority, ProviderContract.PATH_TRACK, TRACK);
         matcher.addURI(authority, ProviderContract.PATH_TRACK + "/#", TRACK_WITH_ID);
@@ -70,7 +71,6 @@ public class ScheduleProvider extends ContentProvider{
 
         //TODO
         retCursor = null;
-
 
         switch(sUriMatcher.match(uri)) {
             case EVENT:
@@ -96,16 +96,52 @@ public class ScheduleProvider extends ContentProvider{
                 );
                 break;
             case EVENT_WITH_DATE:
-
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ProviderContract.EventEntry.TABLE_NAME,
+                        projection,
+                        EventEntry.COLUMN_START_TIME + " = '" +
+                                EventEntry.getStartTimeFromUri(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             case EVENT_WITH_ROOM:
-
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ProviderContract.EventEntry.TABLE_NAME,
+                        projection,
+                        EventEntry.COLUMN_ROOM_TITLE + " = '" +
+                                EventEntry.getRoomFromUri(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             case EVENT_WITH_TRACK:
-
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ProviderContract.EventEntry.TABLE_NAME,
+                        projection,
+                        EventEntry.COLUMN_TRACK_ID + " = '" +
+                                EventEntry.getTrackIdFromUri(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             case EVENT_WITH_SPEAKER:
-
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ProviderContract.EventEntry.TABLE_NAME,
+                        projection,
+                        EventEntry.COLUMN_SPEAKER_ID + " = '" +
+                                EventEntry.getSpeakerIdFromUri(uri) + "'",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             case TRACK:
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -164,26 +200,37 @@ public class ScheduleProvider extends ContentProvider{
     public String getType(Uri uri) {
         final int match = sUriMatcher.match(uri);
         Log.d(LOG_TAG, uri.toString());
+
         switch (match) {
             case EVENT:
+                Log.d(LOG_TAG, "Event");
                 return EventEntry.CONTENT_TYPE;
             case EVENT_WITH_ID:
+                Log.d(LOG_TAG, "Event with id");
                 return EventEntry.CONTENT_ITEM_TYPE;
             case EVENT_WITH_DATE:
+                Log.d(LOG_TAG, "Event with date");
                 return EventEntry.CONTENT_TYPE;
             case EVENT_WITH_ROOM:
+                Log.d(LOG_TAG, "Event with room");
                 return EventEntry.CONTENT_TYPE;
             case EVENT_WITH_TRACK:
+                Log.d(LOG_TAG, "Event with track");
                 return EventEntry.CONTENT_TYPE;
             case EVENT_WITH_SPEAKER:
+                Log.d(LOG_TAG, "Event with speaker");
                 return EventEntry.CONTENT_TYPE;
             case TRACK:
+                Log.d(LOG_TAG, "Track");
                 return TrackEntry.CONTENT_TYPE;
             case TRACK_WITH_ID:
+                Log.d(LOG_TAG, "Track with id");
                 return TrackEntry.CONTENT_ITEM_TYPE;
             case SPEAKER:
+                Log.d(LOG_TAG, "Speaker");
                 return SpeakerEntry.CONTENT_TYPE;
             case SPEAKER_WITH_ID:
+                Log.d(LOG_TAG, "Speaker with id");
                 return SpeakerEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

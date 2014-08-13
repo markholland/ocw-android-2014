@@ -1,17 +1,20 @@
 package com.partiallogic.ocw_android_2014;
 
 import android.annotation.TargetApi;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderDbHelper;
+
 
 /**
  * Created by markholland on 12/08/14.
@@ -21,39 +24,40 @@ public class TestProvider extends AndroidTestCase {
     public static final String LOG_TAG = TestProvider.class.getSimpleName();
 
     public void setUp() {
-        deleteAllRecords();
-    }
-
-    public void testInsertReadProvider() {
-
+        //deleteAllRecords();
         ProviderDbHelper dbHelper = new ProviderDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+    }
+    
+    public void testInsertReadProvider() {
 
-        ContentValues feedTestValues, articleTestValues, authorTestValues;
+
+
+        ContentValues eventTestValues, trackTestValues, speakerTestValues;
 
         Cursor cursor;
 
-        feedTestValues = TestDb.createTrackValues();
+        trackTestValues = TestDb.createTrackValues();
         Uri feedInsertUri = mContext.getContentResolver()
-                .insert(TrackEntry.CONTENT_URI, feedTestValues);
+                .insert(TrackEntry.CONTENT_URI, trackTestValues);
         assertTrue(feedInsertUri != null);
 
 
-        authorTestValues = TestDb.createSpeakerValues();
+        speakerTestValues = TestDb.createSpeakerValues();
         Uri authorInsertUri = mContext.getContentResolver()
-                .insert(SpeakerEntry.CONTENT_URI, authorTestValues);
+                .insert(SpeakerEntry.CONTENT_URI, speakerTestValues);
         assertTrue(authorInsertUri != null);
 
 
-        articleTestValues = TestDb.createEventValues();
+        eventTestValues = TestDb.createEventValues();
         Uri articleInsertUri = mContext.getContentResolver()
-                .insert(EventEntry.CONTENT_URI, articleTestValues);
+                .insert(EventEntry.CONTENT_URI, eventTestValues);
         assertTrue(articleInsertUri != null);
 
-        /*
-        // Feed articles
+
+        // Events
         cursor = mContext.getContentResolver().query(
-                ArticleEntry.buildArticlesWithFeedIdURI(TEST_FEED_ID),  // Table to Query
+                EventEntry.buildEventUri(),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -61,14 +65,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, articleTestValues);
+            TestDb.validateCursor(cursor, eventTestValues);
         } else {
             fail("No data");
         }
-
-        // Feeds
+        
+        // Event by Id
         cursor = mContext.getContentResolver().query(
-                FeedEntry.CONTENT_URI,  // Table to Query
+                EventEntry.buildEventByIdUri(Integer.parseInt(TestDb.TEST_EVENT_ID)),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -76,14 +80,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, feedTestValues);
+            TestDb.validateCursor(cursor, eventTestValues);
         } else {
             fail("No data");
         }
 
-        // Articles
+        // Event by Room
         cursor = mContext.getContentResolver().query(
-                ArticleEntry.CONTENT_URI,  // Table to Query
+                EventEntry.buildEventByRoomUri(TestDb.TEST_ROOM_TITLE),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -91,14 +95,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, articleTestValues);
+            TestDb.validateCursor(cursor, eventTestValues);
         } else {
             fail("No data");
         }
 
-        // ArticleById
+        // Event by Track
         cursor = mContext.getContentResolver().query(
-                ArticleEntry.buildArticleWithIdURI(Integer.parseInt(TEST_ARTICLE_ID)),  // Table to Query
+                EventEntry.buildEventByTrackUri(TestDb.TEST_TRACK_ID),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -106,14 +110,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, articleTestValues);
+            TestDb.validateCursor(cursor, eventTestValues);
         } else {
             fail("No data");
         }
 
-        // ArticleByDate
+        // Event by Speaker
         cursor = mContext.getContentResolver().query(
-                ArticleEntry.buildArticlesWithDateURI(TEST_ARTICLE_ID),  // Table to Query
+                EventEntry.buildEventBySpeakerUri(TestDb.TEST_SPEAKER_ID),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -121,14 +125,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, articleTestValues);
+            TestDb.validateCursor(cursor, eventTestValues);
         } else {
             fail("No data");
         }
 
-        // ArticlesRead
+        // Tracks
         cursor = mContext.getContentResolver().query(
-                ArticleEntry.buildArticlesWithReadURI(TEST_READ),  // Table to Query
+                TrackEntry.CONTENT_URI,  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -136,14 +140,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, articleTestValues);
+            TestDb.validateCursor(cursor, trackTestValues);
         } else {
             fail("No data");
         }
 
-        // Author articles
+        // Track by Id
         cursor = mContext.getContentResolver().query(
-                ArticleEntry.buildArticlesWithAuthorIdURI(TEST_AUTHOR_ID),  // Table to Query
+                TrackEntry.buildTrackByIdUri(Integer.parseInt(TestDb.TEST_TRACK_ID)),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -151,14 +155,14 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, articleTestValues);
+            TestDb.validateCursor(cursor, trackTestValues);
         } else {
             fail("No data");
         }
 
-        // Authors
+        // Speakers
         cursor = mContext.getContentResolver().query(
-                AuthorEntry.CONTENT_URI,  // Table to Query
+                SpeakerEntry.CONTENT_URI,  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -166,13 +170,28 @@ public class TestProvider extends AndroidTestCase {
         );
 
         if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, authorTestValues);
+            TestDb.validateCursor(cursor, speakerTestValues);
         } else {
             fail("No data");
         }
-        */
+
+        // Speaker by Id
+        cursor = mContext.getContentResolver().query(
+                SpeakerEntry.buildSpeakerByIdUri(Integer.parseInt(TestDb.TEST_SPEAKER_ID)),  // Table to Query
+                null,
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null  // columns to group by
+        );
+
+        if(cursor.moveToFirst()) {
+            TestDb.validateCursor(cursor, speakerTestValues);
+        } else {
+            fail("No data");
+        }
     }
-
+    
+    
     //brings our database to an empty state
     public void deleteAllRecords() {
         // null selection deletes all rows
@@ -222,33 +241,32 @@ public class TestProvider extends AndroidTestCase {
         assertEquals(0, cursor.getCount());
         cursor.close();
     }
-
-    /*
-    public void testUpdateArticle() {
+    
+    
+    public void testUpdateEvent() {
         // Create a new map of values, where column names are the keys
-        ContentValues values = TestDb.createArticleValues();
+        ContentValues values = TestDb.createEventValues();
 
-        Uri articleUri = mContext.getContentResolver().
-                insert(ArticleEntry.CONTENT_URI, values);
-        long articleRowId = ContentUris.parseId(articleUri);
+        Uri eventUri = mContext.getContentResolver().
+                insert(EventEntry.CONTENT_URI, values);
+        long eventRowId = ContentUris.parseId(eventUri);
 
         // Verify we got a row back.
-        assertTrue(articleRowId != -1);
-        Log.d(LOG_TAG, "New row id: " + articleRowId);
+        assertTrue(eventRowId != -1);
+        Log.d(LOG_TAG, "New row id: " + eventRowId);
 
         ContentValues updatedValues = new ContentValues(values);
-        updatedValues.put(ArticleEntry._ID, articleRowId);
-        updatedValues.put(ArticleEntry.COLUMN_TITLE, "Santa's Village");
+        updatedValues.put(EventEntry._ID, eventRowId);
+        updatedValues.put(EventEntry.COLUMN_TITLE, "Santa's Event");
 
         int count = mContext.getContentResolver().update(
-                ArticleEntry.CONTENT_URI, updatedValues, ArticleEntry._ID + "= ?",
-                new String[] { Long.toString(articleRowId)});
+                EventEntry.CONTENT_URI, updatedValues, EventEntry._ID + "= ?",
+                new String[] { Long.toString(eventRowId)});
 
         assertEquals(count, 1);
 
-        // A cursor is your primary interface to the query results.
         Cursor cursor = mContext.getContentResolver().query(
-                ArticleEntry.buildArticleWithIdURI(articleRowId),
+                EventEntry.buildEventByIdUri(eventRowId),
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -260,29 +278,29 @@ public class TestProvider extends AndroidTestCase {
 
     public void testUpdateFeed() {
         // Create a new map of values, where column names are the keys
-        ContentValues values = TestDb.createFeedValues();
+        ContentValues values = TestDb.createTrackValues();
 
-        Uri feedUri = mContext.getContentResolver().
-                insert(FeedEntry.CONTENT_URI, values);
-        long feedRowId = ContentUris.parseId(feedUri);
+        Uri trackUri = mContext.getContentResolver().
+                insert(TrackEntry.CONTENT_URI, values);
+        long trackRowId = ContentUris.parseId(trackUri);
 
         // Verify we got a row back.
-        assertTrue(feedRowId != -1);
-        Log.d(LOG_TAG, "New row id: " + feedRowId);
+        assertTrue(trackRowId != -1);
+        Log.d(LOG_TAG, "New row id: " + trackRowId);
 
         ContentValues updatedValues = new ContentValues(values);
-        updatedValues.put(FeedEntry._ID, feedRowId);
-        updatedValues.put(FeedEntry.COLUMN_NAME, "Santa's Village");
+        updatedValues.put(TrackEntry._ID, trackRowId);
+        updatedValues.put(TrackEntry.COLUMN_TITLE, "Santa's Track");
 
         int count = mContext.getContentResolver().update(
-                FeedEntry.CONTENT_URI, updatedValues, FeedEntry._ID + "= ?",
-                new String[] { Long.toString(feedRowId)});
+                TrackEntry.CONTENT_URI, updatedValues, TrackEntry._ID + "= ?",
+                new String[] { Long.toString(trackRowId)});
 
         assertEquals(count, 1);
 
         // A cursor is your primary interface to the query results.
         Cursor cursor = mContext.getContentResolver().query(
-                FeedEntry.buildFeedWithIdUri(feedRowId),
+                TrackEntry.buildTrackByIdUri(trackRowId),
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -294,29 +312,29 @@ public class TestProvider extends AndroidTestCase {
 
     public void testUpdateAuthor() {
         // Create a new map of values, where column names are the keys
-        ContentValues values = TestDb.createAuthorValues();
+        ContentValues values = TestDb.createSpeakerValues();
 
-        Uri authorUri = mContext.getContentResolver().
-                insert(AuthorEntry.CONTENT_URI, values);
-        long authorRowId = ContentUris.parseId(authorUri);
+        Uri speakerUri = mContext.getContentResolver().
+                insert(SpeakerEntry.CONTENT_URI, values);
+        long speakerRowId = ContentUris.parseId(speakerUri);
 
         // Verify we got a row back.
-        assertTrue(authorRowId != -1);
-        Log.d(LOG_TAG, "New row id: " + authorRowId);
+        assertTrue(speakerRowId != -1);
+        Log.d(LOG_TAG, "New row id: " + speakerRowId);
 
         ContentValues updatedValues = new ContentValues(values);
-        updatedValues.put(AuthorEntry._ID, authorRowId);
-        updatedValues.put(AuthorEntry.COLUMN_NAME, "Santa's Village");
+        updatedValues.put(SpeakerEntry._ID, speakerRowId);
+        updatedValues.put(SpeakerEntry.COLUMN_FULLNAME, "Santa");
 
         int count = mContext.getContentResolver().update(
-                AuthorEntry.CONTENT_URI, updatedValues, AuthorEntry._ID + "= ?",
-                new String[] { Long.toString(authorRowId)});
+                SpeakerEntry.CONTENT_URI, updatedValues, SpeakerEntry._ID + "= ?",
+                new String[] { Long.toString(speakerRowId)});
 
         assertEquals(count, 1);
 
         // A cursor is your primary interface to the query results.
         Cursor cursor = mContext.getContentResolver().query(
-                AuthorEntry.buildAuthorWithIdUri(authorRowId),
+                SpeakerEntry.buildSpeakerByIdUri(speakerRowId),
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -325,10 +343,10 @@ public class TestProvider extends AndroidTestCase {
 
         TestDb.validateCursor(cursor, updatedValues);
     }
-    */
+    
     // Make sure we can still delete after adding/updating stuff
     public void testDeleteRecordsAtEnd() {
-        deleteAllRecords();
+        //deleteAllRecords();
     }
 
     public void testGetType() {
@@ -341,35 +359,35 @@ public class TestProvider extends AndroidTestCase {
         // content://com.partiallogic.ocw_android_2014.app/event/1
         type = mContext.getContentResolver().getType(
                 EventEntry.buildEventByIdUri(testEventId));
-        // vnd.android.cursor.item/com.partiallogic.ocw_android_2014.app/Event/1
+        // vnd.android.cursor.item/com.partiallogic.ocw_android_2014.app/event/1
         assertEquals(EventEntry.CONTENT_ITEM_TYPE, type);
 
         String testDate = "20140612";
-        // content://com.partiallogic.ocw_android_2014.app/event?date=20140612
+        // content://com.partiallogic.ocw_android_2014.app/event/date/20140612
         type = mContext.getContentResolver().getType(
                 EventEntry.buildEventByDateUri(testDate));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/event?date=20140612
+        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/event/date/20140612
         assertEquals(EventEntry.CONTENT_TYPE, type);
 
         String testRoom = "room 1";
-        // content://com.partiallogic.ocw_android_2014.app/event?room=room 1
+        // content://com.partiallogic.ocw_android_2014.app/event/room/room 1
         type = mContext.getContentResolver().getType(
                 EventEntry.buildEventByRoomUri(testRoom));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article?room=room 1
+        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article/room/room 1
         assertEquals(EventEntry.CONTENT_TYPE, type);
 
         String testTrack = "Track 1";
-        // content://com.partiallogic.ocw_android_2014.app/event?track=Track 1
+        // content://com.partiallogic.ocw_android_2014.app/event/track/Track 1
         type = mContext.getContentResolver().getType(
                 EventEntry.buildEventByTrackUri(testTrack));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article?track=Track 1
+        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/event/track/Track 1
         assertEquals(EventEntry.CONTENT_TYPE, type);
 
         String testSpeaker = "Speaker 1";
-        // content://com.partiallogic.ocw_android_2014.app/event?speaker=Speaker 1
+        // content://com.partiallogic.ocw_android_2014.app/event/speaker/Speaker 1
         type = mContext.getContentResolver().getType(
                 EventEntry.buildEventBySpeakerUri(testSpeaker));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article?speaker=Speaker 1
+        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article/speaker/Speaker 1
         assertEquals(EventEntry.CONTENT_TYPE, type);
 
         // content://com.partiallogic.ocw_android_2014.app/track

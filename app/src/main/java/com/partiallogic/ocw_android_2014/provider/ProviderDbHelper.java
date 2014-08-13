@@ -56,7 +56,7 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
         EventBuilder.append(EventEntry.COLUMN_END_TIME + " TEXT NOT NULL, ");
         EventBuilder.append(EventEntry.COLUMN_ROOM_TITLE + " TEXT, ");
         EventBuilder.append(EventEntry.COLUMN_TRACK_ID + " TEXT, ");
-        EventBuilder.append(EventEntry.COLUMN_SPEAKER_IDS + " TEXT, ");
+        EventBuilder.append(EventEntry.COLUMN_SPEAKER_ID + " TEXT, ");
         EventBuilder.append(" UNIQUE (" + EventEntry.COLUMN_EVENT_ID +") ON CONFLICT REPLACE");
         EventBuilder.append(" FOREIGN KEY (" + EventEntry.COLUMN_TRACK_ID + ") REFERENCES " +
                 TrackEntry.TABLE_NAME + " (" + TrackEntry.COLUMN_TRACK_ID + ") ");
