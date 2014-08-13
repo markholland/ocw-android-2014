@@ -88,7 +88,7 @@ public class ScheduleProvider extends ContentProvider{
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.EventEntry.TABLE_NAME,
                         projection,
-                        ProviderContract.EventEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
+                        EventEntry.COLUMN_EVENT_ID + " = '" + ContentUris.parseId(uri) + "'",
                         null,
                         null,
                         null,
@@ -158,7 +158,7 @@ public class ScheduleProvider extends ContentProvider{
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.TrackEntry.TABLE_NAME,
                         projection,
-                        ProviderContract.TrackEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
+                        TrackEntry.COLUMN_TRACK_ID + " = '" + ContentUris.parseId(uri) + "'",
                         null,
                         null,
                         null,
@@ -180,7 +180,7 @@ public class ScheduleProvider extends ContentProvider{
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.SpeakerEntry.TABLE_NAME,
                         projection,
-                        ProviderContract.SpeakerEntry._ID + " = '" + ContentUris.parseId(uri) + "'",
+                        SpeakerEntry.COLUMN_SPEAKER_ID + " = '" + ContentUris.parseId(uri) + "'",
                         null,
                         null,
                         null,

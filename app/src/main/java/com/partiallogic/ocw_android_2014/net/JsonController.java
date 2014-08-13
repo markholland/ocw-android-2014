@@ -41,9 +41,11 @@ public class JsonController {
 
         List<EventItem> events = sched.getEventItems();
 
+        /*
         for(int i = 0; i < events.size(); i++) {
             Log.d(LOG_TAG, events.get(i).getEvent().toString());
         }
+        */
 
         return sched;
     }

@@ -256,7 +256,7 @@ public class TestProvider extends AndroidTestCase {
         Log.d(LOG_TAG, "New row id: " + eventRowId);
 
         ContentValues updatedValues = new ContentValues(values);
-        updatedValues.put(EventEntry._ID, eventRowId);
+        updatedValues.put(EventEntry.COLUMN_EVENT_ID, eventRowId);
         updatedValues.put(EventEntry.COLUMN_TITLE, "Santa's Event");
 
         int count = mContext.getContentResolver().update(
@@ -289,7 +289,7 @@ public class TestProvider extends AndroidTestCase {
         Log.d(LOG_TAG, "New row id: " + trackRowId);
 
         ContentValues updatedValues = new ContentValues(values);
-        updatedValues.put(TrackEntry._ID, trackRowId);
+        updatedValues.put(TrackEntry.COLUMN_TRACK_ID, trackRowId);
         updatedValues.put(TrackEntry.COLUMN_TITLE, "Santa's Track");
 
         int count = mContext.getContentResolver().update(
@@ -323,7 +323,7 @@ public class TestProvider extends AndroidTestCase {
         Log.d(LOG_TAG, "New row id: " + speakerRowId);
 
         ContentValues updatedValues = new ContentValues(values);
-        updatedValues.put(SpeakerEntry._ID, speakerRowId);
+        updatedValues.put(SpeakerEntry.COLUMN_SPEAKER_ID, speakerRowId);
         updatedValues.put(SpeakerEntry.COLUMN_FULLNAME, "Santa");
 
         int count = mContext.getContentResolver().update(
