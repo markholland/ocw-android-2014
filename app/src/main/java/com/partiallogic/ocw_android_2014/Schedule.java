@@ -1,6 +1,6 @@
 package com.partiallogic.ocw_android_2014;
 
-import com.partiallogic.ocw_android_2014.Event;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -8,21 +8,19 @@ import java.util.List;
  * Created by markholland on 13/08/14.
  */
 public class Schedule {
-    
-    private List<Event> events;
 
-    public Schedule(List<Event> events) {
-        this.events = events;
+    @SerializedName("items")
+    private List<EventItem> eventItems;
+
+    public Schedule(List<EventItem> eventItems) {
+        this.eventItems = eventItems;
     }
 
-    @Override
-    public String toString() {
-        String str = "";
+    public List<EventItem> getEventItems() {
+        return eventItems;
+    }
 
-        for( int i = 0; i < events.size(); i++) {
-            str += events.get(i).toString();
-        }
-
-        return str;
+    public void setEventItems(List<EventItem> eventItems) {
+        this.eventItems = eventItems;
     }
 }

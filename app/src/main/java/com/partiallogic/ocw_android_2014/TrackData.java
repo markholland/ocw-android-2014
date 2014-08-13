@@ -3,11 +3,11 @@ package com.partiallogic.ocw_android_2014;
 /**
  * Created by markholland on 13/08/14.
  */
-public class Data {
+public class TrackData {
 
     private Track track;
 
-    public Data(Track track) {
+    public TrackData(Track track) {
         this.track = track;
     }
 

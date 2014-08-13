@@ -1,12 +1,13 @@
 package com.partiallogic.ocw_android_2014.net;
 
-import com.partiallogic.ocw_android_2014.Data;
 import com.partiallogic.ocw_android_2014.Schedule;
-import com.partiallogic.ocw_android_2014.Speaker;
+import com.partiallogic.ocw_android_2014.SpeakerData;
+import com.partiallogic.ocw_android_2014.TrackData;
 
 import java.util.List;
 
 import retrofit.http.GET;
+import retrofit.http.Path;
 
 /**
  * Created by markholland on 13/08/14.
@@ -14,7 +15,7 @@ import retrofit.http.GET;
 public interface ApiClient {
 
     // Schedule
-    @GET("/schedule")
+    @GET("/schedule.json")
     Schedule getSchedule();
 
 
@@ -22,14 +23,14 @@ public interface ApiClient {
 
     // Tracks
     @GET("/tracks.json")
-    List<Data> getTracks();
+    List<TrackData> getTracks();
 
 
 
 
     // Speaker
-    @GET("/users/1.json")
-    Speaker getSpeakerById();
+    @GET("/users/{id}.json")
+    SpeakerData getSpeakerById(@Path("id") String _id);
 
 
 }

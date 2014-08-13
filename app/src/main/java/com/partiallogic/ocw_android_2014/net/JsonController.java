@@ -3,10 +3,12 @@ package com.partiallogic.ocw_android_2014.net;
 import android.content.Context;
 import android.util.Log;
 
-import com.partiallogic.ocw_android_2014.Data;
+import com.partiallogic.ocw_android_2014.EventItem;
 import com.partiallogic.ocw_android_2014.Schedule;
 import com.partiallogic.ocw_android_2014.Speaker;
+import com.partiallogic.ocw_android_2014.SpeakerData;
 import com.partiallogic.ocw_android_2014.Track;
+import com.partiallogic.ocw_android_2014.TrackData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,31 +38,40 @@ public class JsonController {
     public Schedule getSchedule(ServiceClient serviceClient, Context con) {
         ApiClient client = serviceClient.getClient(con, ApiClient.class);
         Schedule sched = client.getSchedule();
+
+        List<EventItem> events = sched.getEventItems();
+
+        for(int i = 0; i < events.size(); i++) {
+            Log.d(LOG_TAG, events.get(i).getEvent().toString());
+        }
+
         return sched;
     }
 
     public List<Track> getTracks(ServiceClient serviceClient, Context con) {
         ApiClient client = serviceClient.getClient(con, ApiClient.class);
-        List<Data> dataList = client.getTracks();
-        Log.d(LOG_TAG, "SIZE: "+dataList.size());
+        List<TrackData> trackDataList = client.getTracks();
+        Log.d(LOG_TAG, "SIZE: "+ trackDataList.size());
 
         ArrayList<Track> tracks = new ArrayList<Track>();
 
-        for(int i = 0; i < dataList.size(); i++) {
-            tracks.add(dataList.get(i).getTrack());
-            Log.d(LOG_TAG, dataList.get(i).getTrack().getId());
-        }
-
+        /*
         for(int i = 0; i < tracks.size(); i++) {
             Log.d(LOG_TAG, tracks.get(i).toString());
         }
+        */
 
         return tracks;
     }
 
     public Speaker getSpeakerById(ServiceClient serviceClient, Context con, String id) {
         ApiClient client = serviceClient.getClient(con, ApiClient.class);
-        Speaker speaker = client.getSpeakerById();
+        SpeakerData speakerData = client.getSpeakerById(id);
+
+        Speaker speaker = speakerData.getSpeaker();
+
+        //Log.d(LOG_TAG, speaker.toString());
+
         return speaker;
     }
 

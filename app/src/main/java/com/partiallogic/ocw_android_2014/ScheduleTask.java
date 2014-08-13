@@ -32,6 +32,12 @@ public class ScheduleTask extends AsyncTask<Void, Void, Void> {
         List<Track> tracks = JsonController.getInstance().getTracks(ServiceClient.getInstance(),
                 mContext);
 
+        Speaker speaker = JsonController.getInstance().getSpeakerById(ServiceClient.getInstance(),
+                mContext,"1");
+
+        Schedule schedule = JsonController.getInstance().getSchedule(ServiceClient.getInstance(),
+                mContext);
+
 
 
         return null;

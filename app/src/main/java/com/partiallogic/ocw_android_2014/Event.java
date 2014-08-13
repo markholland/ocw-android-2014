@@ -1,5 +1,7 @@
 package com.partiallogic.ocw_android_2014;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -14,6 +16,7 @@ public class Event {
     private String end_time;
     private String room_title;
     private String track_id;
+    @SerializedName("user_ids")
     private List<String> speaker_ids;
 
     public Event(String id, String title, String description, String start_time,
