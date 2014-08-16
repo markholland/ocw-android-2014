@@ -45,7 +45,8 @@ public class DownloadScheduleTask extends AsyncTask<Void, Void, Void> {
             eventValues.put(EventEntry.COLUMN_DESCRIPTION, event.getDescription());
             eventValues.put(EventEntry.COLUMN_START_TIME, event.getStart_time());
             eventValues.put(EventEntry.COLUMN_END_TIME, event.getEnd_time());
-            eventValues.put(EventEntry.COLUMN_ROOM_TITLE, event.getTrack_id());
+            eventValues.put(EventEntry.COLUMN_ROOM_TITLE, event.getRoom_title());
+            eventValues.put(EventEntry.COLUMN_TRACK_ID, event.getTrack_id());
             eventValues.put(EventEntry.COLUMN_SPEAKER_ID, event.getSpeaker_idsAsString());
 
             cVVector.add(eventValues);
