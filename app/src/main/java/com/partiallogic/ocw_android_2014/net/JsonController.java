@@ -54,11 +54,11 @@ public class JsonController {
         List<TrackData> trackDataList = client.getTracks();
         ArrayList<Track> tracks = new ArrayList<Track>();
 
-        /*
-        for(int i = 0; i < tracks.size(); i++) {
-            Log.d(LOG_TAG, tracks.get(i).toString());
+
+        for(int i = 0; i < trackDataList.size(); i++) {
+            tracks.add(trackDataList.get(i).getTrack());
         }
-        */
+
 
         return tracks;
     }

@@ -100,7 +100,7 @@ public class Event {
 
     public String getSpeaker_idsAsString() {
 
-        String str = "null";
+        String str = "";
         if(speaker_ids != null) {
             for (String s : speaker_ids) {
                 str += s;

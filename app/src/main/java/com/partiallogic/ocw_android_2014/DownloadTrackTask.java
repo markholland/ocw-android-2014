@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.net.JsonController;
 import com.partiallogic.ocw_android_2014.net.ServiceClient;
@@ -45,7 +44,7 @@ public class DownloadTrackTask extends AsyncTask<Void, Void, Void> {
             Uri inserted = mContext.getContentResolver()
                     .insert(TrackEntry.CONTENT_URI, trackValues);
 
-            Log.d(LOG_TAG, inserted.toString());
+            //Log.d(LOG_TAG, inserted.toString());
 
         }
         return null;
