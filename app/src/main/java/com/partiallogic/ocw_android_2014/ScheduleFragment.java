@@ -3,12 +3,14 @@ package com.partiallogic.ocw_android_2014;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -19,6 +21,8 @@ import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
  */
 public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
+    private static final String LOG_TAG = ScheduleFragment.class.getSimpleName();
+
     private static final int SCHEDULE_LOADER = 0;
 
     private static final String[] SCHEDULE_COLUMNS = {
@@ -26,7 +30,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             EventEntry.COLUMN_TITLE
     };
 
-    public static final int COL_EVENT_TITLE = 0;
+    public static final int COL_EVENT_TITLE = 1;
 
     private SimpleCursorAdapter mScheduleAdapter;
 
@@ -72,6 +76,19 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         ListView listView = (ListView) rootView.findViewById(R.id.listview_schedule);
         listView.setAdapter(mScheduleAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Cursor cursor = mScheduleAdapter.getCursor();
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    String eventTitle = cursor.getString(COL_EVENT_TITLE);
+                    Intent intent = new Intent(getActivity(), EventActivity.class)
+                            .putExtra(Intent.EXTRA_TEXT, eventTitle);
+                    startActivity(intent);
+                }
+            }
+        });
 
         return rootView;
     }

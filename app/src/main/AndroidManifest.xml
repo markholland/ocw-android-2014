@@ -16,9 +16,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="com.partiallogic.ocw_android_2014.app"
-            android:name=".provider.ScheduleProvider"/>
+            android:name=".provider.ScheduleProvider"
+            android:authorities="com.partiallogic.ocw_android_2014.app" />
+
+        <activity
+            android:name=".EventActivity"
+            android:label="@string/title_activity_event" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

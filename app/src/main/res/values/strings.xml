@@ -4,5 +4,6 @@
     <string name="app_name">ocw-android-2014</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_event">EventActivity</string>
 
 </resources>
