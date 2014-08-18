@@ -73,7 +73,9 @@ public class EventActivity extends Activity {
         private static final String[] EVENT_COLUMNS = {
                 EventEntry._ID,
                 EventEntry.COLUMN_TITLE,
-                EventEntry.COLUMN_DESCRIPTION
+                EventEntry.COLUMN_DESCRIPTION,
+                EventEntry.COLUMN_ROOM_TITLE,
+                EventEntry.COLUMN_TRACK_ID
         };
 
         public EventDetailFragment() {
@@ -98,6 +100,7 @@ public class EventActivity extends Activity {
             if (mShareString != null) {
                 mShareActionProvider.setShareIntent(createShareEventIntent());
             }
+
         }
 
         @Override
@@ -161,7 +164,7 @@ public class EventActivity extends Activity {
             ((TextView) getView().findViewById(R.id.detail_description_textview))
                     .setText(eventDescription);
 
-            /*String eventRoomTitle =
+            String eventRoomTitle =
                     data.getString(data.getColumnIndex(EventEntry.COLUMN_ROOM_TITLE));
             ((TextView) getView().findViewById(R.id.detail_room_title_textview))
                     .setText(eventRoomTitle);
@@ -169,8 +172,8 @@ public class EventActivity extends Activity {
             String eventTrackId =
                     data.getString(data.getColumnIndex(EventEntry.COLUMN_TRACK_ID));
             ((TextView) getView().findViewById(R.id.detail_track_id_textview))
-                    .setText(eventDescription);
-            */
+                    .setText(eventTrackId);
+
             // We still need this for the share intent
             mShareString = eventTitle;
 
