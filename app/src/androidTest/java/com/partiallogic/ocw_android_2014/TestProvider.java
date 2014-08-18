@@ -33,7 +33,8 @@ public class TestProvider extends AndroidTestCase {
 
 
 
-        ContentValues eventTestValues, trackTestValues, speakerTestValues;
+        ContentValues eventTestValues, trackTestValues, speakerTestValues,
+                eventSpeakerTrackTestValues;
 
         Cursor cursor;
 
@@ -191,6 +192,26 @@ public class TestProvider extends AndroidTestCase {
         } else {
             fail("No data");
         }
+
+        eventSpeakerTrackTestValues = TestDb.createEventValues();
+        addAllContentValues(eventSpeakerTrackTestValues, speakerTestValues);
+        addAllContentValues(eventSpeakerTrackTestValues, trackTestValues);
+
+        // Event with speaker and track by Id
+        cursor = mContext.getContentResolver().query(
+                EventEntry.buildEventByIdWithSpeakerAndTrackUri(TestDb.TEST_EVENT_ID),  // Table to Query
+                null,
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null  // columns to group by
+        );
+
+        if(cursor.moveToFirst()) {
+            TestDb.validateCursor(cursor, eventSpeakerTrackTestValues);
+        } else {
+            fail("No data");
+        }
+
     }
     
     
@@ -391,6 +412,12 @@ public class TestProvider extends AndroidTestCase {
                 EventEntry.buildEventBySpeakerUri(testSpeaker));
         // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article/speaker/Speaker 1
         assertEquals(EventEntry.CONTENT_TYPE, type);
+
+        // content://com.partiallogic.ocw_android_2014.app/speakertrack/1
+        type = mContext.getContentResolver().getType(
+                EventEntry.buildEventByIdWithSpeakerAndTrackUri(""+testEventId));
+        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/speakertrack/1
+        assertEquals(EventEntry.CONTENT_ITEM_TYPE, type);
 
         // content://com.partiallogic.ocw_android_2014.app/track
         type = mContext.getContentResolver().getType(

@@ -60,6 +60,8 @@ public final class ProviderContract {
 
         public static final String BY_SPEAKER = "speaker";
 
+        public static final String WITH_SPEAKER_AND_TRACK = "speakertrack";
+
 
         public static Uri buildEventUri() {
             return CONTENT_URI;
@@ -83,6 +85,11 @@ public final class ProviderContract {
 
         public static Uri buildEventBySpeakerUri(String speaker_id) {
             return CONTENT_URI.buildUpon().appendPath(BY_SPEAKER).appendPath(speaker_id).build();
+        }
+
+        public static Uri buildEventByIdWithSpeakerAndTrackUri(String event_id) {
+            return CONTENT_URI.buildUpon().appendPath(WITH_SPEAKER_AND_TRACK)
+                    .appendPath(event_id).build();
         }
 
         public static String getStartTimeFromUri(Uri uri) {
