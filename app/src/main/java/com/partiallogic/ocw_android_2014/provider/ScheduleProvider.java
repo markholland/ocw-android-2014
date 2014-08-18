@@ -241,13 +241,25 @@ public class ScheduleProvider extends ContentProvider{
     public Uri insert(Uri uri, ContentValues values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
-        Uri returnUri;
+        Uri returnUri = null;
 
         switch (match) {
             case EVENT: {
                 long _id = db.insert(EventEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
-                    returnUri = EventEntry.buildEventByIdUri(_id);
+                    Cursor c = mOpenHelper.getReadableDatabase().query(
+                            ProviderContract.EventEntry.TABLE_NAME,
+                            null,
+                            EventEntry._ID + " = '" + _id + "'",
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    if(c.moveToFirst()) {
+                        String event_id = c.getString(1);
+                        returnUri = EventEntry.buildEventByIdUri(Long.parseLong(event_id));
+                    }
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -256,7 +268,19 @@ public class ScheduleProvider extends ContentProvider{
             case TRACK: {
                 long _id = db.insert(TrackEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
-                    returnUri = TrackEntry.buildTrackByIdUri(_id);
+                    Cursor c = mOpenHelper.getReadableDatabase().query(
+                            ProviderContract.TrackEntry.TABLE_NAME,
+                            null,
+                            TrackEntry._ID + " = '" + _id + "'",
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    if(c.moveToFirst()) {
+                        String track_id = c.getString(1);
+                        returnUri = TrackEntry.buildTrackByIdUri(Long.parseLong(track_id));
+                    }
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -265,7 +289,20 @@ public class ScheduleProvider extends ContentProvider{
             case SPEAKER: {
                 long _id = db.insert(SpeakerEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
-                    returnUri = SpeakerEntry.buildSpeakerByIdUri(_id);
+                    Cursor c = mOpenHelper.getReadableDatabase().query(
+                            ProviderContract.SpeakerEntry.TABLE_NAME,
+                            null,
+                            SpeakerEntry._ID + " = '" + _id + "'",
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    if(c.moveToFirst()) {
+                        String speaker_id = c.getString(1);
+                        returnUri = SpeakerEntry.buildSpeakerByIdUri(Long.parseLong(speaker_id));
+                        Log.d(LOG_TAG, returnUri.toString());
+                    }
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }

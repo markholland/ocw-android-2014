@@ -21,18 +21,18 @@ public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
-    public static final String TEST_EVENT_ID = "1";
+    public static final String TEST_EVENT_ID = "101";
     public static final String TEST_EVENT_TITLE = "Test Event";
     public static final String TEST_EVENT_DESCRIPTION = "A description of an event";
     public static final String TEST_EVENT_START_TIME = "2014-06-24T10:00:00.000-07:00";
     public static final String TEST_EVENT_END_TIME = "2014-06-24T11:00:00.000-07:00";
     public static final String TEST_ROOM_TITLE = "Testing room";
-    public static final String TEST_TRACK_ID = "1";
+    public static final String TEST_TRACK_ID = "102";
     public static final String TEST_TRACK_TITLE = "Test Track";
     public static final String TEST_TRACK_DESCRIPTION = "A description of a track";
     public static final String TEST_TRACK_COLOR = "Blue";
     public static final String TEST_TRACK_EXCERPT = "An excerpt of a track description";
-    public static final String TEST_SPEAKER_ID = "1";
+    public static final String TEST_SPEAKER_ID = "103";
     public static final String TEST_SPEAKER_FULLNAME = "Mr. A. Speaker";
     public static final String TEST_SPEAKER_AFFILIATION = "Testers inc.";
     public static final String TEST_SPEAKER_BIOGRAPHY = "A biography all about the speaker";

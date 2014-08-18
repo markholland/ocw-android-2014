@@ -38,22 +38,24 @@ public class TestProvider extends AndroidTestCase {
         Cursor cursor;
 
         trackTestValues = TestDb.createTrackValues();
-        Uri feedInsertUri = mContext.getContentResolver()
+        Uri trackInsertUri = mContext.getContentResolver()
                 .insert(TrackEntry.CONTENT_URI, trackTestValues);
-        assertTrue(feedInsertUri != null);
+        assertTrue(trackInsertUri != null);
+        assertEquals(Long.parseLong(TestDb.TEST_TRACK_ID),ContentUris.parseId(trackInsertUri));
 
 
         speakerTestValues = TestDb.createSpeakerValues();
-        Uri authorInsertUri = mContext.getContentResolver()
+        Uri speakerInsertUri = mContext.getContentResolver()
                 .insert(SpeakerEntry.CONTENT_URI, speakerTestValues);
-        assertTrue(authorInsertUri != null);
+        assertTrue(speakerInsertUri != null);
+        assertEquals(Long.parseLong(TestDb.TEST_SPEAKER_ID), ContentUris.parseId(speakerInsertUri));
 
 
         eventTestValues = TestDb.createEventValues();
-        Uri articleInsertUri = mContext.getContentResolver()
+        Uri eventInsertUri = mContext.getContentResolver()
                 .insert(EventEntry.CONTENT_URI, eventTestValues);
-        assertTrue(articleInsertUri != null);
-
+        assertTrue(eventInsertUri != null);
+        assertEquals(Long.parseLong(TestDb.TEST_EVENT_ID), ContentUris.parseId(eventInsertUri));
 
         // Events
         cursor = mContext.getContentResolver().query(
@@ -260,10 +262,10 @@ public class TestProvider extends AndroidTestCase {
         updatedValues.put(EventEntry.COLUMN_TITLE, "Santa's Event");
 
         int count = mContext.getContentResolver().update(
-                EventEntry.CONTENT_URI, updatedValues, EventEntry._ID + "= ?",
+                EventEntry.CONTENT_URI, updatedValues, EventEntry.COLUMN_EVENT_ID + "= ?",
                 new String[] { Long.toString(eventRowId)});
 
-        assertEquals(count, 1);
+        assertEquals(1, count);
 
         Cursor cursor = mContext.getContentResolver().query(
                 EventEntry.buildEventByIdUri(eventRowId),
@@ -276,7 +278,7 @@ public class TestProvider extends AndroidTestCase {
         TestDb.validateCursor(cursor, updatedValues);
     }
 
-    public void testUpdateFeed() {
+    public void testUpdateTrack() {
         // Create a new map of values, where column names are the keys
         ContentValues values = TestDb.createTrackValues();
 
@@ -293,10 +295,10 @@ public class TestProvider extends AndroidTestCase {
         updatedValues.put(TrackEntry.COLUMN_TITLE, "Santa's Track");
 
         int count = mContext.getContentResolver().update(
-                TrackEntry.CONTENT_URI, updatedValues, TrackEntry._ID + "= ?",
+                TrackEntry.CONTENT_URI, updatedValues, TrackEntry.COLUMN_TRACK_ID + "= ?",
                 new String[] { Long.toString(trackRowId)});
 
-        assertEquals(count, 1);
+        assertEquals(1, count);
 
         // A cursor is your primary interface to the query results.
         Cursor cursor = mContext.getContentResolver().query(
@@ -310,7 +312,7 @@ public class TestProvider extends AndroidTestCase {
         TestDb.validateCursor(cursor, updatedValues);
     }
 
-    public void testUpdateAuthor() {
+    public void testUpdateSpeaker() {
         // Create a new map of values, where column names are the keys
         ContentValues values = TestDb.createSpeakerValues();
 
@@ -327,10 +329,10 @@ public class TestProvider extends AndroidTestCase {
         updatedValues.put(SpeakerEntry.COLUMN_FULLNAME, "Santa");
 
         int count = mContext.getContentResolver().update(
-                SpeakerEntry.CONTENT_URI, updatedValues, SpeakerEntry._ID + "= ?",
+                SpeakerEntry.CONTENT_URI, updatedValues, SpeakerEntry.COLUMN_SPEAKER_ID + "= ?",
                 new String[] { Long.toString(speakerRowId)});
 
-        assertEquals(count, 1);
+        assertEquals(1, count);
 
         // A cursor is your primary interface to the query results.
         Cursor cursor = mContext.getContentResolver().query(
