@@ -103,7 +103,7 @@ public class Event {
         String str = "";
         if(speaker_ids != null) {
             for (String s : speaker_ids) {
-                str += s;
+                str += s + ",";
             }
         }
         return str;

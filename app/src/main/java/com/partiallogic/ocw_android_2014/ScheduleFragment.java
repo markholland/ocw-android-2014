@@ -27,10 +27,11 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String[] SCHEDULE_COLUMNS = {
             EventEntry._ID,
+            EventEntry.COLUMN_EVENT_ID,
             EventEntry.COLUMN_TITLE
     };
 
-    public static final int COL_EVENT_TITLE = 1;
+    public static final int COL_EVENT_ID = 1;
 
     private SimpleCursorAdapter mScheduleAdapter;
 
@@ -82,9 +83,9 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = mScheduleAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    String eventTitle = cursor.getString(COL_EVENT_TITLE);
+                    String eventTitle = cursor.getString(COL_EVENT_ID);
                     Intent intent = new Intent(getActivity(), EventActivity.class)
-                            .putExtra(Intent.EXTRA_TEXT, eventTitle);
+                            .putExtra(EventActivity.EVENT_KEY, eventTitle);
                     startActivity(intent);
                 }
             }
@@ -103,13 +104,15 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
+        String selection = EventEntry.COLUMN_TRACK_ID + " =? ";
+        String selectionArgs[] = {"32"};
 
         return new CursorLoader(
                 getActivity(),
                 EventEntry.buildEventUri(),
                 SCHEDULE_COLUMNS,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null
         );
     }
