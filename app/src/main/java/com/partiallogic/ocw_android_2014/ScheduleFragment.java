@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 
@@ -28,10 +29,15 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     private static final String[] SCHEDULE_COLUMNS = {
             EventEntry._ID,
             EventEntry.COLUMN_EVENT_ID,
-            EventEntry.COLUMN_TITLE
+            EventEntry.COLUMN_TITLE,
+            EventEntry.COLUMN_START_TIME,
+            EventEntry.COLUMN_ROOM_TITLE
     };
 
     public static final int COL_EVENT_ID = 1;
+    public static final int COL_TITLE = 2;
+    public static final int COL_START_TIME = 3;
+    public static final int COL_ROOM_TITLE = 4;
 
     private SimpleCursorAdapter mScheduleAdapter;
 
@@ -53,8 +59,8 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         downloadTrackTask.execute();
         DownloadScheduleTask schedTask = new DownloadScheduleTask(getActivity());
         schedTask.execute();
-        DownloadSpeakerTask downloadSpeakerTask = new DownloadSpeakerTask(getActivity());
-        downloadSpeakerTask.execute("1");
+        //DownloadSpeakerTask downloadSpeakerTask = new DownloadSpeakerTask(getActivity());
+        //downloadSpeakerTask.execute("1");
 
     }
 
@@ -67,12 +73,31 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                 getActivity(),
                 R.layout.list_item_schedule,
                 null,
-                new String[]{EventEntry.COLUMN_TITLE
+                new String[]{EventEntry.COLUMN_TITLE,
+                        EventEntry.COLUMN_START_TIME,
+                        EventEntry.COLUMN_ROOM_TITLE
                 },
-                new int[]{R.id.list_item_title_textview
+                new int[]{R.id.list_item_title_textview,
+                        R.id.list_item_time_textview,
+                        R.id.list_item_room_textview
                 },
                 0
         );
+
+        mScheduleAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                switch (columnIndex) {
+                    case COL_START_TIME: {
+                        String timeString = cursor.getString(columnIndex);
+                        TextView dateView = (TextView) view;
+                        dateView.setText(Utility.getHumanStartTime(timeString));
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_schedule);
         listView.setAdapter(mScheduleAdapter);
@@ -83,9 +108,9 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = mScheduleAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    String eventTitle = cursor.getString(COL_EVENT_ID);
+                    String eventId = cursor.getString(COL_EVENT_ID);
                     Intent intent = new Intent(getActivity(), EventActivity.class)
-                            .putExtra(EventActivity.EVENT_KEY, eventTitle);
+                            .putExtra(EventActivity.EVENT_KEY, eventId);
                     startActivity(intent);
                 }
             }

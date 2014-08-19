@@ -67,7 +67,6 @@ public class EventActivity extends Activity {
         private static final String EVENT_SHARE_HASHTAG = "#OCW";
 
         private ShareActionProvider mShareActionProvider;
-        private String mEventTitle;
         private String mShareString = null;
 
         private static final String[] EVENT_COLUMNS = {

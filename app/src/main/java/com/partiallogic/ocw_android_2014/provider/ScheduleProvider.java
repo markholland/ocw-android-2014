@@ -369,13 +369,28 @@ public class ScheduleProvider extends ContentProvider{
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
+        int returnCount = 0;
         switch (match) {
             case EVENT:
                 db.beginTransaction();
-                int returnCount = 0;
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(ProviderContract.EventEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case SPEAKER:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(ProviderContract.SpeakerEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }
