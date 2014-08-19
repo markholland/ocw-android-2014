@@ -1,18 +1,18 @@
 package com.partiallogic.ocw_android_2014;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
@@ -129,16 +129,17 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        String selection = EventEntry.COLUMN_TRACK_ID + " =? ";
-        String selectionArgs[] = {"32"};
+        //String selection = EventEntry.COLUMN_TRACK_ID + " =? ";
+        //String selectionArgs[] = {"32"};
+        String sortOrder = EventEntry.COLUMN_START_TIME + " ASC";
 
         return new CursorLoader(
                 getActivity(),
                 EventEntry.buildEventUri(),
                 SCHEDULE_COLUMNS,
-                selection,
-                selectionArgs,
-                null
+                null,//selection,
+                null,//selectionArgs,
+                sortOrder
         );
     }
 

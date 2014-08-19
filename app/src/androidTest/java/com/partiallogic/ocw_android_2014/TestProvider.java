@@ -448,7 +448,11 @@ public class TestProvider extends AndroidTestCase {
 
     }
 
-
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        deleteAllRecords();
+    }
 
     // The target api annotation is needed for the call to keySet -- we wouldn't want
     // to use this in our app, but in a test it's fine to assume a higher target.

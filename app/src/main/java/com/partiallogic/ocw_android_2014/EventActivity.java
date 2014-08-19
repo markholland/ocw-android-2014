@@ -1,15 +1,16 @@
 package com.partiallogic.ocw_android_2014;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ShareActionProvider;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 
-public class EventActivity extends Activity {
+public class EventActivity extends ActionBarActivity {
 
     public static final String EVENT_KEY = "event_id";
 
@@ -32,7 +33,7 @@ public class EventActivity extends Activity {
         if (savedInstanceState == null) {
             EventDetailFragment detail = new EventDetailFragment();
             detail.setArguments(getIntent().getExtras());
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new EventDetailFragment())
                     .commit();
         }
@@ -42,7 +43,7 @@ public class EventActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.detailfragment, menu);
+        getMenuInflater().inflate(R.menu.detail, menu);
         return true;
     }
 
@@ -89,12 +90,12 @@ public class EventActivity extends Activity {
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.detailfragment, menu);
+            inflater.inflate(R.menu.detail_fragment, menu);
 
             MenuItem menuItem = menu.findItem(R.id.menu_item_share);
 
             mShareActionProvider =
-                    (ShareActionProvider) menuItem.getActionProvider();
+                    (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
             if (mShareString != null) {
                 mShareActionProvider.setShareIntent(createShareEventIntent());
