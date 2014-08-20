@@ -18,22 +18,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:paddingTop="6dp"
+        android:minHeight="?android:attr/listPreferredItemHeight"
         >
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_title_textview"
+            android:layout_gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:layout_weight="1"/>
+            android:layout_weight="0.8"/>
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:background="#222222"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_room_textview"
-            android:paddingRight="16dp"/>
+            android:layout_gravity="center"
+            android:layout_weight="0.2"/>
 
     </LinearLayout>
 

@@ -10,8 +10,7 @@ import com.partiallogic.ocw_android_2014.net.ServiceClient;
 import com.partiallogic.ocw_android_2014.obj.Event;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
 import com.partiallogic.ocw_android_2014.obj.Speaker;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.*;
 
 import java.util.ArrayList;
 import java.util.List;

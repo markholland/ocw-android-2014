@@ -75,7 +75,8 @@ public class EventActivity extends ActionBarActivity {
                 EventEntry.COLUMN_TITLE,
                 EventEntry.COLUMN_DESCRIPTION,
                 EventEntry.COLUMN_ROOM_TITLE,
-                EventEntry.COLUMN_TRACK_ID
+                EventEntry.COLUMN_TRACK_ID,
+                //EventEntry.COLUMN_SPEAKER_ID
         };
 
         public EventDetailFragment() {
@@ -131,7 +132,7 @@ public class EventActivity extends ActionBarActivity {
                 return null;
             }
             String eventId = intent.getStringExtra(EVENT_KEY);
-            Log.d(LOG_TAG,eventId);
+            Log.d(LOG_TAG, eventId);
 
             // Sort order: Ascending, by date.
             String sortOrder = EventEntry.COLUMN_TITLE + " ASC";
@@ -174,6 +175,49 @@ public class EventActivity extends ActionBarActivity {
             ((TextView) getView().findViewById(R.id.detail_track_id_textview))
                     .setText(eventTrackId);
 
+            /*
+            String speakerId = data.getString(
+                    data.getColumnIndex(EventEntry.COLUMN_SPEAKER_ID));
+
+            // If returns a valid speakerId
+            if(speakerId.length() > 0) {
+                // Speaker by Id
+                Cursor cursor = getActivity().getContentResolver().query(
+                        ProviderContract.SpeakerEntry.buildSpeakerByIdUri(
+                                Long.parseLong(speakerId)),
+                        null,
+                        null, // Columns for the "where" clause
+                        null, // Values for the "where" clause
+                        null  // columns to group by
+                );
+
+                if (cursor.moveToFirst()) {
+                    String eventSpeakerId = cursor.getString(2);
+
+                    ((TextView) getView().findViewById(R.id.detail_speaker_textview))
+                            .setText(eventSpeakerId);
+                } else { // Not in db so download
+
+                    // Load speaker
+
+                    // Speaker by Id
+                    cursor = getActivity().getContentResolver().query(
+                            ProviderContract.SpeakerEntry.buildSpeakerByIdUri(
+                                    Long.parseLong(speakerId)),
+                            null,
+                            null, // Columns for the "where" clause
+                            null, // Values for the "where" clause
+                            null  // columns to group by
+                    );
+
+                    if (cursor.moveToFirst()) {
+                        String eventSpeakerId = cursor.getString(2);
+
+                        ((TextView) getView().findViewById(R.id.detail_speaker_textview))
+                                .setText(eventSpeakerId);
+                    }
+                }
+            } */
             // We still need this for the share intent
             mShareString = eventTitle;
 

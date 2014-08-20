@@ -7,13 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 
@@ -39,7 +37,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_START_TIME = 3;
     public static final int COL_ROOM_TITLE = 4;
 
-    private SimpleCursorAdapter mScheduleAdapter;
+    private ScheduleAdapter mScheduleAdapter;
 
 
     public ScheduleFragment() {
@@ -69,35 +67,11 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        mScheduleAdapter = new SimpleCursorAdapter(
+        mScheduleAdapter = new ScheduleAdapter(
                 getActivity(),
-                R.layout.list_item_schedule,
                 null,
-                new String[]{EventEntry.COLUMN_TITLE,
-                        EventEntry.COLUMN_START_TIME,
-                        EventEntry.COLUMN_ROOM_TITLE
-                },
-                new int[]{R.id.list_item_title_textview,
-                        R.id.list_item_time_textview,
-                        R.id.list_item_room_textview
-                },
                 0
         );
-
-        mScheduleAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                switch (columnIndex) {
-                    case COL_START_TIME: {
-                        String timeString = cursor.getString(columnIndex);
-                        TextView dateView = (TextView) view;
-                        dateView.setText(Utility.getHumanStartTime(timeString));
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_schedule);
         listView.setAdapter(mScheduleAdapter);
