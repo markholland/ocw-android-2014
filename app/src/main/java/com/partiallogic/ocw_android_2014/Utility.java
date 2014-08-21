@@ -1,7 +1,5 @@
 package com.partiallogic.ocw_android_2014;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,7 +34,7 @@ public class Utility {
 
         try {
             Date sTime = SourceFormatter.parse(startTime);
-            Log.d(LOG_TAG, sTime.toString());
+            //Log.d(LOG_TAG, sTime.toString());
             String sDate = HumanDateFormatter.format(sTime);
             return sDate;
         } catch (ParseException e) {

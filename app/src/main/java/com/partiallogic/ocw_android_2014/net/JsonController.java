@@ -63,15 +63,24 @@ public class JsonController {
         return tracks;
     }
 
-    public Speaker getSpeakerById(ServiceClient serviceClient, Context con, String id) {
+    public List<Speaker> getSpeakers(ServiceClient serviceClient, Context con) {
         ApiClient client = serviceClient.getClient(con, ApiClient.class);
-        SpeakerData speakerData = client.getSpeakerById(id);
+        List<SpeakerData> speakerDataList = client.getSpeakers();
 
-        Speaker speaker = speakerData.getSpeaker();
+        ArrayList<Speaker> speakers = new ArrayList<Speaker>();
 
-        //Log.d(LOG_TAG, speaker.toString());
 
-        return speaker;
+        for(int i = 0; i < speakerDataList.size(); i++) {
+            speakers.add(speakerDataList.get(i).getSpeaker());
+        }
+
+        /*
+        for( Speaker s : speakers) {
+            Log.d(LOG_TAG, s.toString());
+        }
+        */
+
+        return speakers;
     }
 
 

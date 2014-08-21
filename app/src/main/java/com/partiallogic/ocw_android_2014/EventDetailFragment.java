@@ -38,12 +38,12 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     private String mShareString = null;
 
     private static final String[] EVENT_COLUMNS = {
-            EventEntry._ID,
-            EventEntry.COLUMN_TITLE,
-            EventEntry.COLUMN_DESCRIPTION,
+            EventEntry.TABLE_NAME + "." + EventEntry._ID,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TITLE,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DESCRIPTION,
             EventEntry.COLUMN_ROOM_TITLE,
-            EventEntry.COLUMN_TRACK_ID,
-            //EventEntry.COLUMN_SPEAKER_ID
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
+            //SpeakerEntry.COLUMN_FULLNAME
     };
 
     public static final int COL_EVENT_TITLE = 1;
@@ -55,6 +55,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mEventDescriptionView;
     private TextView mEventRoomView;
     private TextView mEventTrackView;
+    //private TextView mEventSpeakerView;
 
     public EventDetailFragment() {
         setHasOptionsMenu(true);
@@ -89,6 +90,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventDescriptionView = (TextView) rootView.findViewById(R.id.detail_description_textview);
         mEventRoomView = (TextView) rootView.findViewById(R.id.detail_room_title_textview);
         mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
+        //mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
 
         return rootView;
     }
@@ -118,8 +120,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         // Sort order: Ascending, by date.
         String sortOrder = EventEntry.COLUMN_TITLE + " ASC";
 
-        Uri EventByIdUri = EventEntry.buildEventByIdUri(
-                Long.parseLong(eventId));
+        Uri EventByIdUri = EventEntry.buildEventByIdUri(Long.parseLong(eventId));
         Log.v(LOG_TAG, EventByIdUri.toString());
 
         return new CursorLoader(
@@ -153,51 +154,11 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventTrackView.setText(eventTrackId);
 
         /*
-            String speakerId = data.getString(
-                    data.getColumnIndex(EventEntry.COLUMN_SPEAKER_ID));
+        String eventSpeakerName =
+                data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_FULLNAME));
+        mEventSpeakerView.setText(eventSpeakerName);
+        */
 
-            // If returns a valid speakerId
-            if(speakerId.length() > 0) {
-                // Speaker by Id
-                Cursor cursor = getActivity().getContentResolver().query(
-                        SpeakerEntry.buildSpeakerByIdUri(
-                                Long.parseLong(speakerId)),
-                        null,
-                        null, // Columns for the "where" clause
-                        null, // Values for the "where" clause
-                        null  // columns to group by
-                );
-
-                if (cursor.moveToFirst()) {
-                    String eventSpeakerId = cursor.getString(2);
-
-                    ((TextView) getView().findViewById(R.id.detail_speaker_textview))
-                            .setText(eventSpeakerId);
-                } else { // Not in db so download
-
-                    // Load speaker
-                    DownloadSpeakerTask dl = new DownloadSpeakerTask(getActivity());
-                    dl.execute(speakerId);
-
-                    // Speaker by Id
-                    cursor = getActivity().getContentResolver().query(
-                            SpeakerEntry.buildSpeakerByIdUri(
-                                    Long.parseLong(speakerId)),
-                            null,
-                            null, // Columns for the "where" clause
-                            null, // Values for the "where" clause
-                            null  // columns to group by
-                    );
-
-                    if (cursor.moveToFirst()) {
-                        String eventSpeakerId = cursor.getString(2);
-
-                        ((TextView) getView().findViewById(R.id.detail_speaker_textview))
-                                .setText(eventSpeakerId);
-                    }
-                }
-            }
-            */
         // We still need this for the share intent
         mShareString = eventTitle;
 

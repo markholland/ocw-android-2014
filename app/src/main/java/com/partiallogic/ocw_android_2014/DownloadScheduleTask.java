@@ -35,7 +35,6 @@ public class DownloadScheduleTask extends AsyncTask<Void, Void, Void> {
                 mContext);
 
         List<Event> events = schedule.getEvents();
-        //ArrayList<String> speakerIds = new ArrayList<String>();
         ArrayList<String> scheduleDays = new ArrayList<String>();
         String currentDay;
 
@@ -44,14 +43,6 @@ public class DownloadScheduleTask extends AsyncTask<Void, Void, Void> {
         for( Event event : events ) {
             ContentValues eventValues = new ContentValues();
 
-            /*
-            // Create list of all speaker ids in schedule
-            if(event.getSpeaker_ids() != null) {
-                for (String sIds : event.getSpeaker_ids()) {
-                    speakerIds.add(sIds);
-                }
-            }
-            */
 
             // Get list of the dates that have events.
             currentDay = Utility.getDateFromStartTime(event.getStart_time());
@@ -79,40 +70,6 @@ public class DownloadScheduleTask extends AsyncTask<Void, Void, Void> {
             Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of event data");
         }
 
-        /*
-        ArrayList<Speaker> speakers = new ArrayList<Speaker>();
-        // Now get all the speakers and insert
-        for(String sId : speakerIds) {
-            speakers.add(JsonController.getInstance().getSpeakerById(ServiceClient.getInstance(),
-                    mContext, sId));
-        }
-
-        Vector<ContentValues> speakersVector = new Vector<ContentValues>(events.size());
-
-        for(Speaker speaker : speakers) {
-
-            ContentValues speakerValues = new ContentValues();
-
-            speakerValues.put(SpeakerEntry.COLUMN_SPEAKER_ID, speaker.getId());
-            speakerValues.put(SpeakerEntry.COLUMN_FULLNAME, speaker.getFullname());
-            speakerValues.put(SpeakerEntry.COLUMN_AFFILIATION, speaker.getAffiliation());
-            speakerValues.put(SpeakerEntry.COLUMN_BIOGRAPHY, speaker.getBiography());
-            speakerValues.put(SpeakerEntry.COLUMN_WEBSITE, speaker.getWebsite());
-            speakerValues.put(SpeakerEntry.COLUMN_TWITTER, speaker.getTwitter());
-            speakerValues.put(SpeakerEntry.COLUMN_IDENTICA, speaker.getIdentica());
-            speakerValues.put(SpeakerEntry.COLUMN_BLOG_URL, speaker.getBlog_url());
-
-            speakersVector.add(speakerValues);
-        }
-
-        if (speakersVector.size() > 0) {
-            ContentValues[] cvArray = new ContentValues[speakersVector.size()];
-            speakersVector.toArray(cvArray);
-            int rowsInserted = mContext.getContentResolver()
-                    .bulkInsert(SpeakerEntry.CONTENT_URI, cvArray);
-            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of speaker data");
-        }
-        */
 
         return null;
     }

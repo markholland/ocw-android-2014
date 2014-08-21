@@ -38,7 +38,7 @@ public final class ProviderContract {
 
         public static final String COLUMN_EVENT_ID = "event_id";
 
-        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_TITLE = "event_title";
 
         public static final String COLUMN_DESCRIPTION = "description";
 
@@ -125,7 +125,7 @@ public final class ProviderContract {
 
         public static final String COLUMN_TRACK_ID = "track_id";
 
-        public static final String COLUMN_TITLE = "title";
+        public static final String COLUMN_TITLE = "track_title";
 
         public static final String COLUMN_DESCRIPTION = "description";
 

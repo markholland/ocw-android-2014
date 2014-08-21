@@ -37,12 +37,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_track_id_textview" />
-    <!--
+
+            <!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_speaker_textview" />
-    -->
+            -->
+
         </LinearLayout>
 
     </ScrollView>

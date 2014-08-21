@@ -2,19 +2,22 @@ package com.partiallogic.ocw_android_2014;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.net.JsonController;
 import com.partiallogic.ocw_android_2014.net.ServiceClient;
 import com.partiallogic.ocw_android_2014.obj.Speaker;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
+
+import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by markholland on 13/08/14.
  */
-public class DownloadSpeakerTask extends AsyncTask<String, Void, Void> {
+public class DownloadSpeakerTask extends AsyncTask<Void, Void, Void> {
 
     private final String LOG_TAG = DownloadSpeakerTask.class.getSimpleName();
 
@@ -25,26 +28,37 @@ public class DownloadSpeakerTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected Void doInBackground(Void... params) {
 
-        Speaker speaker = JsonController.getInstance().getSpeakerById(ServiceClient.getInstance(),
-                mContext, params[0]);
+        List<Speaker> speakers = JsonController.getInstance().getSpeakers(ServiceClient.getInstance(),
+                mContext);
 
-        ContentValues speakerValues = new ContentValues();
+        Vector<ContentValues> speakersVector = new Vector<ContentValues>(speakers.size());
 
-        speakerValues.put(SpeakerEntry.COLUMN_SPEAKER_ID, speaker.getId());
-        speakerValues.put(SpeakerEntry.COLUMN_FULLNAME, speaker.getFullname());
-        speakerValues.put(SpeakerEntry.COLUMN_AFFILIATION, speaker.getAffiliation());
-        speakerValues.put(SpeakerEntry.COLUMN_BIOGRAPHY, speaker.getBiography());
-        speakerValues.put(SpeakerEntry.COLUMN_WEBSITE, speaker.getWebsite());
-        speakerValues.put(SpeakerEntry.COLUMN_TWITTER, speaker.getTwitter());
-        speakerValues.put(SpeakerEntry.COLUMN_IDENTICA, speaker.getIdentica());
-        speakerValues.put(SpeakerEntry.COLUMN_BLOG_URL, speaker.getBlog_url());
+        for (Speaker speaker : speakers) {
 
-        Uri inserted = mContext.getContentResolver()
-                .insert(SpeakerEntry.CONTENT_URI, speakerValues);
+            ContentValues speakerValues = new ContentValues();
 
-        Log.d(LOG_TAG, inserted.toString());
+            speakerValues.put(SpeakerEntry.COLUMN_SPEAKER_ID, speaker.getId());
+            speakerValues.put(SpeakerEntry.COLUMN_FULLNAME, speaker.getFullname());
+            speakerValues.put(SpeakerEntry.COLUMN_AFFILIATION, speaker.getAffiliation());
+            speakerValues.put(SpeakerEntry.COLUMN_BIOGRAPHY, speaker.getBiography());
+            speakerValues.put(SpeakerEntry.COLUMN_WEBSITE, speaker.getWebsite());
+            speakerValues.put(SpeakerEntry.COLUMN_TWITTER, speaker.getTwitter());
+            speakerValues.put(SpeakerEntry.COLUMN_IDENTICA, speaker.getIdentica());
+            speakerValues.put(SpeakerEntry.COLUMN_BLOG_URL, speaker.getBlog_url());
+
+            speakersVector.add(speakerValues);
+
+        }
+
+        if (speakersVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[speakersVector.size()];
+            speakersVector.toArray(cvArray);
+            int rowsInserted = mContext.getContentResolver()
+                    .bulkInsert(ProviderContract.SpeakerEntry.CONTENT_URI, cvArray);
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of speaker data");
+        }
 
         return null;
     }

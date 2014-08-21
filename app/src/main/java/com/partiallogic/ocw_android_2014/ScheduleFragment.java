@@ -53,13 +53,6 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DownloadTrackTask downloadTrackTask = new DownloadTrackTask(getActivity());
-        downloadTrackTask.execute();
-        DownloadScheduleTask schedTask = new DownloadScheduleTask(getActivity());
-        schedTask.execute();
-        //DownloadSpeakerTask downloadSpeakerTask = new DownloadSpeakerTask(getActivity());
-        //downloadSpeakerTask.execute("1");
-
     }
 
     @Override

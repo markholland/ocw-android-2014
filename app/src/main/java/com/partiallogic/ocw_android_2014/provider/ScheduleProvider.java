@@ -66,8 +66,8 @@ public class ScheduleProvider extends ContentProvider{
 
         return sQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
-                selection,
-                selectionArgs,
+                null,//selection,
+                null,//selectionArgs,
                 null,
                 null,
                 sortOrder
@@ -188,6 +188,7 @@ public class ScheduleProvider extends ContentProvider{
                 break;
             case EVENT_AND_SPEAKER_AND_TRACK_WITH_ID:
                 retCursor = getEventWithSpeakerAndTrack(uri, projection, sortOrder);
+                break;
             case TRACK:
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.TrackEntry.TABLE_NAME,

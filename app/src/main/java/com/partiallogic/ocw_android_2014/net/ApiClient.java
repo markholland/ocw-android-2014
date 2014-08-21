@@ -7,7 +7,6 @@ import com.partiallogic.ocw_android_2014.obj.TrackData;
 import java.util.List;
 
 import retrofit.http.GET;
-import retrofit.http.Path;
 
 /**
  * Created by markholland on 13/08/14.
@@ -29,8 +28,8 @@ public interface ApiClient {
 
 
     // Speaker
-    @GET("/users/{id}.json")
-    SpeakerData getSpeakerById(@Path("id") String _id);
+    @GET("/events/2014/speakers.json")
+    List<SpeakerData> getSpeakers();
 
 
 }
