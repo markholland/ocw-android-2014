@@ -46,6 +46,12 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             //EventEntry.COLUMN_SPEAKER_ID
     };
 
+    private TextView mEventTitleView;
+    private TextView mEventDescriptionView;
+    private TextView mEventRoomView;
+    private TextView mEventTrackView;
+
+
     public EventDetailFragment() {
         setHasOptionsMenu(true);
     }
@@ -75,6 +81,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_event, null);
+        mEventTitleView = (TextView) getView().findViewById(R.id.detail_title_textview);
+        mEventDescriptionView = (TextView) getView().findViewById(R.id.detail_description_textview);
+        mEventRoomView = (TextView) getView().findViewById(R.id.detail_room_title_textview);
+        mEventTrackView = (TextView) getView().findViewById(R.id.detail_track_id_textview);
 
         return rootView;
     }
@@ -124,23 +134,19 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         if(!data.moveToFirst()) { return; }
 
         String eventTitle = data.getString(data.getColumnIndex(EventEntry.COLUMN_TITLE));
-        ((TextView) getView().findViewById(R.id.detail_title_textview))
-                .setText(eventTitle);
+        mEventTitleView.setText(eventTitle);
 
         String eventDescription =
                 data.getString(data.getColumnIndex(EventEntry.COLUMN_DESCRIPTION));
-        ((TextView) getView().findViewById(R.id.detail_description_textview))
-                .setText(eventDescription);
+        mEventDescriptionView.setText(eventDescription);
 
         String eventRoomTitle =
                 data.getString(data.getColumnIndex(EventEntry.COLUMN_ROOM_TITLE));
-        ((TextView) getView().findViewById(R.id.detail_room_title_textview))
-                .setText(eventRoomTitle);
+        mEventRoomView.setText(eventRoomTitle);
 
         String eventTrackId =
                 data.getString(data.getColumnIndex(EventEntry.COLUMN_TRACK_ID));
-        ((TextView) getView().findViewById(R.id.detail_track_id_textview))
-                .setText(eventTrackId);
+        mEventTrackView.setText(eventTrackId);
 
         /*
             String speakerId = data.getString(
