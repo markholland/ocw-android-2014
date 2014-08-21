@@ -23,8 +23,8 @@ public class MainActivity extends ActionBarActivity {
         downloadSpeakerTask.execute();
         */
 
-        //DownloadDataTask dl = new DownloadDataTask(this);
-        //dl.execute();
+        DownloadDataTask dl = new DownloadDataTask(this);
+        dl.execute();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

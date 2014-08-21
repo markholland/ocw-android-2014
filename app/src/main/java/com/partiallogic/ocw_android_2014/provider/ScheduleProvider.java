@@ -96,7 +96,7 @@ public class ScheduleProvider extends ContentProvider{
     }
 
     private Cursor getEventWithTrack(Uri uri, String[] projection, String sortOrder) {
-        
+
         return sEventTrackQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 null,
@@ -153,7 +153,7 @@ public class ScheduleProvider extends ContentProvider{
 
         switch(sUriMatcher.match(uri)) {
             case EVENT:
-                /*retCursor = mOpenHelper.getReadableDatabase().query(
+                retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.EventEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -161,8 +161,8 @@ public class ScheduleProvider extends ContentProvider{
                         null,
                         null,
                         sortOrder
-                );*/
-                retCursor = getEventWithTrack(uri, projection, sortOrder);
+                );
+                // retCursor = getEventWithTrack(uri, projection, sortOrder);
                 break;
             case EVENT_BY_ID:
                 retCursor = mOpenHelper.getReadableDatabase().query(

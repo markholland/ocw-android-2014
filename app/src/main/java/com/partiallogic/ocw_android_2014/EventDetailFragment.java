@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.*;
@@ -43,19 +44,22 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DESCRIPTION,
             EventEntry.COLUMN_ROOM_TITLE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
-            SpeakerEntry.COLUMN_FULLNAME
+            SpeakerEntry.COLUMN_FULLNAME,
+            SpeaksAtEntry.TABLE_NAME + "." + SpeakerEntry.COLUMN_SPEAKER_ID
     };
 
     public static final int COL_EVENT_TITLE = 1;
     public static final int COL_DESCRIPTION = 2;
     public static final int COL_ROOM_TITLE = 3;
     public static final int COL_TRACK_ID = 4;
+    public static final int COL_SPEAKER_ID = 5;
 
     private TextView mEventTitleView;
     private TextView mEventDescriptionView;
     private TextView mEventRoomView;
     private TextView mEventTrackView;
     private TextView mEventSpeakerView;
+    private ImageView mEventSpeakerImageView;
 
     public EventDetailFragment() {
         setHasOptionsMenu(true);
@@ -91,6 +95,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventRoomView = (TextView) rootView.findViewById(R.id.detail_room_title_textview);
         mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
         mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
+        mEventSpeakerImageView = (ImageView) rootView.findViewById(R.id.detail_speaker_imageview);
 
         return rootView;
     }
@@ -161,6 +166,14 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_FULLNAME));
         mEventSpeakerView.setText(eventSpeakerName);
 
+        /*
+        String speaker_id = data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_SPEAKER_ID));
+        //TODO
+        String image_url = "http://opensourcebridge.org/system/photos/"
+                +speaker_id+"/profile/headshot.jpg";
+        DownloadImageTask dl = new DownloadImageTask(mEventSpeakerImageView);
+        dl.execute(image_url);
+        */
 
         // We still need this for the share intent
         mShareString = eventTitle;

@@ -19,11 +19,11 @@ public class MyColor {
 
     public String getColor() {
 
-        Double auxR = r*10;
-        Double auxG = g*10;
-        Double auxB = b*10;
+        Double auxR = r*100;
+        Double auxG = g*100;
+        Double auxB = b*100;
 
-        return ""+Color.argb(127, auxR.intValue(), auxG.intValue(), auxB.intValue());
+        return ""+Color.rgb(auxR.intValue(), auxG.intValue(), auxB.intValue());
     }
 
     public Double getR() {

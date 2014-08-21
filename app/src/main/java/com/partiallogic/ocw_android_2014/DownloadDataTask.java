@@ -1,5 +1,6 @@
 package com.partiallogic.ocw_android_2014;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
@@ -12,7 +13,10 @@ import com.partiallogic.ocw_android_2014.obj.Event;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
 import com.partiallogic.ocw_android_2014.obj.Speaker;
 import com.partiallogic.ocw_android_2014.obj.Track;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.*;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeaksAtEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +31,19 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
 
     private final Context mContext;
 
+    private ProgressDialog progress;
+
     public DownloadDataTask(Context context) {
         mContext = context;
+        progress = new ProgressDialog(context);
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
     }
 
     @Override
@@ -128,6 +143,8 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
 
             ContentValues trackValues = new ContentValues();
 
+            Log.d(LOG_TAG, "Track color:" +track.getStringColor());
+
             trackValues.put(TrackEntry.COLUMN_TRACK_ID, track.getId());
             trackValues.put(TrackEntry.COLUMN_TITLE, track.getTitle());
             trackValues.put(TrackEntry.COLUMN_DESCRIPTION, track.getDescription());
@@ -143,5 +160,11 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
 
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        progress.dismiss();
     }
 }

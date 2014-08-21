@@ -3,15 +3,20 @@ package com.partiallogic.ocw_android_2014;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
+
 /**
  * Created by markholland on 20/08/14.
  */
 public class ScheduleAdapter extends CursorAdapter {
+
+    private static final String LOG_TAG = ScheduleAdapter.class.getSimpleName();
 
     public ScheduleAdapter(Context context, Cursor c, int flags) {
 
@@ -49,8 +54,23 @@ public class ScheduleAdapter extends CursorAdapter {
         // Find TextView and set event room on it
         viewholder.roomView.setText(roomString);
 
-        String trackColor = cursor.getString(ScheduleFragment.COL_TRACK_COLOR);
-        viewholder.timeView.setBackgroundColor(Integer.parseInt(trackColor));
+        Long trackId = cursor.getLong(ScheduleFragment.COL_TRACK_ID);
+        Cursor c = context.getContentResolver().query(
+                ProviderContract.TrackEntry.buildTrackByIdUri(trackId),
+                null,
+                null,
+                null,
+                null
+        );
+        int trackColor;
+        if(c.moveToFirst()) {
+            trackColor = c.getInt(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_COLOR));
+        } else {
+            trackColor = 999999999;
+        }
+
+        Log.d(LOG_TAG, ""+trackColor);
+        viewholder.timeView.setBackgroundColor(trackColor);
 
     }
 
