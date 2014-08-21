@@ -48,9 +48,15 @@ public class ScheduleProvider extends ContentProvider{
                         " = " + TrackEntry.TABLE_NAME +
                         "." + TrackEntry.COLUMN_TRACK_ID +
                         " INNER JOIN " +
-                        SpeakerEntry.TABLE_NAME +
+                        SpeaksAtEntry.TABLE_NAME +
                         " ON " + EventEntry.TABLE_NAME +
-                        "." + EventEntry.COLUMN_SPEAKER_ID +
+                        "." + EventEntry.COLUMN_EVENT_ID +
+                        " = " + SpeaksAtEntry.TABLE_NAME +
+                        "." + SpeaksAtEntry.COLUMN_EVENT_ID +
+                        " INNER JOIN " +
+                        SpeakerEntry.TABLE_NAME +
+                        " ON " + SpeaksAtEntry.TABLE_NAME +
+                        "." + SpeaksAtEntry.COLUMN_SPEAKER_ID +
                         " = " + SpeakerEntry.TABLE_NAME +
                         "." + SpeakerEntry.COLUMN_SPEAKER_ID
         );
@@ -67,8 +73,8 @@ public class ScheduleProvider extends ContentProvider{
 
         return sQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
-                null,//selection,
-                null,//selectionArgs,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 sortOrder
@@ -100,6 +106,7 @@ public class ScheduleProvider extends ContentProvider{
         matcher.addURI(authority, ProviderContract.PATH_SPEAKER + "/#", SPEAKER_BY_ID);
 
         matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT, SPEAKS_AT);
+        matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT + "/#", EVENT_AND_SPEAKER_AND_TRACK_WITH_ID);
 
         return matcher;
     }

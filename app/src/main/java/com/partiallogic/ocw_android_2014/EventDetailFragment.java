@@ -43,7 +43,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DESCRIPTION,
             EventEntry.COLUMN_ROOM_TITLE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
-            //SpeakerEntry.COLUMN_FULLNAME
+            SpeakerEntry.COLUMN_FULLNAME
     };
 
     public static final int COL_EVENT_TITLE = 1;
@@ -55,7 +55,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mEventDescriptionView;
     private TextView mEventRoomView;
     private TextView mEventTrackView;
-    //private TextView mEventSpeakerView;
+    private TextView mEventSpeakerView;
 
     public EventDetailFragment() {
         setHasOptionsMenu(true);
@@ -90,7 +90,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventDescriptionView = (TextView) rootView.findViewById(R.id.detail_description_textview);
         mEventRoomView = (TextView) rootView.findViewById(R.id.detail_room_title_textview);
         mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
-        //mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
+        mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
 
         return rootView;
     }
@@ -120,7 +120,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         // Sort order: Ascending, by date.
         String sortOrder = EventEntry.COLUMN_TITLE + " ASC";
 
-        Uri EventByIdUri = EventEntry.buildEventByIdUri(Long.parseLong(eventId));
+        //Uri EventByIdUri = EventEntry.buildEventByIdUri(Long.parseLong(eventId));
+        //Log.v(LOG_TAG, EventByIdUri.toString());
+
+        Uri EventByIdUri = SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(eventId));
         Log.v(LOG_TAG, EventByIdUri.toString());
 
         return new CursorLoader(
@@ -153,11 +156,11 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 data.getString(data.getColumnIndex(EventEntry.COLUMN_TRACK_ID));
         mEventTrackView.setText(eventTrackId);
 
-        /*
+
         String eventSpeakerName =
                 data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_FULLNAME));
         mEventSpeakerView.setText(eventSpeakerName);
-        */
+
 
         // We still need this for the share intent
         mShareString = eventTitle;
