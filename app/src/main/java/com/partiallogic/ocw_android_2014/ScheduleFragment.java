@@ -29,13 +29,16 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             EventEntry.COLUMN_EVENT_ID,
             EventEntry.COLUMN_TITLE,
             EventEntry.COLUMN_START_TIME,
-            EventEntry.COLUMN_ROOM_TITLE
+            EventEntry.COLUMN_ROOM_TITLE,
+            EventEntry.COLUMN_TRACK_ID,
     };
 
     public static final int COL_EVENT_ID = 1;
     public static final int COL_TITLE = 2;
     public static final int COL_START_TIME = 3;
     public static final int COL_ROOM_TITLE = 4;
+    public static final int COL_TRACK_ID = 5;
+
 
     private ScheduleAdapter mScheduleAdapter;
 
@@ -75,10 +78,13 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = mScheduleAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    String eventId = cursor.getString(COL_EVENT_ID);
-                    Intent intent = new Intent(getActivity(), EventActivity.class)
-                            .putExtra(EventDetailFragment.EVENT_KEY, eventId);
-                    startActivity(intent);
+                    // Only events with more detail to show
+                    if(cursor.getString(COL_TRACK_ID) != null) {
+                        String eventId = cursor.getString(COL_EVENT_ID);
+                        Intent intent = new Intent(getActivity(), EventActivity.class)
+                                .putExtra(EventDetailFragment.EVENT_KEY, eventId);
+                        startActivity(intent);
+                    }
                 }
             }
         });
