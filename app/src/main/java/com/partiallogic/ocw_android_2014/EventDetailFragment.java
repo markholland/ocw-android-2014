@@ -103,7 +103,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventRoomView = (TextView) rootView.findViewById(R.id.detail_room_title_textview);
         mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
         mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
-        mEventSpeakerImageView = (ImageView) rootView.findViewById(R.id.detail_speaker_imageview);
+        //mEventSpeakerImageView = (ImageView) rootView.findViewById(R.id.detail_speaker_imageview);
 
         return rootView;
     }
