@@ -1,7 +1,9 @@
 package com.partiallogic.ocw_android_2014;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +22,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.*;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeaksAtEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
 
 /**
  * Created by markholland on 20/08/14.
@@ -45,14 +50,17 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventEntry.COLUMN_ROOM_TITLE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
             SpeakerEntry.COLUMN_FULLNAME,
-            SpeaksAtEntry.TABLE_NAME + "." + SpeakerEntry.COLUMN_SPEAKER_ID
+            SpeaksAtEntry.TABLE_NAME + "." + SpeakerEntry.COLUMN_SPEAKER_ID,
+            TrackEntry.COLUMN_COLOR
     };
 
     public static final int COL_EVENT_TITLE = 1;
     public static final int COL_DESCRIPTION = 2;
     public static final int COL_ROOM_TITLE = 3;
     public static final int COL_TRACK_ID = 4;
-    public static final int COL_SPEAKER_ID = 5;
+    public static final int COL_SPEAKER_FULLNAME = 5;
+    public static final int COL_SPEAKER_ID = 6;
+    public static final int COL_TRACK_COLOR = 7;
 
     private TextView mEventTitleView;
     private TextView mEventDescriptionView;
@@ -146,25 +154,34 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         Log.v(LOG_TAG, "In onLoadFinished");
         if(!data.moveToFirst()) { return; }
 
-        String eventTitle = data.getString(data.getColumnIndex(EventEntry.COLUMN_TITLE));
+        String eventTitle = data.getString(COL_EVENT_TITLE);
         mEventTitleView.setText(eventTitle);
 
         String eventDescription =
-                data.getString(data.getColumnIndex(EventEntry.COLUMN_DESCRIPTION));
+                data.getString(COL_DESCRIPTION);
         mEventDescriptionView.setText(eventDescription);
 
         String eventRoomTitle =
-                data.getString(data.getColumnIndex(EventEntry.COLUMN_ROOM_TITLE));
+                data.getString(COL_ROOM_TITLE);
         mEventRoomView.setText(eventRoomTitle);
 
         String eventTrackId =
-                data.getString(data.getColumnIndex(EventEntry.COLUMN_TRACK_ID));
+                data.getString(COL_TRACK_ID);
         mEventTrackView.setText(eventTrackId);
 
-
         String eventSpeakerName =
-                data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_FULLNAME));
+                data.getString(COL_SPEAKER_FULLNAME);
         mEventSpeakerView.setText(eventSpeakerName);
+
+        int trackColor = 0;
+        trackColor = data.getInt(COL_TRACK_COLOR);
+        if(trackColor == 0) {
+            trackColor = 999999999;
+        }
+
+        Log.d(LOG_TAG, ""+trackColor);
+        ActionBar actionBar = getActivity().getActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(trackColor));
 
         /*
         String speaker_id = data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_SPEAKER_ID));
