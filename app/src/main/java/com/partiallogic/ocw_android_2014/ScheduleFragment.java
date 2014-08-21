@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 
 /**
@@ -25,12 +26,13 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     private static final int SCHEDULE_LOADER = 0;
 
     private static final String[] SCHEDULE_COLUMNS = {
-            EventEntry._ID,
+            EventEntry.TABLE_NAME + "." + EventEntry._ID,
             EventEntry.COLUMN_EVENT_ID,
             EventEntry.COLUMN_TITLE,
             EventEntry.COLUMN_START_TIME,
             EventEntry.COLUMN_ROOM_TITLE,
-            EventEntry.COLUMN_TRACK_ID,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
+            ProviderContract.TrackEntry.COLUMN_COLOR
     };
 
     public static final int COL_EVENT_ID = 1;
@@ -38,6 +40,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_START_TIME = 3;
     public static final int COL_ROOM_TITLE = 4;
     public static final int COL_TRACK_ID = 5;
+    public static final int COL_TRACK_COLOR = 6;
 
 
     private ScheduleAdapter mScheduleAdapter;

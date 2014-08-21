@@ -8,10 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.partiallogic.ocw_android_2014.R;
-import com.partiallogic.ocw_android_2014.ScheduleFragment;
-import com.partiallogic.ocw_android_2014.Utility;
-
 /**
  * Created by markholland on 20/08/14.
  */
@@ -52,6 +48,10 @@ public class ScheduleAdapter extends CursorAdapter {
         String roomString = cursor.getString(ScheduleFragment.COL_ROOM_TITLE);
         // Find TextView and set event room on it
         viewholder.roomView.setText(roomString);
+
+        String trackColor = cursor.getString(ScheduleFragment.COL_TRACK_COLOR);
+        viewholder.timeView.setBackgroundColor(Integer.parseInt(trackColor));
+
     }
 
     public static class ViewHolder {

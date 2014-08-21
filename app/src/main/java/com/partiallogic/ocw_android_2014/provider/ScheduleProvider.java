@@ -36,11 +36,12 @@ public class ScheduleProvider extends ContentProvider{
 
     private ProviderDbHelper mOpenHelper;
 
-    private static final SQLiteQueryBuilder sQueryBuilder;
+    private static final SQLiteQueryBuilder sEventTrackSpeakerQueryBuilder;
+    private static final SQLiteQueryBuilder sEventTrackQueryBuilder;
 
     static{
-        sQueryBuilder = new SQLiteQueryBuilder();
-        sQueryBuilder.setTables(
+        sEventTrackSpeakerQueryBuilder = new SQLiteQueryBuilder();
+        sEventTrackSpeakerQueryBuilder.setTables(
                 EventEntry.TABLE_NAME + " INNER JOIN " +
                         TrackEntry.TABLE_NAME +
                         " ON " + EventEntry.TABLE_NAME +
@@ -62,6 +63,19 @@ public class ScheduleProvider extends ContentProvider{
         );
     }
 
+    static{
+        sEventTrackQueryBuilder = new SQLiteQueryBuilder();
+        sEventTrackQueryBuilder.setTables(
+                EventEntry.TABLE_NAME + " INNER JOIN " +
+                        TrackEntry.TABLE_NAME +
+                        " ON " + EventEntry.TABLE_NAME +
+                        "." + EventEntry.COLUMN_TRACK_ID +
+                        " = " + TrackEntry.TABLE_NAME +
+                        "." + TrackEntry.COLUMN_TRACK_ID
+
+        );
+    }
+
     private static final String sEventSelection =
             EventEntry.TABLE_NAME+
                     "." + EventEntry.COLUMN_EVENT_ID + " = ? ";
@@ -71,10 +85,22 @@ public class ScheduleProvider extends ContentProvider{
         String[] selectionArgs = new String[]{ ""+event_id };
         String selection = sEventSelection;
 
-        return sQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+        return sEventTrackSpeakerQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
                 selection,
                 selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    private Cursor getEventWithTrack(Uri uri, String[] projection, String sortOrder) {
+        
+        return sEventTrackQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
                 null,
                 null,
                 sortOrder
@@ -127,7 +153,7 @@ public class ScheduleProvider extends ContentProvider{
 
         switch(sUriMatcher.match(uri)) {
             case EVENT:
-                retCursor = mOpenHelper.getReadableDatabase().query(
+                /*retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.EventEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -135,7 +161,8 @@ public class ScheduleProvider extends ContentProvider{
                         null,
                         null,
                         sortOrder
-                );
+                );*/
+                retCursor = getEventWithTrack(uri, projection, sortOrder);
                 break;
             case EVENT_BY_ID:
                 retCursor = mOpenHelper.getReadableDatabase().query(
