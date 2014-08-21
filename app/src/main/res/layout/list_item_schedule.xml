@@ -12,7 +12,8 @@
         android:id="@+id/list_item_time_textview"
         android:paddingLeft="16dp"
         android:background="#13558A"
-        android:textColor="#FFF"/>
+        android:textColor="#FFF"
+        android:text="9:00 am"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +29,8 @@
             android:layout_gravity="center_vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:layout_weight="0.8"/>
+            android:layout_weight="0.8"
+            android:text="The Title"/>
 
         <View
             android:id="@+id/separator"
@@ -46,10 +48,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_room_textview"
             android:layout_gravity="center"
-            android:layout_weight="0.2"/>
+            android:layout_weight="0.2"
+            android:text="Room 1"/>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

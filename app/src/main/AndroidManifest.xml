@@ -22,7 +22,8 @@
 
         <activity
             android:name=".EventActivity"
-            android:label="@string/title_activity_event" >
+            android:label="@string/title_activity_event"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

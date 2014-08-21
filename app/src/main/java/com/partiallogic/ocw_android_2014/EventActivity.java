@@ -15,7 +15,7 @@ public class EventActivity extends ActionBarActivity {
             EventDetailFragment detail = new EventDetailFragment();
             detail.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new EventDetailFragment())
+                    .add(R.id.mainEventContainer, new EventDetailFragment())
                     .commit();
         }
     }

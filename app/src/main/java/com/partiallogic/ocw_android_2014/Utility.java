@@ -14,19 +14,37 @@ public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
+    private static final DateFormat SourceFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS-'07:00'");
+
+    private static final DateFormat HumanTimeFormatter = new SimpleDateFormat("h:mm a");
+
+    private static final DateFormat HumanDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
     public static String getHumanStartTime(String startTime) {
 
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS-'07:00'");
         try {
-            Date sTime = formatter.parse(startTime);
-            Log.d(LOG_TAG, sTime.toString());
-            DateFormat formatter2 = new SimpleDateFormat("h:mm a");
-            String humanStartTime = formatter2.format(sTime);
+            Date sTime = SourceFormatter.parse(startTime);
+            String humanStartTime = HumanTimeFormatter.format(sTime);
             return humanStartTime;
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    public static String getDateFromStartTime(String startTime) {
+
+        try {
+            Date sTime = SourceFormatter.parse(startTime);
+            Log.d(LOG_TAG, sTime.toString());
+            String sDate = HumanDateFormatter.format(sTime);
+            return sDate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
 
 }

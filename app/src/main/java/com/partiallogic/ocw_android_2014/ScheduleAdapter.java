@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.partiallogic.ocw_android_2014.R;
+import com.partiallogic.ocw_android_2014.ScheduleFragment;
+import com.partiallogic.ocw_android_2014.Utility;
+
 /**
  * Created by markholland on 20/08/14.
  */
@@ -18,9 +22,6 @@ public class ScheduleAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
-     /**
-     * Copy/paste note: Replace existing newView() method in ForecastAdapter with this one.
-     */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         int layoutId = R.layout.list_item_schedule;
@@ -53,9 +54,6 @@ public class ScheduleAdapter extends CursorAdapter {
         viewholder.roomView.setText(roomString);
     }
 
-    /**
-     * Cache of the children views for a forecast list item.
-     */
     public static class ViewHolder {
         public final TextView timeView;
         public final TextView titleView;

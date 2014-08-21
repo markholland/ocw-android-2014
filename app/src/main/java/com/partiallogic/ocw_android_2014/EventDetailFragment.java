@@ -46,11 +46,15 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             //EventEntry.COLUMN_SPEAKER_ID
     };
 
+    public static final int COL_EVENT_TITLE = 1;
+    public static final int COL_DESCRIPTION = 2;
+    public static final int COL_ROOM_TITLE = 3;
+    public static final int COL_TRACK_ID = 4;
+
     private TextView mEventTitleView;
     private TextView mEventDescriptionView;
     private TextView mEventRoomView;
     private TextView mEventTrackView;
-
 
     public EventDetailFragment() {
         setHasOptionsMenu(true);
@@ -81,10 +85,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_event, null);
-        mEventTitleView = (TextView) getView().findViewById(R.id.detail_title_textview);
-        mEventDescriptionView = (TextView) getView().findViewById(R.id.detail_description_textview);
-        mEventRoomView = (TextView) getView().findViewById(R.id.detail_room_title_textview);
-        mEventTrackView = (TextView) getView().findViewById(R.id.detail_track_id_textview);
+        mEventTitleView = (TextView) rootView.findViewById(R.id.detail_title_textview);
+        mEventDescriptionView = (TextView) rootView.findViewById(R.id.detail_description_textview);
+        mEventRoomView = (TextView) rootView.findViewById(R.id.detail_room_title_textview);
+        mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
 
         return rootView;
     }

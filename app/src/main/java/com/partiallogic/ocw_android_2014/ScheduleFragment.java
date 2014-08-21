@@ -84,7 +84,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                 if (cursor != null && cursor.moveToPosition(position)) {
                     String eventId = cursor.getString(COL_EVENT_ID);
                     Intent intent = new Intent(getActivity(), EventActivity.class)
-                            .putExtra(EventActivity.EVENT_KEY, eventId);
+                            .putExtra(EventDetailFragment.EVENT_KEY, eventId);
                     startActivity(intent);
                 }
             }
