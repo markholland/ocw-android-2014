@@ -30,6 +30,7 @@ public class ScheduleProvider extends ContentProvider{
     private static final int TRACK_BY_ID = 201;
     private static final int SPEAKER = 300;
     private static final int SPEAKER_BY_ID = 301;
+    private static final int SPEAKS_AT = 400;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -97,6 +98,8 @@ public class ScheduleProvider extends ContentProvider{
 
         matcher.addURI(authority, ProviderContract.PATH_SPEAKER, SPEAKER);
         matcher.addURI(authority, ProviderContract.PATH_SPEAKER + "/#", SPEAKER_BY_ID);
+
+        matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT, SPEAKS_AT);
 
         return matcher;
     }
@@ -281,6 +284,9 @@ public class ScheduleProvider extends ContentProvider{
             case SPEAKER_BY_ID:
                 Log.d(LOG_TAG, "Speaker by id");
                 return SpeakerEntry.CONTENT_ITEM_TYPE;
+            case SPEAKS_AT:
+            Log.d(LOG_TAG, "Speaks_at");
+            return SpeaksAtEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -318,7 +324,7 @@ public class ScheduleProvider extends ContentProvider{
                 long _id = db.insert(TrackEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
                     Cursor c = mOpenHelper.getReadableDatabase().query(
-                            ProviderContract.TrackEntry.TABLE_NAME,
+                            TrackEntry.TABLE_NAME,
                             null,
                             TrackEntry._ID + " = '" + _id + "'",
                             null,
@@ -339,7 +345,7 @@ public class ScheduleProvider extends ContentProvider{
                 long _id = db.insert(SpeakerEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
                     Cursor c = mOpenHelper.getReadableDatabase().query(
-                            ProviderContract.SpeakerEntry.TABLE_NAME,
+                            SpeakerEntry.TABLE_NAME,
                             null,
                             SpeakerEntry._ID + " = '" + _id + "'",
                             null,
@@ -350,6 +356,28 @@ public class ScheduleProvider extends ContentProvider{
                     if(c.moveToFirst()) {
                         String speaker_id = c.getString(1);
                         returnUri = SpeakerEntry.buildSpeakerByIdUri(Long.parseLong(speaker_id));
+                        Log.d(LOG_TAG, returnUri.toString());
+                    }
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+            case SPEAKS_AT: {
+                long _id = db.insert(SpeaksAtEntry.TABLE_NAME, null, values);
+                if ( _id > 0 ) {
+                    Cursor c = mOpenHelper.getReadableDatabase().query(
+                            SpeaksAtEntry.TABLE_NAME,
+                            null,
+                            SpeaksAtEntry._ID + " = '" + _id + "'",
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    if(c.moveToFirst()) {
+                        String speaker_id = c.getString(1);
+                        returnUri = SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(speaker_id));
                         Log.d(LOG_TAG, returnUri.toString());
                     }
                 } else {
@@ -402,6 +430,21 @@ public class ScheduleProvider extends ContentProvider{
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
+            case SPEAKS_AT:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(SpeaksAtEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
             default:
                 return super.bulkInsert(uri, values);
         }
@@ -425,6 +468,10 @@ public class ScheduleProvider extends ContentProvider{
             case SPEAKER:
                 rowsDeleted = db.delete(
                         ProviderContract.SpeakerEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case SPEAKS_AT:
+                rowsDeleted = db.delete(
+                        SpeaksAtEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -453,6 +500,10 @@ public class ScheduleProvider extends ContentProvider{
                 break;
             case SPEAKER:
                 rowsUpdated = db.update(ProviderContract.SpeakerEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case SPEAKS_AT:
+                rowsUpdated = db.update(SpeaksAtEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:

@@ -18,6 +18,7 @@ public final class ProviderContract {
     public static final String PATH_EVENT = "event";
     public static final String PATH_TRACK = "track";
     public static final String PATH_SPEAKER = "speaker";
+    public static final String PATH_SPEAKS_AT = "speaks_at";
 
     private ProviderContract() {
         // disallow instantiation
@@ -177,6 +178,33 @@ public final class ProviderContract {
         }
 
         public static Uri buildSpeakerByIdUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+    }
+
+    /* Inner class that defines the table contents of the speaks_at table */
+    public static final class SpeaksAtEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SPEAKS_AT).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_SPEAKS_AT;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_SPEAKS_AT;
+
+        public static final String TABLE_NAME = "speaks_at";
+
+        public static final String COLUMN_EVENT_ID = "event_id";
+
+        public static final String COLUMN_SPEAKER_ID = "speaker_id";
+
+        public static Uri buildSpeaks_atUri() {
+            return CONTENT_URI;
+        }
+
+        public static Uri buildSpeaks_atByEventIdUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 

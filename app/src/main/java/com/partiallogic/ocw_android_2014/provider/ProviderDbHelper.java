@@ -8,6 +8,7 @@ import android.util.Log;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeaksAtEntry;
 
 /**
  * Created by markholland on 12/08/14.
@@ -56,7 +57,6 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
         EventBuilder.append(EventEntry.COLUMN_END_TIME + " TEXT NOT NULL, ");
         EventBuilder.append(EventEntry.COLUMN_ROOM_TITLE + " TEXT, ");
         EventBuilder.append(EventEntry.COLUMN_TRACK_ID + " TEXT, ");
-        EventBuilder.append(EventEntry.COLUMN_SPEAKER_ID + " TEXT, ");
         EventBuilder.append(" UNIQUE (" + EventEntry.COLUMN_EVENT_ID +") ON CONFLICT REPLACE");
         EventBuilder.append(" FOREIGN KEY (" + EventEntry.COLUMN_TRACK_ID + ") REFERENCES " +
                 TrackEntry.TABLE_NAME + " (" + TrackEntry.COLUMN_TRACK_ID + ") ");
@@ -102,6 +102,19 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
         SpeakerBuilder.append(");");
 
         sql = SpeakerBuilder.toString();
+        Log.i(LOG_TAG, "Creating DB table with string: '" + sql + "'");
+
+        db.execSQL(sql);
+
+        // Create Speaks_at table
+        StringBuilder SpeaksAtBuilder = new StringBuilder();
+        SpeaksAtBuilder.append("CREATE TABLE " + SpeaksAtEntry.TABLE_NAME + "(");
+        SpeaksAtBuilder.append(SpeaksAtEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,");
+        SpeaksAtBuilder.append(SpeaksAtEntry.COLUMN_EVENT_ID + " INTEGER NOT NULL, ");
+        SpeaksAtBuilder.append(SpeaksAtEntry.COLUMN_SPEAKER_ID + " INTEGER NOT NULL ");
+        SpeaksAtBuilder.append(");");
+
+        sql = SpeaksAtBuilder.toString();
         Log.i(LOG_TAG, "Creating DB table with string: '" + sql + "'");
 
         db.execSQL(sql);

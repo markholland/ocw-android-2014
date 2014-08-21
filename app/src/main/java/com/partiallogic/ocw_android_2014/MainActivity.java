@@ -14,13 +14,17 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
         DownloadTrackTask downloadTrackTask = new DownloadTrackTask(this);
         downloadTrackTask.execute();
         DownloadScheduleTask schedTask = new DownloadScheduleTask(this);
         schedTask.execute();
         DownloadSpeakerTask downloadSpeakerTask = new DownloadSpeakerTask(this);
         downloadSpeakerTask.execute();
+        */
 
+        DownloadDataTask dl = new DownloadDataTask(this);
+        dl.execute();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
