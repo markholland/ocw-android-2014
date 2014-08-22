@@ -1,5 +1,6 @@
 package com.partiallogic.ocw_android_2014;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -7,7 +8,9 @@ import android.view.MenuItem;
 
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ScheduleFragment.Callback {
+
+    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +29,16 @@ public class MainActivity extends ActionBarActivity {
         //DownloadDataTask dl = new DownloadDataTask(this);
         //dl.execute();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ScheduleFragment())
-                    .commit();
+        if(findViewById(R.id.event_detail_container) != null) {
+            mTwoPane = true;
+
+            if(savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.event_detail_container, new EventDetailFragment())
+                        .commit();
+            }
+        } else {
+            mTwoPane = false;
         }
     }
 
@@ -51,6 +60,26 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(String event_id) {
+        if(mTwoPane) {
+
+            Bundle args = new Bundle();
+            args.putString(EventActivity.EVENT_KEY, event_id);
+
+            EventDetailFragment fragment = new EventDetailFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.event_detail_container, fragment)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, EventActivity.class)
+                    .putExtra(EventActivity.EVENT_KEY, event_id);
+            startActivity(intent);
+        }
     }
 
 

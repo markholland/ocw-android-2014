@@ -1,6 +1,5 @@
 package com.partiallogic.ocw_android_2014;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -42,6 +41,17 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
     private ScheduleAdapter mScheduleAdapter;
 
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onItemSelected(String date);
+    }
 
     public ScheduleFragment() {
     }
@@ -80,10 +90,8 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                 if (cursor != null && cursor.moveToPosition(position)) {
                     // Only events with more detail to show
                     if(cursor.getString(COL_TRACK_ID) != null) {
-                        String eventId = cursor.getString(COL_EVENT_ID);
-                        Intent intent = new Intent(getActivity(), EventActivity.class)
-                                .putExtra(EventDetailFragment.EVENT_KEY, eventId);
-                        startActivity(intent);
+                        ((Callback) getActivity())
+                                .onItemSelected(cursor.getString(COL_EVENT_ID));
                     }
                 }
             }

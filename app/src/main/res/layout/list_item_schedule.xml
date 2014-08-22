@@ -39,15 +39,15 @@
             android:background="#222222"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/list_item_room_textview"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_weight="0.2"
             android:text="Room 1"/>
 

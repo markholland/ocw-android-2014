@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="?android:attr/dividerHorizontal"
+    android:orientation="horizontal"
+    tools:context="com.partiallogic.ocw_android_2014.app.MainActivity">
+
+    <fragment
+        android:id="@+id/fragment_schedule"
+        android:name="com.partiallogic.ocw_android_2014.ScheduleFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        tools:layout="@android:layout/list_content" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="2dip"
+        android:layout_height="fill_parent"
+        android:background="#222222"
+        />
+
+    <FrameLayout
+        android:id="@+id/event_detail_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4" />
+
+</LinearLayout>

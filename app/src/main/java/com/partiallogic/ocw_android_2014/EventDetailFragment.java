@@ -35,8 +35,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
 
     private static final String LOG_TAG = EventDetailFragment.class.getSimpleName();
 
-    public static final String EVENT_KEY = "event_id";
-
     private static final int EVENT_LOADER = 0;
 
     private static final String EVENT_SHARE_HASHTAG = "#OCW";
@@ -86,7 +84,11 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(EVENT_LOADER, null, this);
+        Bundle arguments = getArguments();
+        if(arguments != null && arguments.containsKey(EventActivity.EVENT_KEY)) {
+            getLoaderManager().initLoader(EVENT_LOADER, null, this);
+        }
+
     }
 
     @Override
@@ -134,14 +136,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        //String selection = ProviderContract.EventEntry.COLUMN_EVENT_ID + " =? ";
-        //String selectionArgs[] = {mEventId};
-        Log.v(LOG_TAG, "In onCreateLoader");
-        Intent intent = getActivity().getIntent();
-        if (intent == null || !intent.hasExtra(EVENT_KEY)) {
-            return null;
-        }
-        String eventId = intent.getStringExtra(EVENT_KEY);
+        String eventId = getArguments().getString(EventActivity.EVENT_KEY);
         Log.d(LOG_TAG, eventId);
 
         // Sort order: Ascending, by date.
