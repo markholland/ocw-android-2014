@@ -7,7 +7,8 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listview_schedule">
+        android:id="@+id/listview_schedule"
+        style="@style/ScheduleListStyle">
     </ListView>
 
 </RelativeLayout>

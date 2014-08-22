@@ -72,8 +72,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mEventSpeakerView;
     private ImageView mEventSpeakerImageView;
     private LinearLayout mHeader;
+    private ImageView mFooterImageView;
     private TextView mSpeakerNameView;
     private TextView mSpeakerBioView;
+    private TextView mSpeakerTwitterLabelView;
     private TextView mSpeakerTwitterView;
 
 
@@ -117,9 +119,11 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
         //mEventSpeakerImageView = (ImageView) rootView.findViewById(R.id.detail_speaker_imageview);
         mHeader = (LinearLayout) rootView.findViewById(R.id.detail_header);
-        mSpeakerNameView = (TextView) rootView.findViewById(R.id.detail_speaker_name_textview);;
-        mSpeakerBioView = (TextView) rootView.findViewById(R.id.detail_speaker_bio_textview);;
-        mSpeakerTwitterView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_value_textview);;
+        mFooterImageView = (ImageView) rootView.findViewById(R.id.event_detail_footer);
+        mSpeakerNameView = (TextView) rootView.findViewById(R.id.detail_speaker_name_textview);
+        mSpeakerBioView = (TextView) rootView.findViewById(R.id.detail_speaker_bio_textview);
+        mSpeakerTwitterView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_value_textview);
+        mSpeakerTwitterLabelView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_label_textview);
 
         return rootView;
     }
@@ -174,12 +178,15 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 data.getString(COL_DESCRIPTION);
         mEventDescriptionView.setText(eventDescription);
 
+        mFooterImageView.setImageResource(R.drawable.ic_icon_footer);
+
         mSpeakerNameView.setText(eventSpeakerName);
 
         String speakerBio = data.getString(COL_SPEAKER_BIO);
         mSpeakerBioView.setText(speakerBio);
 
         String speakerTwitter = data.getString(COL_SPEAKER_TWITTER);
+        mSpeakerTwitterLabelView.setText("Twitter: ");
         mSpeakerTwitterView.setText(speakerTwitter);
 
 

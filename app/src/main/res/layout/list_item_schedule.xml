@@ -4,14 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="?android:attr/listPreferredItemHeight">
+    >
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/list_item_time_textview"
         android:paddingLeft="16dp"
-        android:background="#13558A"
         android:textColor="#FFF"
         android:text="9:00 am"/>
 
@@ -20,6 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:minHeight="?android:attr/listPreferredItemHeight"
+        android:background="@drawable/touch_selector"
         >
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"

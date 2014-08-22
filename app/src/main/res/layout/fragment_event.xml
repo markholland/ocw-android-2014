@@ -69,7 +69,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_icon_footer"
+                    android:id="@+id/event_detail_footer"
                     android:layout_gravity="center"/>
 
                 <View
@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/detail_speaker_twitter_label_textview"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Twitter: "/>
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"

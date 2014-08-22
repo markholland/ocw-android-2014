@@ -3,7 +3,6 @@ package com.partiallogic.ocw_android_2014;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,11 @@ public class ScheduleAdapter extends CursorAdapter {
         // Read event room from cursor
         String roomString = cursor.getString(ScheduleFragment.COL_ROOM_TITLE);
         // Find TextView and set event room on it
-        viewholder.roomView.setText(roomString);
+        if(roomString != null) {
+            viewholder.roomView.setText(roomString);
+        } else {
+            viewholder.roomView.setText("");
+        }
 
         Long trackId = cursor.getLong(ScheduleFragment.COL_TRACK_ID);
         Cursor c = context.getContentResolver().query(
@@ -69,7 +72,6 @@ public class ScheduleAdapter extends CursorAdapter {
             trackColor = 999999999;
         }
 
-        Log.d(LOG_TAG, ""+trackColor);
         viewholder.timeView.setBackgroundColor(trackColor);
 
     }
