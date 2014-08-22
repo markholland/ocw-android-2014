@@ -8,7 +8,7 @@
 
     <!-- Used when the view is "activated". -->
     <item android:state_activated="true"
-        android:drawable="@color/sunshine_light_blue" />
+        android:drawable="@color/orange" />
 
     <!-- Default, "just hangin' out" state. -->
     <item android:drawable="@android:color/transparent" />

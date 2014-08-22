@@ -38,8 +38,11 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_ROOM_TITLE = 4;
     public static final int COL_TRACK_ID = 5;
 
-
     private ScheduleAdapter mScheduleAdapter;
+    private ListView mListView;
+    private int mPosition = ListView.INVALID_POSITION;
+    private static final String SELECTED_KEY = "selected_position";
+
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -69,6 +72,16 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        if(mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
@@ -79,10 +92,10 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                 0
         );
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_schedule);
-        listView.setAdapter(mScheduleAdapter);
+        mListView = (ListView) rootView.findViewById(R.id.listview_schedule);
+        mListView.setAdapter(mScheduleAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -94,8 +107,13 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                                 .onItemSelected(cursor.getString(COL_EVENT_ID));
                     }
                 }
+                mPosition = position;
             }
         });
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
 
         return rootView;
     }
@@ -125,6 +143,9 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mScheduleAdapter.swapCursor(data);
+        if(mPosition != ListView.INVALID_POSITION) {
+            mListView.setSelection(mPosition);
+        }
     }
 
     @Override
