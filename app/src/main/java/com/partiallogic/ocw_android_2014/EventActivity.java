@@ -24,7 +24,7 @@ public class EventActivity extends ActionBarActivity {
             fragment.setArguments(arguments);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.event_detail_container, new EventDetailFragment())
+                    .add(R.id.event_detail_container, fragment)
                     .commit();
         }
     }
