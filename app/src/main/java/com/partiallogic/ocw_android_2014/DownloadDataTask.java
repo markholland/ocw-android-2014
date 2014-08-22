@@ -42,6 +42,7 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setMessage("Loading...");
         progress.setIndeterminate(true);
         progress.show();
     }
@@ -157,7 +158,6 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
             //Log.d(LOG_TAG, inserted.toString());
 
         }
-
 
         return null;
     }

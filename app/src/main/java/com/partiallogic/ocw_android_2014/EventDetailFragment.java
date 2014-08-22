@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
@@ -51,7 +52,9 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
             SpeakerEntry.COLUMN_FULLNAME,
             SpeaksAtEntry.TABLE_NAME + "." + SpeakerEntry.COLUMN_SPEAKER_ID,
-            TrackEntry.COLUMN_COLOR
+            TrackEntry.COLUMN_COLOR,
+            SpeakerEntry.COLUMN_BIOGRAPHY,
+            SpeakerEntry.COLUMN_TWITTER
     };
 
     public static final int COL_EVENT_TITLE = 1;
@@ -61,6 +64,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_SPEAKER_FULLNAME = 5;
     public static final int COL_SPEAKER_ID = 6;
     public static final int COL_TRACK_COLOR = 7;
+    public static final int COL_SPEAKER_BIO = 8;
+    public static final int COL_SPEAKER_TWITTER = 9;
 
     private TextView mEventTitleView;
     private TextView mEventDescriptionView;
@@ -68,6 +73,11 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     private TextView mEventTrackView;
     private TextView mEventSpeakerView;
     private ImageView mEventSpeakerImageView;
+    private LinearLayout mHeader;
+    private TextView mSpeakerNameView;
+    private TextView mSpeakerBioView;
+    private TextView mSpeakerTwitterView;
+
 
     public EventDetailFragment() {
         setHasOptionsMenu(true);
@@ -104,6 +114,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
         mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
         //mEventSpeakerImageView = (ImageView) rootView.findViewById(R.id.detail_speaker_imageview);
+        mHeader = (LinearLayout) rootView.findViewById(R.id.detail_header);
+        mSpeakerNameView = (TextView) rootView.findViewById(R.id.detail_speaker_name_textview);;
+        mSpeakerBioView = (TextView) rootView.findViewById(R.id.detail_speaker_bio_textview);;
+        mSpeakerTwitterView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_value_textview);;
 
         return rootView;
     }
@@ -157,21 +171,31 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         String eventTitle = data.getString(COL_EVENT_TITLE);
         mEventTitleView.setText(eventTitle);
 
+        String eventSpeakerName =
+                data.getString(COL_SPEAKER_FULLNAME);
+        mEventSpeakerView.setText(eventSpeakerName);
+
         String eventDescription =
                 data.getString(COL_DESCRIPTION);
         mEventDescriptionView.setText(eventDescription);
 
+        mSpeakerNameView.setText(eventSpeakerName);
+
+        String speakerBio = data.getString(COL_SPEAKER_BIO);
+        mSpeakerBioView.setText(speakerBio);
+
+        String speakerTwitter = data.getString(COL_SPEAKER_TWITTER);
+        mSpeakerTwitterView.setText(speakerTwitter);
+
+
         String eventRoomTitle =
                 data.getString(COL_ROOM_TITLE);
-        mEventRoomView.setText(eventRoomTitle);
+        //mEventRoomView.setText(eventRoomTitle);
 
         String eventTrackId =
                 data.getString(COL_TRACK_ID);
-        mEventTrackView.setText(eventTrackId);
+        //mEventTrackView.setText(eventTrackId);
 
-        String eventSpeakerName =
-                data.getString(COL_SPEAKER_FULLNAME);
-        mEventSpeakerView.setText(eventSpeakerName);
 
         int trackColor = 0;
         trackColor = data.getInt(COL_TRACK_COLOR);
@@ -182,6 +206,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         Log.d(LOG_TAG, ""+trackColor);
         ActionBar actionBar = getActivity().getActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(trackColor));
+
+        mHeader.setBackgroundColor(trackColor);
 
         /*
         String speaker_id = data.getString(data.getColumnIndex(SpeakerEntry.COLUMN_SPEAKER_ID));
