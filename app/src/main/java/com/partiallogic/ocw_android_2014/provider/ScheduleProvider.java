@@ -156,7 +156,7 @@ public class ScheduleProvider extends ContentProvider{
 
         switch(sUriMatcher.match(uri)) {
             case EVENT:
-                retCursor = mOpenHelper.getReadableDatabase().query(
+                /*retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.EventEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -164,8 +164,8 @@ public class ScheduleProvider extends ContentProvider{
                         null,
                         null,
                         sortOrder
-                );
-                // retCursor = getEventWithTrack(uri, projection, sortOrder);
+                );*/
+                retCursor = getEventWithTrack(uri, projection, sortOrder);
                 break;
             case EVENT_BY_ID:
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -179,8 +179,8 @@ public class ScheduleProvider extends ContentProvider{
                 );
                 break;
             case EVENT_BY_DATE:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        ProviderContract.EventEntry.TABLE_NAME,
+                retCursor = sEventTrackSpeakerQueryBuilder.query(
+                        mOpenHelper.getReadableDatabase(),
                         projection,
                         EventEntry.COLUMN_START_TIME + " LIKE '" +
                                 EventEntry.getStartDateFromUri(uri) + "%'",
@@ -494,6 +494,21 @@ public class ScheduleProvider extends ContentProvider{
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(ProviderContract.SpeakerEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case TRACK:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(ProviderContract.TrackEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

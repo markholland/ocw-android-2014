@@ -3,7 +3,6 @@ package com.partiallogic.ocw_android_2014;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,12 +13,11 @@ import com.partiallogic.ocw_android_2014.obj.Schedule;
 import com.partiallogic.ocw_android_2014.obj.Speaker;
 import com.partiallogic.ocw_android_2014.obj.Track;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeaksAtEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +137,8 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
             Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of speaker data");
         }
 
+        Vector<ContentValues> speaks_atVector = new Vector<ContentValues>();
+
         for (Event event : events) {
 
             if (event.getSpeaker_ids() != null)
@@ -149,14 +149,19 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
                     speaksAtValues.put(SpeaksAtEntry.COLUMN_EVENT_ID, event.getId());
                     speaksAtValues.put(SpeaksAtEntry.COLUMN_SPEAKER_ID, s);
 
-                    Uri inserted = mContext.getContentResolver()
-                            .insert(SpeaksAtEntry.CONTENT_URI, speaksAtValues);
-
-                    Log.d(LOG_TAG, inserted.toString());
-
+                    speaks_atVector.add(speaksAtValues);
                 }
-
         }
+
+        if (speaks_atVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[speaks_atVector.size()];
+            speaks_atVector.toArray(cvArray);
+            int rowsInserted = mContext.getContentResolver()
+                    .bulkInsert(SpeaksAtEntry.CONTENT_URI, cvArray);
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of speaks_at data");
+        }
+
+        Vector<ContentValues> tracksVector = new Vector<ContentValues>(tracks.size());
 
         for (Track track : tracks) {
 
@@ -170,11 +175,15 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
             trackValues.put(TrackEntry.COLUMN_COLOR, track.getStringColor());
             trackValues.put(TrackEntry.COLUMN_EXCERPT, track.getExcerpt());
 
-            Uri inserted = mContext.getContentResolver()
-                    .insert(TrackEntry.CONTENT_URI, trackValues);
+            tracksVector.add(trackValues);
+        }
 
-            //Log.d(LOG_TAG, inserted.toString());
-
+        if (tracksVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[tracksVector.size()];
+            tracksVector.toArray(cvArray);
+            int rowsInserted = mContext.getContentResolver()
+                    .bulkInsert(TrackEntry.CONTENT_URI, cvArray);
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of track data");
         }
 
         return null;
