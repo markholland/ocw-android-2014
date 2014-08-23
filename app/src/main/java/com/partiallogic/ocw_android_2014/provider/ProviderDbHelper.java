@@ -7,8 +7,9 @@ import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeaksAtEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
 
 /**
  * Created by markholland on 12/08/14.
@@ -115,6 +116,19 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
         SpeaksAtBuilder.append(");");
 
         sql = SpeaksAtBuilder.toString();
+        Log.i(LOG_TAG, "Creating DB table with string: '" + sql + "'");
+
+        db.execSQL(sql);
+
+        // Create Dates table
+        StringBuilder DatesBuilder = new StringBuilder();
+        DatesBuilder.append("CREATE TABLE " + DatesEntry.TABLE_NAME + "(");
+        DatesBuilder.append(DatesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,");
+        DatesBuilder.append(DatesEntry.COLUMN_DATE + " TEXT NOT NULL, ");
+        DatesBuilder.append(" UNIQUE (" + DatesEntry.COLUMN_DATE +") ON CONFLICT REPLACE");
+        DatesBuilder.append(");");
+
+        sql = DatesBuilder.toString();
         Log.i(LOG_TAG, "Creating DB table with string: '" + sql + "'");
 
         db.execSQL(sql);
