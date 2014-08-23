@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.partiallogic.ocw_android_2014.provider.ProviderContract;
-
 /**
  * Created by markholland on 20/08/14.
  */
@@ -57,20 +55,7 @@ public class ScheduleAdapter extends CursorAdapter {
             viewholder.roomView.setText("");
         }
 
-        Long trackId = cursor.getLong(ScheduleFragment.COL_TRACK_ID);
-        Cursor c = context.getContentResolver().query(
-                ProviderContract.TrackEntry.buildTrackByIdUri(trackId),
-                null,
-                null,
-                null,
-                null
-        );
-        int trackColor;
-        if(c.moveToFirst()) {
-            trackColor = c.getInt(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_COLOR));
-        } else {
-            trackColor = 999999999;
-        }
+        int trackColor = cursor.getInt(ScheduleFragment.COL_TRACK_COLOR);
 
         viewholder.timeView.setBackgroundColor(trackColor);
 
