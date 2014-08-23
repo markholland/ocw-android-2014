@@ -19,6 +19,7 @@ public final class ProviderContract {
     public static final String PATH_TRACK = "track";
     public static final String PATH_SPEAKER = "speaker";
     public static final String PATH_SPEAKS_AT = "speaks_at";
+    public static final String PATH_DATE = "date";
 
     private ProviderContract() {
         // disallow instantiation
@@ -206,6 +207,31 @@ public final class ProviderContract {
 
         public static Uri buildSpeaks_atByEventIdUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+    }
+
+    /* Inner class that defines the table contents of the date table */
+    public static final class DatesEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_DATE).build();
+
+        public static final String CONTENT_TYPE =
+                "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_DATE;
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_DATE;
+
+        public static final String TABLE_NAME = "dates";
+
+        public static final String COLUMN_DATE = "date";
+
+        public static Uri buildDateUri() {
+            return CONTENT_URI;
+        }
+
+        public static Uri buildDateWithDate(String date) {
+            return CONTENT_URI.buildUpon().appendPath(date).build();
         }
 
     }

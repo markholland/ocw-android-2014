@@ -31,6 +31,7 @@ public class ScheduleProvider extends ContentProvider{
     private static final int SPEAKER = 300;
     private static final int SPEAKER_BY_ID = 301;
     private static final int SPEAKS_AT = 400;
+    private static final int DATE = 500;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
@@ -133,6 +134,8 @@ public class ScheduleProvider extends ContentProvider{
 
         matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT, SPEAKS_AT);
         matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT + "/#", EVENT_AND_SPEAKER_AND_TRACK_WITH_ID);
+
+        matcher.addURI(authority, ProviderContract.PATH_DATE, DATE);
 
         return matcher;
     }
@@ -270,6 +273,17 @@ public class ScheduleProvider extends ContentProvider{
                         sortOrder
                 );
                 break;
+            case DATE:
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        ProviderContract.DatesEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -320,7 +334,10 @@ public class ScheduleProvider extends ContentProvider{
                 return SpeakerEntry.CONTENT_ITEM_TYPE;
             case SPEAKS_AT:
             Log.d(LOG_TAG, "Speaks_at");
-            return SpeaksAtEntry.CONTENT_TYPE;
+                return SpeaksAtEntry.CONTENT_TYPE;
+            case DATE:
+                Log.d(LOG_TAG, "Date");
+                return DatesEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -419,6 +436,29 @@ public class ScheduleProvider extends ContentProvider{
                 }
                 break;
             }
+            case DATE: {
+                long _id = db.insert(DatesEntry.TABLE_NAME, null, values);
+                if ( _id > 0 ) {
+                    Cursor c = mOpenHelper.getReadableDatabase().query(
+                            SpeaksAtEntry.TABLE_NAME,
+                            null,
+                            SpeaksAtEntry._ID + " = '" + _id + "'",
+                            null,
+                            null,
+                            null,
+                            null
+                    );
+                    if(c.moveToFirst()) {
+                        String speaker_id = c.getString(1);
+                        returnUri = SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(speaker_id));
+                        Log.d(LOG_TAG, returnUri.toString());
+                    }
+                    Log.d(LOG_TAG, returnUri.toString());
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -479,6 +519,21 @@ public class ScheduleProvider extends ContentProvider{
                 }
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
+            case DATE:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(DatesEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
             default:
                 return super.bulkInsert(uri, values);
         }
@@ -506,6 +561,10 @@ public class ScheduleProvider extends ContentProvider{
             case SPEAKS_AT:
                 rowsDeleted = db.delete(
                         SpeaksAtEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case DATE:
+                rowsDeleted = db.delete(
+                        DatesEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -538,6 +597,10 @@ public class ScheduleProvider extends ContentProvider{
                 break;
             case SPEAKS_AT:
                 rowsUpdated = db.update(SpeaksAtEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case DATE:
+                rowsUpdated = db.update(DatesEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:

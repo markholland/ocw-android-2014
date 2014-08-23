@@ -9,6 +9,7 @@ import android.util.Log;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderDbHelper;
 
 import java.util.Map;
@@ -40,6 +41,7 @@ public class TestDb extends AndroidTestCase {
     public static final String TEST_SPEAKER_TWITTER = "tester";
     public static final String TEST_SPEAKER_IDENTICA = "tester";
     public static final String TEST_SPEAKER_BLOG_URL = "http://www.tester.com/blog";
+    public static final String TEST_DATE = "2014-06-24";
 
     public void testCreateDb() throws Throwable {
         mContext.deleteDatabase(ProviderDbHelper.DATABASE_NAME);
@@ -125,6 +127,28 @@ public class TestDb extends AndroidTestCase {
 
         validateCursor(cursor, testValues);
 
+        // Date
+
+        testValues = createDateValues();
+
+        rowId = db.insert(DatesEntry.TABLE_NAME, null, testValues);
+
+        // Verify we got a row back.
+        assertTrue(rowId != -1);
+        Log.d(LOG_TAG, "New row id: " + rowId);
+
+        cursor = db.query(
+                DatesEntry.TABLE_NAME,  // Table to Query
+                null,
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null, // columns to group by
+                null, // columns to filter by row groups
+                null // sort order
+        );
+
+        validateCursor(cursor, testValues);
+
         dbHelper.close();
 
     }
@@ -167,6 +191,14 @@ public class TestDb extends AndroidTestCase {
         speakerValues.put(SpeakerEntry.COLUMN_TWITTER, TEST_SPEAKER_TWITTER);
         speakerValues.put(SpeakerEntry.COLUMN_IDENTICA, TEST_SPEAKER_IDENTICA);
         speakerValues.put(SpeakerEntry.COLUMN_BLOG_URL, TEST_SPEAKER_BLOG_URL);
+
+        return speakerValues;
+    }
+
+    static ContentValues createDateValues() {
+        ContentValues speakerValues = new ContentValues();
+
+        speakerValues.put(DatesEntry.COLUMN_DATE, TEST_DATE);
 
         return speakerValues;
     }

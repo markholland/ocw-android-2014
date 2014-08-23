@@ -13,10 +13,13 @@ import com.partiallogic.ocw_android_2014.obj.Event;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
 import com.partiallogic.ocw_android_2014.obj.Speaker;
 import com.partiallogic.ocw_android_2014.obj.Track;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeaksAtEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +94,21 @@ public class DownloadDataTask extends AsyncTask<Void, Void, Void> {
             eventsVector.toArray(cvArray);
             int rowsInserted = mContext.getContentResolver()
                     .bulkInsert(EventEntry.CONTENT_URI, cvArray);
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of event data");
+        }
+
+        Vector<ContentValues> datesVector = new Vector<ContentValues>(scheduleDays.size());
+
+        for(String day : scheduleDays) {
+            ContentValues dateValues = new ContentValues();
+            dateValues.put(ProviderContract.DatesEntry.COLUMN_DATE, day);
+        }
+
+        if (datesVector.size() > 0) {
+            ContentValues[] cvArray = new ContentValues[datesVector.size()];
+            datesVector.toArray(cvArray);
+            int rowsInserted = mContext.getContentResolver()
+                    .bulkInsert(DatesEntry.CONTENT_URI, cvArray);
             Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of event data");
         }
 

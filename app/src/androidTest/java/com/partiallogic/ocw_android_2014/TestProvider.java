@@ -13,6 +13,8 @@ import android.util.Log;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
+
 import com.partiallogic.ocw_android_2014.provider.ProviderDbHelper;
 
 
@@ -31,10 +33,8 @@ public class TestProvider extends AndroidTestCase {
     
     public void testInsertReadProvider() {
 
-
-
         ContentValues eventTestValues, trackTestValues, speakerTestValues,
-                eventSpeakerTrackTestValues;
+                eventSpeakerTrackTestValues, datesTestValues;
 
         Cursor cursor;
 
@@ -57,6 +57,13 @@ public class TestProvider extends AndroidTestCase {
                 .insert(EventEntry.CONTENT_URI, eventTestValues);
         assertTrue(eventInsertUri != null);
         assertEquals(Long.parseLong(TestDb.TEST_EVENT_ID), ContentUris.parseId(eventInsertUri));
+
+        datesTestValues = TestDb.createDateValues();
+        Uri dateInsertUri = mContext.getContentResolver()
+                .insert(DatesEntry.CONTENT_URI, datesTestValues);
+        assertTrue(dateInsertUri != null);
+        assertEquals(Long.parseLong(TestDb.TEST_DATE), dateInsertUri.getPathSegments().get(2));
+
 
         // Events
         cursor = mContext.getContentResolver().query(
@@ -208,6 +215,21 @@ public class TestProvider extends AndroidTestCase {
 
         if(cursor.moveToFirst()) {
             TestDb.validateCursor(cursor, eventSpeakerTrackTestValues);
+        } else {
+            fail("No data");
+        }
+
+        // date
+        cursor = mContext.getContentResolver().query(
+                DatesEntry.buildDateUri(),  // Table to Query
+                null,
+                null, // Columns for the "where" clause
+                null, // Values for the "where" clause
+                null  // columns to group by
+        );
+
+        if(cursor.moveToFirst()) {
+            TestDb.validateCursor(cursor, datesTestValues);
         } else {
             fail("No data");
         }
