@@ -93,7 +93,7 @@ public final class ProviderContract {
                     .appendPath(event_id).build();
         }
 
-        public static String getStartTimeFromUri(Uri uri) {
+        public static String getStartDateFromUri(Uri uri) {
             return uri.getPathSegments().get(2);
         }
 

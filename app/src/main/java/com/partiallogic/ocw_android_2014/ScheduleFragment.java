@@ -130,9 +130,12 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
         String sortOrder = EventEntry.COLUMN_START_TIME + " ASC";
 
+        //TODO
+        String date = "2014-06-25";
+
         return new CursorLoader(
                 getActivity(),
-                EventEntry.buildEventUri(),
+                EventEntry.buildEventByDateUri(date),
                 SCHEDULE_COLUMNS,
                 null,//selection,
                 null,//selectionArgs,

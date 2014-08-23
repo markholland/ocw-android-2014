@@ -179,8 +179,8 @@ public class ScheduleProvider extends ContentProvider{
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.EventEntry.TABLE_NAME,
                         projection,
-                        EventEntry.COLUMN_START_TIME + " = '" +
-                                EventEntry.getStartTimeFromUri(uri) + "'",
+                        EventEntry.COLUMN_START_TIME + " LIKE '" +
+                                EventEntry.getStartDateFromUri(uri) + "%'",
                         null,
                         null,
                         null,
