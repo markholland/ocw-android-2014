@@ -21,11 +21,8 @@ public class ScheduleProvider extends ContentProvider{
 
     private static final int EVENT = 100;
     private static final int EVENT_BY_ID = 101;
-    private static final int EVENT_BY_DATE = 102;
-    private static final int EVENT_BY_ROOM = 103;
-    private static final int EVENT_BY_TRACK = 104;
-    private static final int EVENT_BY_SPEAKER = 105;
-    private static final int EVENT_AND_SPEAKER_AND_TRACK_WITH_ID = 106;
+    private static final int EVENT_TRACK = 102;
+    private static final int EVENT_SPEAKER_TRACK = 103;
     private static final int TRACK = 200;
     private static final int TRACK_BY_ID = 201;
     private static final int SPEAKER = 300;
@@ -96,12 +93,13 @@ public class ScheduleProvider extends ContentProvider{
         );
     }
 
-    private Cursor getEventWithTrack(Uri uri, String[] projection, String sortOrder) {
+    private Cursor getEventWithTrack(String[] projection, String selection,
+                                     String[] selectionArgs, String sortOrder) {
 
         return sEventTrackQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 sortOrder
@@ -116,15 +114,7 @@ public class ScheduleProvider extends ContentProvider{
         matcher.addURI(authority, ProviderContract.PATH_EVENT, EVENT);
         matcher.addURI(authority, ProviderContract.PATH_EVENT + "/#", EVENT_BY_ID);
         matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.ON_DATE + "/*", EVENT_BY_DATE);
-        matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.IN_ROOM + "/*", EVENT_BY_ROOM);
-        matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.OF_TRACK + "/*", EVENT_BY_TRACK);
-        matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.BY_SPEAKER + "/*", EVENT_BY_SPEAKER);
-        matcher.addURI(authority, ProviderContract.PATH_EVENT + "/" +
-                EventEntry.WITH_SPEAKER_AND_TRACK + "/*", EVENT_AND_SPEAKER_AND_TRACK_WITH_ID);
+                ProviderContract.PATH_TRACK, EVENT_TRACK);
 
         matcher.addURI(authority, ProviderContract.PATH_TRACK, TRACK);
         matcher.addURI(authority, ProviderContract.PATH_TRACK + "/#", TRACK_BY_ID);
@@ -133,7 +123,7 @@ public class ScheduleProvider extends ContentProvider{
         matcher.addURI(authority, ProviderContract.PATH_SPEAKER + "/#", SPEAKER_BY_ID);
 
         matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT, SPEAKS_AT);
-        matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT + "/#", EVENT_AND_SPEAKER_AND_TRACK_WITH_ID);
+        matcher.addURI(authority, ProviderContract.PATH_SPEAKS_AT + "/#", EVENT_SPEAKER_TRACK);
 
         matcher.addURI(authority, ProviderContract.PATH_DATE, DATE);
 
@@ -156,7 +146,7 @@ public class ScheduleProvider extends ContentProvider{
 
         switch(sUriMatcher.match(uri)) {
             case EVENT:
-                /*retCursor = mOpenHelper.getReadableDatabase().query(
+                retCursor = mOpenHelper.getReadableDatabase().query(
                         ProviderContract.EventEntry.TABLE_NAME,
                         projection,
                         selection,
@@ -164,8 +154,7 @@ public class ScheduleProvider extends ContentProvider{
                         null,
                         null,
                         sortOrder
-                );*/
-                retCursor = getEventWithTrack(uri, projection, sortOrder);
+                );
                 break;
             case EVENT_BY_ID:
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -178,55 +167,11 @@ public class ScheduleProvider extends ContentProvider{
                         sortOrder
                 );
                 break;
-            case EVENT_BY_DATE:
-                retCursor = sEventTrackSpeakerQueryBuilder.query(
-                        mOpenHelper.getReadableDatabase(),
-                        projection,
-                        EventEntry.COLUMN_START_TIME + " LIKE '" +
-                                EventEntry.getStartDateFromUri(uri) + "%'",
-                        null,
-                        null,
-                        null,
-                        sortOrder
-                );
+            case EVENT_TRACK:
+                retCursor = getEventWithTrack(projection, selection,
+                        selectionArgs, sortOrder);
                 break;
-            case EVENT_BY_ROOM:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        ProviderContract.EventEntry.TABLE_NAME,
-                        projection,
-                        EventEntry.COLUMN_ROOM_TITLE + " = '" +
-                                EventEntry.getRoomFromUri(uri) + "'",
-                        null,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            case EVENT_BY_TRACK:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        ProviderContract.EventEntry.TABLE_NAME,
-                        projection,
-                        EventEntry.COLUMN_TRACK_ID + " = '" +
-                                EventEntry.getTrackIdFromUri(uri) + "'",
-                        null,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            case EVENT_BY_SPEAKER:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        ProviderContract.EventEntry.TABLE_NAME,
-                        projection,
-                        EventEntry.COLUMN_SPEAKER_ID + " = '" +
-                                EventEntry.getSpeakerIdFromUri(uri) + "'",
-                        null,
-                        null,
-                        null,
-                        sortOrder
-                );
-                break;
-            case EVENT_AND_SPEAKER_AND_TRACK_WITH_ID:
+            case EVENT_SPEAKER_TRACK:
                 retCursor = getEventWithSpeakerAndTrack(uri, projection, sortOrder);
                 break;
             case TRACK:
@@ -305,19 +250,10 @@ public class ScheduleProvider extends ContentProvider{
             case EVENT_BY_ID:
                 Log.d(LOG_TAG, "Event by id");
                 return EventEntry.CONTENT_ITEM_TYPE;
-            case EVENT_BY_DATE:
-                Log.d(LOG_TAG, "Event by date");
+            case EVENT_TRACK:
+                Log.d(LOG_TAG, "Event with track");
                 return EventEntry.CONTENT_TYPE;
-            case EVENT_BY_ROOM:
-                Log.d(LOG_TAG, "Event by room");
-                return EventEntry.CONTENT_TYPE;
-            case EVENT_BY_TRACK:
-                Log.d(LOG_TAG, "Event by track");
-                return EventEntry.CONTENT_TYPE;
-            case EVENT_BY_SPEAKER:
-                Log.d(LOG_TAG, "Event by speaker");
-                return EventEntry.CONTENT_TYPE;
-            case EVENT_AND_SPEAKER_AND_TRACK_WITH_ID:
+            case EVENT_SPEAKER_TRACK:
                 Log.d(LOG_TAG, "Event with speaker and track by Id");
                 return EventEntry.CONTENT_ITEM_TYPE;
             case TRACK:
@@ -440,17 +376,17 @@ public class ScheduleProvider extends ContentProvider{
                 long _id = db.insert(DatesEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
                     Cursor c = mOpenHelper.getReadableDatabase().query(
-                            SpeaksAtEntry.TABLE_NAME,
+                            DatesEntry.TABLE_NAME,
                             null,
-                            SpeaksAtEntry._ID + " = '" + _id + "'",
+                            DatesEntry._ID + " = '" + _id + "'",
                             null,
                             null,
                             null,
                             null
                     );
                     if(c.moveToFirst()) {
-                        String speaker_id = c.getString(1);
-                        returnUri = SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(speaker_id));
+                        String date = c.getString(1);
+                        returnUri = DatesEntry.buildDateWithDate(date);
                         Log.d(LOG_TAG, returnUri.toString());
                     }
                     Log.d(LOG_TAG, returnUri.toString());

@@ -54,17 +54,6 @@ public final class ProviderContract {
 
         public static final String COLUMN_SPEAKER_ID = "speaker_ids";
 
-        public static final String ON_DATE = "date";
-
-        public static final String IN_ROOM = "room";
-
-        public static final String OF_TRACK = "track";
-
-        public static final String BY_SPEAKER = "speaker";
-
-        public static final String WITH_SPEAKER_AND_TRACK = "speakertrack";
-
-
         public static Uri buildEventUri() {
             return CONTENT_URI;
         }
@@ -73,41 +62,8 @@ public final class ProviderContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static Uri buildEventByDateUri(String date) {
-            return CONTENT_URI.buildUpon().appendPath(ON_DATE).appendPath(date).build();
-        }
-
-        public static Uri buildEventByRoomUri(String room) {
-            return CONTENT_URI.buildUpon().appendPath(IN_ROOM).appendPath(room).build();
-        }
-
-        public static Uri buildEventByTrackUri(String track_id) {
-            return CONTENT_URI.buildUpon().appendPath(OF_TRACK).appendPath(track_id).build();
-        }
-
-        public static Uri buildEventBySpeakerUri(String speaker_id) {
-            return CONTENT_URI.buildUpon().appendPath(BY_SPEAKER).appendPath(speaker_id).build();
-        }
-
-        public static Uri buildEventByIdWithSpeakerAndTrackUri(String event_id) {
-            return CONTENT_URI.buildUpon().appendPath(WITH_SPEAKER_AND_TRACK)
-                    .appendPath(event_id).build();
-        }
-
-        public static String getStartDateFromUri(Uri uri) {
-            return uri.getPathSegments().get(2);
-        }
-
-        public static String getRoomFromUri(Uri uri) {
-            return uri.getPathSegments().get(2);
-        }
-
-        public static String getTrackIdFromUri(Uri uri) {
-            return uri.getPathSegments().get(2);
-        }
-
-        public static String getSpeakerIdFromUri(Uri uri) {
-            return uri.getPathSegments().get(2);
+        public static Uri buildEventWithTrackUri() {
+            return CONTENT_URI.buildUpon().appendPath(PATH_TRACK).build();
         }
 
     }

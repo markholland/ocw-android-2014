@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -146,15 +145,9 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         // Sort order: Ascending, by date.
         String sortOrder = EventEntry.COLUMN_TITLE + " ASC";
 
-        //Uri EventByIdUri = EventEntry.buildEventByIdUri(Long.parseLong(eventId));
-        //Log.v(LOG_TAG, EventByIdUri.toString());
-
-        Uri EventByIdUri = SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(eventId));
-        Log.v(LOG_TAG, EventByIdUri.toString());
-
         return new CursorLoader(
                 getActivity(),
-                EventByIdUri,
+                SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(eventId)),
                 EVENT_COLUMNS,
                 null,
                 null,

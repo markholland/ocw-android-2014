@@ -10,6 +10,7 @@ import android.os.Build;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
@@ -26,7 +27,7 @@ public class TestProvider extends AndroidTestCase {
     public static final String LOG_TAG = TestProvider.class.getSimpleName();
 
     public void setUp() {
-        //deleteAllRecords();
+        deleteAllRecords();
         ProviderDbHelper dbHelper = new ProviderDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
     }
@@ -62,7 +63,7 @@ public class TestProvider extends AndroidTestCase {
         Uri dateInsertUri = mContext.getContentResolver()
                 .insert(DatesEntry.CONTENT_URI, datesTestValues);
         assertTrue(dateInsertUri != null);
-        assertEquals(Long.parseLong(TestDb.TEST_DATE), dateInsertUri.getPathSegments().get(2));
+        assertEquals(TestDb.TEST_DATE, dateInsertUri.getPathSegments().get(1));
 
 
         // Events
@@ -83,51 +84,6 @@ public class TestProvider extends AndroidTestCase {
         // Event by Id
         cursor = mContext.getContentResolver().query(
                 EventEntry.buildEventByIdUri(Integer.parseInt(TestDb.TEST_EVENT_ID)),  // Table to Query
-                null,
-                null, // Columns for the "where" clause
-                null, // Values for the "where" clause
-                null  // columns to group by
-        );
-
-        if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, eventTestValues);
-        } else {
-            fail("No data");
-        }
-
-        // Event by Room
-        cursor = mContext.getContentResolver().query(
-                EventEntry.buildEventByRoomUri(TestDb.TEST_ROOM_TITLE),  // Table to Query
-                null,
-                null, // Columns for the "where" clause
-                null, // Values for the "where" clause
-                null  // columns to group by
-        );
-
-        if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, eventTestValues);
-        } else {
-            fail("No data");
-        }
-
-        // Event by Track
-        cursor = mContext.getContentResolver().query(
-                EventEntry.buildEventByTrackUri(TestDb.TEST_TRACK_ID),  // Table to Query
-                null,
-                null, // Columns for the "where" clause
-                null, // Values for the "where" clause
-                null  // columns to group by
-        );
-
-        if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, eventTestValues);
-        } else {
-            fail("No data");
-        }
-
-        // Event by Speaker
-        cursor = mContext.getContentResolver().query(
-                EventEntry.buildEventBySpeakerUri(TestDb.TEST_SPEAKER_ID),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -206,7 +162,7 @@ public class TestProvider extends AndroidTestCase {
 
         // Event with speaker and track by Id
         cursor = mContext.getContentResolver().query(
-                EventEntry.buildEventByIdWithSpeakerAndTrackUri(TestDb.TEST_EVENT_ID),  // Table to Query
+                ProviderContract.SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(TestDb.TEST_EVENT_ID)),  // Table to Query
                 null,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
@@ -407,40 +363,6 @@ public class TestProvider extends AndroidTestCase {
         // vnd.android.cursor.item/com.partiallogic.ocw_android_2014.app/event/1
         assertEquals(EventEntry.CONTENT_ITEM_TYPE, type);
 
-        String testDate = "20140612";
-        // content://com.partiallogic.ocw_android_2014.app/event/date/20140612
-        type = mContext.getContentResolver().getType(
-                EventEntry.buildEventByDateUri(testDate));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/event/date/20140612
-        assertEquals(EventEntry.CONTENT_TYPE, type);
-
-        String testRoom = "room 1";
-        // content://com.partiallogic.ocw_android_2014.app/event/room/room 1
-        type = mContext.getContentResolver().getType(
-                EventEntry.buildEventByRoomUri(testRoom));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article/room/room 1
-        assertEquals(EventEntry.CONTENT_TYPE, type);
-
-        String testTrack = "Track 1";
-        // content://com.partiallogic.ocw_android_2014.app/event/track/Track 1
-        type = mContext.getContentResolver().getType(
-                EventEntry.buildEventByTrackUri(testTrack));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/event/track/Track 1
-        assertEquals(EventEntry.CONTENT_TYPE, type);
-
-        String testSpeaker = "Speaker 1";
-        // content://com.partiallogic.ocw_android_2014.app/event/speaker/Speaker 1
-        type = mContext.getContentResolver().getType(
-                EventEntry.buildEventBySpeakerUri(testSpeaker));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/article/speaker/Speaker 1
-        assertEquals(EventEntry.CONTENT_TYPE, type);
-
-        // content://com.partiallogic.ocw_android_2014.app/speakertrack/1
-        type = mContext.getContentResolver().getType(
-                EventEntry.buildEventByIdWithSpeakerAndTrackUri(""+testEventId));
-        // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/speakertrack/1
-        assertEquals(EventEntry.CONTENT_ITEM_TYPE, type);
-
         // content://com.partiallogic.ocw_android_2014.app/track
         type = mContext.getContentResolver().getType(
                 TrackEntry.CONTENT_URI);
@@ -466,7 +388,6 @@ public class TestProvider extends AndroidTestCase {
                 SpeakerEntry.buildSpeakerByIdUri(testSpeakerId));
         // vnd.android.cursor.dir/com.partiallogic.ocw_android_2014.app/speaker/1
         assertEquals(SpeakerEntry.CONTENT_ITEM_TYPE, type);
-
 
     }
 

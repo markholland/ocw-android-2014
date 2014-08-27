@@ -106,7 +106,6 @@ public class TestDb extends AndroidTestCase {
         validateCursor(cursor, testValues);
 
         // Event
-
         testValues = createEventValues();
 
         rowId = db.insert(EventEntry.TABLE_NAME, null, testValues);
@@ -163,7 +162,6 @@ public class TestDb extends AndroidTestCase {
         EventValues.put(EventEntry.COLUMN_END_TIME, TEST_EVENT_END_TIME);
         EventValues.put(EventEntry.COLUMN_ROOM_TITLE, TEST_ROOM_TITLE);
         EventValues.put(EventEntry.COLUMN_TRACK_ID, TEST_TRACK_ID);
-        EventValues.put(EventEntry.COLUMN_SPEAKER_ID, TEST_SPEAKER_ID);
 
         return EventValues;
     }

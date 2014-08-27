@@ -141,10 +141,10 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new CursorLoader(
                 getActivity(),
-                EventEntry.buildEventByDateUri(date),
+                EventEntry.buildEventWithTrackUri(),
                 SCHEDULE_COLUMNS,
-                null,//selection,
-                null,//selectionArgs,
+                EventEntry.COLUMN_START_TIME + " LIKE ?",
+                new String[]{date+"%"},//selectionArgs,
                 sortOrder
         );
     }
