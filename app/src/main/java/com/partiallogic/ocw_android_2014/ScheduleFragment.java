@@ -28,7 +28,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
     private static final String[] SCHEDULE_COLUMNS = {
             EventEntry.TABLE_NAME + "." + EventEntry._ID,
-            EventEntry.COLUMN_EVENT_ID,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_EVENT_ID,
             EventEntry.COLUMN_TITLE,
             EventEntry.COLUMN_START_TIME,
             EventEntry.COLUMN_ROOM_TITLE,

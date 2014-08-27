@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.partiallogic.ocw_android_2014.service.OCWService;
+
 
 public class MainActivity extends ActionBarActivity implements ScheduleFragment.Callback {
 
@@ -35,17 +37,11 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-        DownloadTrackTask downloadTrackTask = new DownloadTrackTask(this);
-        downloadTrackTask.execute();
-        DownloadScheduleTask schedTask = new DownloadScheduleTask(this);
-        schedTask.execute();
-        DownloadSpeakerTask downloadSpeakerTask = new DownloadSpeakerTask(this);
-        downloadSpeakerTask.execute();
-        */
-
         //DownloadDataTask dl = new DownloadDataTask(this);
         //dl.execute();
+        Intent intent = new Intent(this, OCWService.class);
+        this.startService(intent);
+
 
         mTitle = mDrawerTitle = getTitle();
         mPlanetTitles = getResources().getStringArray(R.array.planets_array);

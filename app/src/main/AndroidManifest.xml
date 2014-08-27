@@ -29,6 +29,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.partiallogic.ocw_android_2014.MainActivity" />
         </activity>
+        <service android:name=".service.OCWService"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
