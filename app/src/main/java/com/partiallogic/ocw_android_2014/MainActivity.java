@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,27 +53,8 @@ public class MainActivity extends Activity implements ScheduleFragment.Callback
 
         getLoaderManager().initLoader(NAV_LOADER, null, this);
 
-        // When was the server files last modified
-        Long lastModified = Long.parseLong(
-                Utility.getSharedPrefString(getApplicationContext(),
-                        Utility.LAST_MODIFIED, Utility.LAST_MODIFIED_DEFAULT));
-        if (lastModified == (Long.parseLong(Utility.LAST_MODIFIED_DEFAULT))) {
-            lastModified = System.currentTimeMillis();
-            Utility.setSharedPrefString(this,
-                    Utility.LAST_MODIFIED, "" + (lastModified + 3600000));
-        }
-
-        Log.d(LOG_TAG, "" + lastModified);
-
-        if ((lastModified + 36000000) <=
-                System.currentTimeMillis()) {
-            //DownloadDataTask dl = new DownloadDataTask(this);
-            //dl.execute();
-            Intent intent = new Intent(this, OCWService.class);
-            this.startService(intent);
-            Utility.setSharedPrefString(this,
-                    Utility.LAST_MODIFIED, "" + System.currentTimeMillis());
-        }
+        // See if first launch and the load data
+        checkAndUpdate();
 
         // Navigation Drawer
         mTitle = mDrawerTitle = getTitle();
@@ -198,14 +178,14 @@ public class MainActivity extends Activity implements ScheduleFragment.Callback
                 return;
             }
         }
-                getFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.content_frame, fragment).commit();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_frame, fragment).commit();
 
-                // update selected item and title, then close the drawer
-                mDrawerList.setItemChecked(position, true);
+        // update selected item and title, then close the drawer
+        mDrawerList.setItemChecked(position, true);
 
-            mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawerList);
 
     }
 
@@ -276,5 +256,21 @@ public class MainActivity extends Activity implements ScheduleFragment.Callback
             return alert;
         }
         return null;
+    }
+
+    private void checkAndUpdate() {
+
+        // When was the server files last modified
+        Long lastModified = Long.parseLong(
+                Utility.getSharedPrefString(getApplicationContext(),
+                        Utility.LAST_MODIFIED, Utility.LAST_MODIFIED_DEFAULT));
+        if (lastModified == (Long.parseLong(Utility.LAST_MODIFIED_DEFAULT))) {
+            lastModified = System.currentTimeMillis();
+            Utility.setSharedPrefString(this,
+                    Utility.LAST_MODIFIED, "" + lastModified);
+            // First launch so no data
+            Intent intent = new Intent(this, OCWService.class);
+            this.startService(intent);
+        }
     }
 }
