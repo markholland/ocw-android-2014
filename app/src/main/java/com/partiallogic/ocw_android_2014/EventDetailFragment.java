@@ -221,8 +221,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         // We still need this for the share intent
         mShareString = eventTitle;
 
-        Log.v(LOG_TAG, "Event Share String: " + mShareString);
-
         // If onCreateOptionsMenu has already happened, we need to update the share intent now.
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(createShareEventIntent());

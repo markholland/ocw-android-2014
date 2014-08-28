@@ -14,8 +14,10 @@ public class EventActivity extends SwipeBackActivity {
         setContentView(R.layout.activity_event);
         if (savedInstanceState == null) {
 
+            // Get the id of the clicked event
             String event_id = getIntent().getStringExtra(EVENT_KEY);
 
+            // Pass it to the fragment
             Bundle arguments = new Bundle();
             arguments.putString(EventActivity.EVENT_KEY, event_id);
 

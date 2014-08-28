@@ -1,4 +1,4 @@
-package com.partiallogic.ocw_android_2014;
+package com.partiallogic.ocw_android_2014.pulltorefresh;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.partiallogic.ocw_android_2014.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

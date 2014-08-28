@@ -6,6 +6,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract;
@@ -66,35 +67,46 @@ public class ScheduleAdapter extends CursorAdapter {
             viewholder.roomView.setText("");
         }
 
+
         Long trackId = cursor.getLong(ScheduleFragment.COL_TRACK_ID);
-        int trackColor = 999999999;
+        int trackColor = context.getResources().
+                getColor(android.R.color.holo_blue_dark); // Color for events without an assigned track
+        String trackName = "";
 
-        if(trackId == 0) {
-
+        // Is a valid event with an assigned track
+        if(trackId != 0) {
+            Cursor c = context.getContentResolver().query(
+                    ProviderContract.TrackEntry.buildTrackByIdUri(trackId),
+                    null,
+                    null,
+                    null,
+                    null
+             );
+            if(c.moveToFirst()) {
+                trackColor = c.getInt(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_COLOR));
+                trackName = c.getString(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_TITLE));
+            }
+            c.close();
         } else {
-        Cursor c = context.getContentResolver().query(
-                ProviderContract.TrackEntry.buildTrackByIdUri(trackId),
-                null,
-                null,
-                null,
-                null
-        );
-        if(c.moveToFirst()) {
-            trackColor = c.getInt(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_COLOR));
+            view.setEnabled(false);
+            view.setOnClickListener(null);
         }
-        c.close();
-        }
-        viewholder.timeView.setBackgroundColor(trackColor);
+        viewholder.listItemHeader.setBackgroundColor(trackColor);
+        viewholder.trackView.setText(trackName);
 
     }
 
     public static class ViewHolder {
+        public final LinearLayout listItemHeader;
         public final TextView timeView;
+        public final TextView trackView;
         public final TextView titleView;
         public final TextView roomView;
 
         public ViewHolder(View view) {
+            listItemHeader = (LinearLayout) view.findViewById(R.id.list_item_header);
             timeView = (TextView) view.findViewById(R.id.list_item_time_textview);
+            trackView = (TextView) view.findViewById(R.id.list_item_track_textview);
             titleView = (TextView) view.findViewById(R.id.list_item_title_textview);
             roomView = (TextView) view.findViewById(R.id.list_item_room_textview);
         }
