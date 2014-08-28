@@ -11,7 +11,8 @@
         android:layout_height="match_parent"
         android:id="@+id/list_item_time_textview"
         android:paddingLeft="16dp"
-        android:textColor="#FFF"/>
+        android:textColor="#FFF"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,9 +27,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_title_textview"
             android:layout_gravity="center_vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_weight="0.8"
+            android:padding="16dp"
+            android:layout_weight="0.75"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="The Title"/>
 
         <View
@@ -47,8 +48,10 @@
             android:layout_height="match_parent"
             android:id="@+id/list_item_room_textview"
             android:gravity="center"
-            android:layout_weight="0.2"
-            android:text="Room 1"/>
+            android:layout_weight="0.25"
+            android:text="Room 1"
+            android:paddingRight="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     </LinearLayout>
 
