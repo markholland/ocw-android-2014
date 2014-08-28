@@ -32,6 +32,12 @@ public class Utility {
 
     private static final DateFormat NavFormatter = new SimpleDateFormat("cccc dd MMMM yyyy");
 
+    /**
+     * Returns a formatted string with the time from an event
+     * i.e. 10:00
+     * @param time
+     * @return
+     */
     public static String getHumanStartTime(String time) {
 
         try {
@@ -44,6 +50,12 @@ public class Utility {
         return null;
     }
 
+    /**
+     * Returns a formatted string with the date from an event
+     * i.e. 2014-06-24
+     * @param time
+     * @return
+     */
     public static String getDateFromStartTime(String time) {
 
         try {
@@ -55,9 +67,14 @@ public class Utility {
             e.printStackTrace();
         }
         return null;
-
     }
 
+    /**
+     * Returns a Date object parsed from a string following the format in the database
+     * i.e. 2014-06-24'T'10:00:00.000-'07:00'
+     * @param time
+     * @return
+     */
     public static Date getDateFromDb(String time) {
 
         try {
@@ -68,6 +85,14 @@ public class Utility {
         return null;
     }
 
+    /**
+     * Returns a formatted string for the event detail header
+     * i.e. Tue 10:00-10:45 in B302
+     * @param startTime
+     * @param endTime
+     * @param roomTitle
+     * @return
+     */
     public static String getEventDetailTimeLocation (String startTime, String endTime,
                                                      String roomTitle) {
         StringBuilder sb = new StringBuilder();
@@ -85,6 +110,12 @@ public class Utility {
 
     }
 
+    /**
+     * Returns a formatted string for the nav drawer items
+     * i.e. Tuesday 24 June 2014
+     * @param time
+     * @return
+     */
     public static String getNavTime(String time) {
 
         try {
@@ -96,7 +127,12 @@ public class Utility {
         return null;
     }
 
-
+    /**
+     * Set a value in shared preferences by providing its key and value
+     * @param context
+     * @param key
+     * @param value
+     */
     public static void setSharedPrefString(Context context, String key, String value) {
 
         SharedPreferences sharedPref = context.getSharedPreferences(
@@ -107,6 +143,13 @@ public class Utility {
         editor.commit();
     }
 
+    /**
+     * Retrieve a value from shared preferences by providing its key and default value
+     * @param context
+     * @param key
+     * @param defaultValue
+     * @return
+     */
     public static String getSharedPrefString(Context context, String key, String defaultValue) {
 
         SharedPreferences sharedPref = context.getSharedPreferences(
