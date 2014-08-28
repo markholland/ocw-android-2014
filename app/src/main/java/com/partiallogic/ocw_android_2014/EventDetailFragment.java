@@ -45,6 +45,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             EventEntry.TABLE_NAME + "." + EventEntry._ID,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TITLE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DESCRIPTION,
+            EventEntry.COLUMN_START_TIME,
+            EventEntry.COLUMN_END_TIME,
             EventEntry.COLUMN_ROOM_TITLE,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
             SpeakerEntry.COLUMN_FULLNAME,
@@ -56,19 +58,21 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
 
     public static final int COL_EVENT_TITLE = 1;
     public static final int COL_DESCRIPTION = 2;
-    public static final int COL_ROOM_TITLE = 3;
-    public static final int COL_TRACK_ID = 4;
-    public static final int COL_SPEAKER_FULLNAME = 5;
-    public static final int COL_SPEAKER_ID = 6;
-    public static final int COL_TRACK_COLOR = 7;
-    public static final int COL_SPEAKER_BIO = 8;
-    public static final int COL_SPEAKER_TWITTER = 9;
+    public static final int COL_START_TIME = 3;
+    public static final int COL_END_TIME = 4;
+    public static final int COL_ROOM_TITLE = 5;
+    public static final int COL_TRACK_ID = 6;
+    public static final int COL_SPEAKER_FULLNAME = 7;
+    public static final int COL_SPEAKER_ID = 8;
+    public static final int COL_TRACK_COLOR = 9;
+    public static final int COL_SPEAKER_BIO = 10;
+    public static final int COL_SPEAKER_TWITTER = 11;
 
     private TextView mEventTitleView;
     private TextView mEventDescriptionView;
     private TextView mEventRoomView;
     private TextView mEventTrackView;
-    private TextView mEventSpeakerView;
+    private TextView mEventTimeLocationView;
     private ImageView mEventSpeakerImageView;
     private LinearLayout mHeader;
     private ImageView mFooterImageView;
@@ -115,7 +119,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mEventDescriptionView = (TextView) rootView.findViewById(R.id.detail_description_textview);
         mEventRoomView = (TextView) rootView.findViewById(R.id.detail_room_title_textview);
         mEventTrackView = (TextView) rootView.findViewById(R.id.detail_track_id_textview);
-        mEventSpeakerView = (TextView) rootView.findViewById(R.id.detail_speaker_textview);
+        mEventTimeLocationView = (TextView) rootView.findViewById(R.id.detail_time_location_textview);
         //mEventSpeakerImageView = (ImageView) rootView.findViewById(R.id.detail_speaker_imageview);
         mHeader = (LinearLayout) rootView.findViewById(R.id.detail_header);
         mFooterImageView = (ImageView) rootView.findViewById(R.id.event_detail_footer);
@@ -163,15 +167,21 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         String eventTitle = data.getString(COL_EVENT_TITLE);
         mEventTitleView.setText(eventTitle);
 
-        String eventSpeakerName =
-                data.getString(COL_SPEAKER_FULLNAME);
-        mEventSpeakerView.setText(eventSpeakerName);
+        String eventStartTime = data.getString(COL_START_TIME);
+        String eventEndTime = data.getString(COL_END_TIME);
+        String eventRoom = data.getString(COL_ROOM_TITLE);
+
+        String eventTimeLocation =
+                Utility.getEventDetailTimeLocation(eventStartTime, eventEndTime, eventRoom);
+        mEventTimeLocationView.setText(eventTimeLocation);
 
         String eventDescription =
                 data.getString(COL_DESCRIPTION);
         mEventDescriptionView.setText(eventDescription);
 
         mFooterImageView.setImageResource(R.drawable.ic_icon_footer);
+
+        String eventSpeakerName = data.getString(EventDetailFragment.COL_SPEAKER_FULLNAME);
 
         mSpeakerNameView.setText(eventSpeakerName);
 
@@ -182,10 +192,6 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mSpeakerTwitterLabelView.setText("Twitter: ");
         mSpeakerTwitterView.setText(speakerTwitter);
 
-
-        String eventRoomTitle =
-                data.getString(COL_ROOM_TITLE);
-        //mEventRoomView.setText(eventRoomTitle);
 
         String eventTrackId =
                 data.getString(COL_TRACK_ID);

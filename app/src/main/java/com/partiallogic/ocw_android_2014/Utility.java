@@ -14,9 +14,11 @@ public class Utility {
 
     private static final DateFormat SourceFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS-'07:00'");
 
-    private static final DateFormat HumanTimeFormatter = new SimpleDateFormat("h:mm a");
+    private static final DateFormat HumanTimeFormatter = new SimpleDateFormat("H:mm");
 
     private static final DateFormat HumanDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static final DateFormat EventDetailFormatter = new SimpleDateFormat("c HH:mm");
 
     public static String getHumanStartTime(String time) {
 
@@ -52,6 +54,23 @@ public class Utility {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getEventDetailTimeLocation (String startTime, String endTime,
+                                                     String roomTitle) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            sb.append(EventDetailFormatter.format(SourceFormatter.parse(startTime)));
+            sb.append(" -");
+            sb.append(HumanTimeFormatter.format(SourceFormatter.parse(endTime)));
+            sb.append(" in ");
+            sb.append(roomTitle);
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        return sb.toString();
+
     }
 
 
