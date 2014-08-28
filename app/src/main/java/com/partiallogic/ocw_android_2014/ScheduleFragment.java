@@ -41,6 +41,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID
     };
 
+    // Must match above columns
     public static final int COL_EVENT_ID = 1;
     public static final int COL_TITLE = 2;
     public static final int COL_START_TIME = 3;
@@ -52,7 +53,6 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     private static final String SELECTED_KEY = "selected_position";
 
     private PullToRefreshListView mListView;
-
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -96,7 +96,6 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-
         mScheduleAdapter = new ScheduleAdapter(
                 getActivity(),
                 null,
@@ -111,7 +110,6 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             @Override
             public void onRefresh() {
                 // Your code to refresh the list contents goes here
-
                 Intent intent = new Intent(getActivity(), OCWService.class);
                 getActivity().startService(intent);
 
@@ -166,11 +164,8 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
         String sortOrder = EventEntry.COLUMN_START_TIME + " ASC";
 
-        //TODO
-        String date = "2014-06-26";
-
         if(getArguments() != null) {
-            date = getArguments().getString(DATE_KEY);
+            String date = getArguments().getString(DATE_KEY);
             Log.d(LOG_TAG, date);
             return new CursorLoader(
                     getActivity(),
@@ -206,13 +201,15 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         mScheduleAdapter.swapCursor(null);
     }
 
+    /**
+     * Used for receiving a notification form the data download service
+     * and halting the pulltorefresh loading state
+     */
     private BroadcastReceiver receiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-
             mListView.onRefreshComplete();
-
         }
     };
 }

@@ -134,7 +134,6 @@ public class ProviderDbHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
     }
 
-
 }
 
 

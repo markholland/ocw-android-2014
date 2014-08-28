@@ -1,7 +1,6 @@
 package com.partiallogic.ocw_android_2014.net;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.obj.EventItem;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
@@ -19,7 +18,6 @@ import java.util.List;
 public class JsonController {
 
     private final String LOG_TAG = JsonController.class.getSimpleName();
-
 
     private static JsonController instance;
 
@@ -41,12 +39,6 @@ public class JsonController {
 
         List<EventItem> events = sched.getEventItems();
 
-        /*
-        for(int i = 0; i < events.size(); i++) {
-            Log.d(LOG_TAG, events.get(i).getEvent().toString());
-        }
-        */
-
         return sched;
     }
 
@@ -55,11 +47,9 @@ public class JsonController {
         List<TrackData> trackDataList = client.getTracks();
         ArrayList<Track> tracks = new ArrayList<Track>();
 
-
         for(int i = 0; i < trackDataList.size(); i++) {
             tracks.add(trackDataList.get(i).getTrack());
         }
-
 
         return tracks;
     }
@@ -70,16 +60,9 @@ public class JsonController {
 
         ArrayList<Speaker> speakers = new ArrayList<Speaker>();
 
-
         for(int i = 0; i < speakerDataList.size(); i++) {
             speakers.add(speakerDataList.get(i).getSpeaker());
         }
-
-        /*
-        for( Speaker s : speakers) {
-            Log.d(LOG_TAG, s.toString());
-        }
-        */
 
         return speakers;
     }

@@ -10,12 +10,10 @@ import android.os.Build;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.partiallogic.ocw_android_2014.provider.ProviderContract;
+import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.SpeakerEntry;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.TrackEntry;
-import com.partiallogic.ocw_android_2014.provider.ProviderContract.DatesEntry;
-
 import com.partiallogic.ocw_android_2014.provider.ProviderDbHelper;
 
 
@@ -152,25 +150,6 @@ public class TestProvider extends AndroidTestCase {
 
         if(cursor.moveToFirst()) {
             TestDb.validateCursor(cursor, speakerTestValues);
-        } else {
-            fail("No data");
-        }
-
-        eventSpeakerTrackTestValues = TestDb.createEventValues();
-        addAllContentValues(eventSpeakerTrackTestValues, speakerTestValues);
-        addAllContentValues(eventSpeakerTrackTestValues, trackTestValues);
-
-        // Event with speaker and track by Id
-        cursor = mContext.getContentResolver().query(
-                ProviderContract.SpeaksAtEntry.buildSpeaks_atByEventIdUri(Long.parseLong(TestDb.TEST_EVENT_ID)),  // Table to Query
-                null,
-                null, // Columns for the "where" clause
-                null, // Values for the "where" clause
-                null  // columns to group by
-        );
-
-        if(cursor.moveToFirst()) {
-            TestDb.validateCursor(cursor, eventSpeakerTrackTestValues);
         } else {
             fail("No data");
         }
