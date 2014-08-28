@@ -22,7 +22,7 @@ public class EventActivity extends SwipeBackActivity {
             EventDetailFragment fragment = new EventDetailFragment();
             fragment.setArguments(arguments);
 
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .add(R.id.event_detail_container, fragment)
                     .commit();
         }

@@ -1,35 +1,35 @@
 package com.partiallogic.ocw_android_2014;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.service.OCWService;
 
 
-public class MainActivity extends ActionBarActivity implements ScheduleFragment.Callback
+public class MainActivity extends Activity implements ScheduleFragment.Callback
         , LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -52,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportLoaderManager().initLoader(NAV_LOADER, null, this);
+        getLoaderManager().initLoader(NAV_LOADER, null, this);
 
         // When was the server files last modified
         Long lastModified = Long.parseLong(
@@ -138,7 +138,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
             mTwoPane = true;
 
             if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
+                getFragmentManager().beginTransaction()
                         .replace(R.id.event_detail_container, new EventDetailFragment())
                         .commit();
             }
@@ -158,7 +158,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
             EventDetailFragment fragment = new EventDetailFragment();
             fragment.setArguments(args);
 
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
                     .replace(R.id.event_detail_container, fragment)
                     .commit();
         } else {
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
                 return;
             }
         }
-                getSupportFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
 

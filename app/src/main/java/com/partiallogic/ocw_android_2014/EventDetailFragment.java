@@ -1,16 +1,14 @@
 package com.partiallogic.ocw_android_2014;
 
 import android.app.ActionBar;
+import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
@@ -103,10 +102,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         MenuItem menuItem = menu.findItem(R.id.menu_item_share);
 
         mShareActionProvider =
-                (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+                (ShareActionProvider) menuItem.getActionProvider();
 
         if (mShareString != null) {
-       //     mShareActionProvider.setShareIntent(createShareEventIntent());
+            mShareActionProvider.setShareIntent(createShareEventIntent());
         }
 
     }
