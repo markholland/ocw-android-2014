@@ -80,6 +80,8 @@ public class OCWService extends IntentService {
         for(String day : scheduleDays) {
             ContentValues dateValues = new ContentValues();
             dateValues.put(ProviderContract.DatesEntry.COLUMN_DATE, day);
+
+            datesVector.add(dateValues);
         }
 
         if (datesVector.size() > 0) {
@@ -87,7 +89,7 @@ public class OCWService extends IntentService {
             datesVector.toArray(cvArray);
             int rowsInserted = this.getContentResolver()
                     .bulkInsert(ProviderContract.DatesEntry.CONTENT_URI, cvArray);
-            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of event data");
+            Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of date data");
         }
 
         Vector<ContentValues> speakersVector = new Vector<ContentValues>(speakers.size());
@@ -146,8 +148,6 @@ public class OCWService extends IntentService {
         for (Track track : tracks) {
 
             ContentValues trackValues = new ContentValues();
-
-            Log.d(LOG_TAG, "Track color:" +track.getStringColor());
 
             trackValues.put(ProviderContract.TrackEntry.COLUMN_TRACK_ID, track.getId());
             trackValues.put(ProviderContract.TrackEntry.COLUMN_TITLE, track.getTitle());

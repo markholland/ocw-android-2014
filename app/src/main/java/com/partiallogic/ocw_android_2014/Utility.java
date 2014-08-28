@@ -18,10 +18,10 @@ public class Utility {
 
     private static final DateFormat HumanDateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static String getHumanStartTime(String startTime) {
+    public static String getHumanStartTime(String time) {
 
         try {
-            Date sTime = SourceFormatter.parse(startTime);
+            Date sTime = SourceFormatter.parse(time);
             String humanStartTime = HumanTimeFormatter.format(sTime);
             return humanStartTime;
         } catch (ParseException e) {
@@ -30,10 +30,10 @@ public class Utility {
         return null;
     }
 
-    public static String getDateFromStartTime(String startTime) {
+    public static String getDateFromStartTime(String time) {
 
         try {
-            Date sTime = SourceFormatter.parse(startTime);
+            Date sTime = SourceFormatter.parse(time);
             //Log.d(LOG_TAG, sTime.toString());
             String sDate = HumanDateFormatter.format(sTime);
             return sDate;
@@ -42,6 +42,16 @@ public class Utility {
         }
         return null;
 
+    }
+
+    public static Date getDateFromDb(String time) {
+
+        try {
+            return SourceFormatter.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 

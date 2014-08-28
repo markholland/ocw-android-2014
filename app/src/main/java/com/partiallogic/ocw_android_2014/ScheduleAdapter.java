@@ -10,10 +10,18 @@ import android.widget.TextView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 
+import java.util.Date;
+
 /**
  * Created by markholland on 20/08/14.
  */
 public class ScheduleAdapter extends CursorAdapter {
+
+    private static final int VIEW_TYPE_WITHOUT_DATE = 0;
+    private static final int VIEW_TYPE_WITH_DATE = 1;
+    private static final int VIEW_TYPE_COUNT = 2;
+
+    private static Date mTime;
 
     private static final String LOG_TAG = ScheduleAdapter.class.getSimpleName();
 
@@ -21,6 +29,7 @@ public class ScheduleAdapter extends CursorAdapter {
 
         super(context, c, flags);
     }
+
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -37,6 +46,7 @@ public class ScheduleAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewholder = (ViewHolder) view.getTag();
+
         // Read event time from cursor
         String eventTime = cursor.getString(ScheduleFragment.COL_START_TIME);
         // Find TextView and set formatted time on it
@@ -57,6 +67,11 @@ public class ScheduleAdapter extends CursorAdapter {
         }
 
         Long trackId = cursor.getLong(ScheduleFragment.COL_TRACK_ID);
+        int trackColor = 999999999;
+
+        if(trackId == 0) {
+
+        } else {
         Cursor c = context.getContentResolver().query(
                 ProviderContract.TrackEntry.buildTrackByIdUri(trackId),
                 null,
@@ -64,14 +79,11 @@ public class ScheduleAdapter extends CursorAdapter {
                 null,
                 null
         );
-        int trackColor;
         if(c.moveToFirst()) {
             trackColor = c.getInt(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_COLOR));
-        } else {
-            trackColor = 999999999;
         }
         c.close();
-
+        }
         viewholder.timeView.setBackgroundColor(trackColor);
 
     }
