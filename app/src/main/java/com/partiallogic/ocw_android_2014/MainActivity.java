@@ -1,6 +1,9 @@
 package com.partiallogic.ocw_android_2014;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -14,8 +17,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
@@ -34,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
     private boolean mTwoPane;
 
     private static int NAV_LOADER = 0;
+    private static final int MENU_ABOUT = -7;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -51,14 +55,28 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
 
         getSupportLoaderManager().initLoader(NAV_LOADER, null, this);
 
-        //DownloadDataTask dl = new DownloadDataTask(this);
-        //dl.execute();
-        Intent intent = new Intent(this, OCWService.class);
-//        this.startService(intent);
+        Long lastModified = Long.parseLong(
+                Utility.getSharedPrefString(getApplicationContext(),
+                        Utility.LAST_MODIFIED, Utility.LAST_MODIFIED_DEFAULT));
+        if (lastModified == (Long.parseLong(Utility.LAST_MODIFIED_DEFAULT))) {
+            lastModified = System.currentTimeMillis();
+            Utility.setSharedPrefString(this,
+                    Utility.LAST_MODIFIED, "" + (lastModified + 3600));
+        }
 
+        Log.d(LOG_TAG, "" + lastModified);
+
+        if (lastModified <=  //+3600
+                System.currentTimeMillis()) {
+            //DownloadDataTask dl = new DownloadDataTask(this);
+            //dl.execute();
+            Intent intent = new Intent(this, OCWService.class);
+            this.startService(intent);
+            Utility.setSharedPrefString(this,
+                    Utility.LAST_MODIFIED, "" + System.currentTimeMillis());
+        }
 
         mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -75,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         mDrawerAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-                ((TextView)view).setText(Utility.getNavTime(cursor.getString(columnIndex)));
+                ((TextView) view).setText(Utility.getNavTime(cursor.getString(columnIndex)));
                 return true;
             }
         });
@@ -114,10 +132,10 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
             selectItem(0);
         }
 
-        if(findViewById(R.id.event_detail_container) != null) {
+        if (findViewById(R.id.event_detail_container) != null) {
             mTwoPane = true;
 
-            if(savedInstanceState == null) {
+            if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.event_detail_container, new EventDetailFragment())
                         .commit();
@@ -127,38 +145,9 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         }
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        //menu.findItem(R.id.action_).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onItemSelected(String event_id) {
-        if(mTwoPane) {
+        if (mTwoPane) {
 
             Bundle args = new Bundle();
             args.putString(EventActivity.EVENT_KEY, event_id);
@@ -191,22 +180,29 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         Bundle args = new Bundle();
 
         Cursor c = ((SimpleCursorAdapter)
-                ((HeaderViewListAdapter)mDrawerList.getAdapter()).getWrappedAdapter()).getCursor();
-        if(c != null) {
+                ((HeaderViewListAdapter) mDrawerList.getAdapter()).getWrappedAdapter()).getCursor();
+        if (c != null) {
             c.moveToPosition(position);
-            String date = c.getString(c.getColumnIndex(ProviderContract.DatesEntry.COLUMN_DATE));
-            setTitle(date);
+            if (!c.isAfterLast()) {
+                String date = c.getString(c.getColumnIndex(ProviderContract.DatesEntry.COLUMN_DATE));
+                setTitle(date);
 
-            args.putString(ScheduleFragment.DATE_KEY, date);
-            fragment.setArguments(args);
+                args.putString(ScheduleFragment.DATE_KEY, date);
+                fragment.setArguments(args);
+            } else {
+                showDialog(MENU_ABOUT);
+                return;
+            }
         }
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.content_frame, fragment).commit();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, fragment).commit();
 
-        // update selected item and title, then close the drawer
-        mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
+                // update selected item and title, then close the drawer
+                mDrawerList.setItemChecked(position, true);
+
+            mDrawerLayout.closeDrawer(mDrawerList);
+
     }
 
     @Override
@@ -261,4 +257,20 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         mDrawerAdapter.swapCursor(null);
     }
 
+
+    protected Dialog onCreateDialog(int id) {
+        if (id == MENU_ABOUT) {
+            Context context = getApplicationContext();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+            View v = inflater.inflate(R.layout.about, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.about);
+            builder.setCancelable(true);
+            builder.setView(v);
+            builder.setIcon(android.R.drawable.ic_dialog_info);
+            final AlertDialog alert = builder.create();
+            return alert;
+        }
+        return null;
+    }
 }

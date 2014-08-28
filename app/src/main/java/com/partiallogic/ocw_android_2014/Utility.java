@@ -1,5 +1,8 @@
 package com.partiallogic.ocw_android_2014;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +14,13 @@ import java.util.Date;
 public class Utility {
 
     private static final String LOG_TAG = Utility.class.getSimpleName();
+
+    private static final String SharedPrefsFileName = "OCW";
+    public static final String LAST_MODIFIED = "last-modified";
+    public static final String LAST_MODIFIED_DEFAULT = "-1";
+    public static final String SCHEDULE = "schedule";
+    public static final String SPEAKER = "speaker";
+    public static final String TRACK = "track";
 
     private static final DateFormat SourceFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS-'07:00'");
 
@@ -85,6 +95,27 @@ public class Utility {
 
         return null;
     }
+
+
+    public static void setSharedPrefString(Context context, String key, String value) {
+
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                SharedPrefsFileName, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getSharedPrefString(Context context, String key, String defaultValue) {
+
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                SharedPrefsFileName, Context.MODE_PRIVATE);
+
+        return sharedPref.getString(key, defaultValue);
+    }
+
+
 
 
 }

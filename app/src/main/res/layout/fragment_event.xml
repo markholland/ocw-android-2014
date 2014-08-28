@@ -60,6 +60,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/detail_description_textview"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:linksClickable="true"
                     />
 
             <LinearLayout

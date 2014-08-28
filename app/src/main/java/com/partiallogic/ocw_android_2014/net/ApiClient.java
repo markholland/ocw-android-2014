@@ -13,22 +13,24 @@ import retrofit.http.GET;
  */
 public interface ApiClient {
 
+    public static final String SCHEDULE_URI = "/schedule.json";
+    public static final String TRACK_URI = "/tracks.json";
+    public static final String SPEAKER_URI = "/events/2014/speakers.json";
+
     // Schedule
-    @GET("/schedule.json")
+    @GET(SCHEDULE_URI)
     Schedule getSchedule();
 
 
 
-
     // Tracks
-    @GET("/tracks.json")
+    @GET(TRACK_URI)
     List<TrackData> getTracks();
 
 
 
-
     // Speaker
-    @GET("/events/2014/speakers.json")
+    @GET(SPEAKER_URI)
     List<SpeakerData> getSpeakers();
 
 
