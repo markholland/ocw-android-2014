@@ -46,7 +46,6 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mPlanetTitles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +54,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
 
         getSupportLoaderManager().initLoader(NAV_LOADER, null, this);
 
+        // When was the server files last modified
         Long lastModified = Long.parseLong(
                 Utility.getSharedPrefString(getApplicationContext(),
                         Utility.LAST_MODIFIED, Utility.LAST_MODIFIED_DEFAULT));
@@ -66,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
 
         Log.d(LOG_TAG, "" + lastModified);
 
-        if (lastModified <=  //+3600
+        if ((lastModified + 36000000) <=
                 System.currentTimeMillis()) {
             //DownloadDataTask dl = new DownloadDataTask(this);
             //dl.execute();
@@ -76,6 +76,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
                     Utility.LAST_MODIFIED, "" + System.currentTimeMillis());
         }
 
+        // Navigation Drawer
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -132,6 +133,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
             selectItem(0);
         }
 
+        // Setting up 2 pane layout
         if (findViewById(R.id.event_detail_container) != null) {
             mTwoPane = true;
 
@@ -145,6 +147,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         }
     }
 
+    // Schedule list items
     @Override
     public void onItemSelected(String event_id) {
         if (mTwoPane) {
@@ -166,7 +169,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
     }
 
 
-    /* The click listner for ListView in the navigation drawer */
+    /* The click listener for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -174,6 +177,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         }
     }
 
+    // Selecting an item in the navigation drawer
     private void selectItem(int position) {
         // update the main content by replacing fragments
         Fragment fragment = new ScheduleFragment();

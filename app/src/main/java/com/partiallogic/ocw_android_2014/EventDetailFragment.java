@@ -106,7 +106,7 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
                 (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
 
         if (mShareString != null) {
-            mShareActionProvider.setShareIntent(createShareEventIntent());
+       //     mShareActionProvider.setShareIntent(createShareEventIntent());
         }
 
     }

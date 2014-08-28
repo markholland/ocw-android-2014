@@ -1,6 +1,7 @@
 package com.partiallogic.ocw_android_2014.net;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.partiallogic.ocw_android_2014.obj.EventItem;
 import com.partiallogic.ocw_android_2014.obj.Schedule;
