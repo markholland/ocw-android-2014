@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements ScheduleFragment.Callback
         if (lastModified == (Long.parseLong(Utility.LAST_MODIFIED_DEFAULT))) {
             lastModified = System.currentTimeMillis();
             Utility.setSharedPrefString(this,
-                    Utility.LAST_MODIFIED, "" + (lastModified + 3600));
+                    Utility.LAST_MODIFIED, "" + (lastModified + 3600000));
         }
 
         Log.d(LOG_TAG, "" + lastModified);

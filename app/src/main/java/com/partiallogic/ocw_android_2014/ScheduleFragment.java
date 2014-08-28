@@ -2,7 +2,11 @@ package com.partiallogic.ocw_android_2014;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
+import com.partiallogic.ocw_android_2014.service.OCWService;
 
 /**
  * Created by markholland on 14/08/14.
@@ -42,9 +47,10 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_TRACK_ID = 5;
 
     private ScheduleAdapter mScheduleAdapter;
-    private ListView mListView;
     private int mPosition = ListView.INVALID_POSITION;
     private static final String SELECTED_KEY = "selected_position";
+
+    private PullToRefreshListView mListView;
 
 
     /**
@@ -89,13 +95,28 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+
         mScheduleAdapter = new ScheduleAdapter(
                 getActivity(),
                 null,
                 0
         );
 
-        mListView = (ListView) rootView.findViewById(R.id.listview_schedule);
+        mListView = (PullToRefreshListView) rootView.findViewById(R.id.listview_schedule);
+
+        // implement OnRefreshListener.
+        mListView.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list contents goes here
+
+                Intent intent = new Intent(getActivity(), OCWService.class);
+                getActivity().startService(intent);
+
+            }
+        });
+
         mListView.setAdapter(mScheduleAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -127,7 +148,17 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         super.onStart();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().registerReceiver(receiver, new IntentFilter(OCWService.NOTIFICATION));
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().unregisterReceiver(receiver);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -173,4 +204,14 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoaderReset(Loader<Cursor> loader) {
         mScheduleAdapter.swapCursor(null);
     }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            mListView.onRefreshComplete();
+
+        }
+    };
 }

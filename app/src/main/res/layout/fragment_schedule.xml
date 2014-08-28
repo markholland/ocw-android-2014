@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     tools:context=".EventsFragment">
 
-    <ListView
+    <com.partiallogic.ocw_android_2014.PullToRefreshListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listview_schedule"
-        style="@style/ScheduleListStyle">
-    </ListView>
+        style="@style/ScheduleListStyle"/>
+
 
 </RelativeLayout>

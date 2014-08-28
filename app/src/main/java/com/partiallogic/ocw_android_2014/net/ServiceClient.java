@@ -46,7 +46,7 @@ public class ServiceClient {
             mRestAdapter = new RestAdapter.Builder().
                     setEndpoint(mBaseUrl).
                     setClient(new OkClient()).
-                    setLogLevel(RestAdapter.LogLevel.FULL).
+                    //setLogLevel(RestAdapter.LogLevel.FULL).
                     build();
         }
         T client = null;
