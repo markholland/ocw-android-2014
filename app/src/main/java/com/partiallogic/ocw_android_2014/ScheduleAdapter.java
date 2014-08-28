@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
+
 /**
  * Created by markholland on 20/08/14.
  */
@@ -35,7 +37,6 @@ public class ScheduleAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewholder = (ViewHolder) view.getTag();
-
         // Read event time from cursor
         String eventTime = cursor.getString(ScheduleFragment.COL_START_TIME);
         // Find TextView and set formatted time on it
@@ -55,7 +56,21 @@ public class ScheduleAdapter extends CursorAdapter {
             viewholder.roomView.setText("");
         }
 
-        int trackColor = cursor.getInt(ScheduleFragment.COL_TRACK_COLOR);
+        Long trackId = cursor.getLong(ScheduleFragment.COL_TRACK_ID);
+        Cursor c = context.getContentResolver().query(
+                ProviderContract.TrackEntry.buildTrackByIdUri(trackId),
+                null,
+                null,
+                null,
+                null
+        );
+        int trackColor;
+        if(c.moveToFirst()) {
+            trackColor = c.getInt(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_COLOR));
+        } else {
+            trackColor = 999999999;
+        }
+        c.close();
 
         viewholder.timeView.setBackgroundColor(trackColor);
 

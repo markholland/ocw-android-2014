@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.provider.ProviderContract.EventEntry;
 
 /**
@@ -32,8 +31,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
             EventEntry.COLUMN_TITLE,
             EventEntry.COLUMN_START_TIME,
             EventEntry.COLUMN_ROOM_TITLE,
-            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID,
-            ProviderContract.TrackEntry.COLUMN_COLOR
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_TRACK_ID
     };
 
     public static final int COL_EVENT_ID = 1;
@@ -41,7 +39,6 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
     public static final int COL_START_TIME = 3;
     public static final int COL_ROOM_TITLE = 4;
     public static final int COL_TRACK_ID = 5;
-    public static final int COL_TRACK_COLOR = 6;
 
     private ScheduleAdapter mScheduleAdapter;
     private ListView mListView;
@@ -141,7 +138,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new CursorLoader(
                 getActivity(),
-                EventEntry.buildEventWithTrackUri(),
+                EventEntry.buildEventUri(),
                 SCHEDULE_COLUMNS,
                 EventEntry.COLUMN_START_TIME + " LIKE ?",
                 new String[]{date+"%"},//selectionArgs,
