@@ -20,6 +20,8 @@ public class Utility {
 
     private static final DateFormat EventDetailFormatter = new SimpleDateFormat("c HH:mm");
 
+    private static final DateFormat NavFormatter = new SimpleDateFormat("cccc dd MMMM yyyy");
+
     public static String getHumanStartTime(String time) {
 
         try {
@@ -71,6 +73,17 @@ public class Utility {
 
         return sb.toString();
 
+    }
+
+    public static String getNavTime(String time) {
+
+        try {
+            return NavFormatter.format(HumanDateFormatter.parse(time));
+        } catch(ParseException e) {
+           e.printStackTrace();
+        }
+
+        return null;
     }
 
 

@@ -3,30 +3,39 @@ package com.partiallogic.ocw_android_2014;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.partiallogic.ocw_android_2014.provider.ProviderContract;
 import com.partiallogic.ocw_android_2014.service.OCWService;
 
 
-public class MainActivity extends ActionBarActivity implements ScheduleFragment.Callback {
+public class MainActivity extends ActionBarActivity implements ScheduleFragment.Callback
+        , LoaderManager.LoaderCallbacks<Cursor> {
 
     private boolean mTwoPane;
 
+    private static int NAV_LOADER = 0;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private SimpleCursorAdapter mDrawerAdapter;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -37,10 +46,12 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportLoaderManager().initLoader(NAV_LOADER, null, this);
+
         //DownloadDataTask dl = new DownloadDataTask(this);
         //dl.execute();
         Intent intent = new Intent(this, OCWService.class);
-        this.startService(intent);
+      //  this.startService(intent);
 
 
         mTitle = mDrawerTitle = getTitle();
@@ -51,8 +62,21 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mPlanetTitles));
+        mDrawerAdapter = new SimpleCursorAdapter(this,
+                R.layout.drawer_list_item,
+                null,
+                new String[]{ProviderContract.DatesEntry.COLUMN_DATE},
+                new int[]{R.id.drawer_list_item_textview},
+                0
+        );
+        mDrawerAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+                ((TextView)view).setText(Utility.getNavTime(cursor.getString(columnIndex)));
+                return true;
+            }
+        });
+        mDrawerList.setAdapter(mDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -80,9 +104,9 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             selectItem(0);
-        }
+        }*/
 
         if(findViewById(R.id.event_detail_container) != null) {
             mTwoPane = true;
@@ -159,7 +183,12 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         // update the main content by replacing fragments
         Fragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
-        args.putInt(ScheduleFragment.DATE_KEY, position);
+
+        Cursor c = ((SimpleCursorAdapter)mDrawerList.getAdapter()).getCursor();
+        c.moveToPosition(position);
+        String date = c.getString(c.getColumnIndex(ProviderContract.DatesEntry.COLUMN_DATE));
+
+        args.putString(ScheduleFragment.DATE_KEY, date);
         fragment.setArguments(args);
 
         getSupportFragmentManager()
@@ -195,6 +224,33 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        String sortOrder = ProviderContract.DatesEntry.COLUMN_DATE + " ASC";
+
+        return new CursorLoader(
+                this,
+                ProviderContract.DatesEntry.buildDateUri(),
+                new String[]{ProviderContract.DatesEntry._ID,
+                        ProviderContract.DatesEntry.COLUMN_DATE},
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mDrawerAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mDrawerAdapter.swapCursor(null);
     }
 
 }

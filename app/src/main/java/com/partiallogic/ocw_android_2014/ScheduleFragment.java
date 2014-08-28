@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,7 +135,8 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         String sortOrder = EventEntry.COLUMN_START_TIME + " ASC";
 
         //TODO
-        String date = "2014-06-25";//getArguments().getString(DATE_KEY);
+        String date = getArguments().getString(DATE_KEY);
+        Log.d(LOG_TAG, date);
 
         return new CursorLoader(
                 getActivity(),
