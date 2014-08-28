@@ -87,9 +87,6 @@ public class ScheduleAdapter extends CursorAdapter {
                 trackName = c.getString(c.getColumnIndex(ProviderContract.TrackEntry.COLUMN_TITLE));
             }
             c.close();
-        } else {
-            view.setEnabled(false);
-            view.setOnClickListener(null);
         }
         viewholder.listItemHeader.setBackgroundColor(trackColor);
         viewholder.trackView.setText(trackName);
