@@ -140,16 +140,25 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         if(getArguments() != null) {
             date = getArguments().getString(DATE_KEY);
             Log.d(LOG_TAG, date);
+            return new CursorLoader(
+                    getActivity(),
+                    EventEntry.buildEventUri(),
+                    SCHEDULE_COLUMNS,
+                    EventEntry.COLUMN_START_TIME + " LIKE ?",
+                    new String[]{date + "%"},//selectionArgs,
+                    sortOrder
+            );
+        } else {
+            getActivity().setTitle("All");
+            return new CursorLoader(
+                    getActivity(),
+                    EventEntry.buildEventUri(),
+                    SCHEDULE_COLUMNS,
+                    null,
+                    null,//selectionArgs,
+                    sortOrder
+            );
         }
-
-        return new CursorLoader(
-                getActivity(),
-                EventEntry.buildEventUri(),
-                SCHEDULE_COLUMNS,
-                EventEntry.COLUMN_START_TIME + " LIKE ?",
-                new String[]{date+"%"},//selectionArgs,
-                sortOrder
-        );
     }
 
     @Override

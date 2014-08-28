@@ -110,9 +110,9 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        /*if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             selectItem(0);
-        }*/
+        }
 
         if(findViewById(R.id.event_detail_container) != null) {
             mTwoPane = true;
@@ -192,19 +192,20 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
 
         Cursor c = ((SimpleCursorAdapter)
                 ((HeaderViewListAdapter)mDrawerList.getAdapter()).getWrappedAdapter()).getCursor();
-        c.moveToPosition(position);
-        String date = c.getString(c.getColumnIndex(ProviderContract.DatesEntry.COLUMN_DATE));
+        if(c != null) {
+            c.moveToPosition(position);
+            String date = c.getString(c.getColumnIndex(ProviderContract.DatesEntry.COLUMN_DATE));
+            setTitle(date);
 
-        args.putString(ScheduleFragment.DATE_KEY, date);
-        fragment.setArguments(args);
-
+            args.putString(ScheduleFragment.DATE_KEY, date);
+            fragment.setArguments(args);
+        }
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.content_frame, fragment).commit();
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(date);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -253,7 +254,6 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDrawerAdapter.swapCursor(data);
-       // selectItem(0);
     }
 
     @Override
