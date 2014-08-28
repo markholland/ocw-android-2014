@@ -52,7 +52,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
             SpeaksAtEntry.TABLE_NAME + "." + SpeakerEntry.COLUMN_SPEAKER_ID,
             TrackEntry.COLUMN_COLOR,
             SpeakerEntry.COLUMN_BIOGRAPHY,
-            SpeakerEntry.COLUMN_TWITTER
+            SpeakerEntry.COLUMN_WEBSITE,
+            SpeakerEntry.COLUMN_TWITTER,
+            SpeakerEntry.COLUMN_IDENTICA,
+            SpeakerEntry.COLUMN_BLOG_URL
     };
 
     public static final int COL_EVENT_TITLE = 1;
@@ -65,7 +68,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     public static final int COL_SPEAKER_ID = 8;
     public static final int COL_TRACK_COLOR = 9;
     public static final int COL_SPEAKER_BIO = 10;
-    public static final int COL_SPEAKER_TWITTER = 11;
+    public static final int COL_SPEAKER_WEBSITE = 11;
+    public static final int COL_SPEAKER_TWITTER = 12;
+    public static final int COL_SPEAKER_IDENTICA = 13;
+    public static final int COL_SPEAKER_BLOG_URL = 14;
 
     private TextView mEventTitleView;
     private TextView mEventDescriptionView;
@@ -77,8 +83,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
     private ImageView mFooterImageView;
     private TextView mSpeakerNameView;
     private TextView mSpeakerBioView;
-    private TextView mSpeakerTwitterLabelView;
+    private TextView mSpeakerWebsiteView;
     private TextView mSpeakerTwitterView;
+    private TextView mSpeakerIdenticaView;
+    private TextView mSpeakerBlog_urlView;
 
 
     public EventDetailFragment() {
@@ -124,8 +132,10 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         mFooterImageView = (ImageView) rootView.findViewById(R.id.event_detail_footer);
         mSpeakerNameView = (TextView) rootView.findViewById(R.id.detail_speaker_name_textview);
         mSpeakerBioView = (TextView) rootView.findViewById(R.id.detail_speaker_bio_textview);
-        mSpeakerTwitterView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_value_textview);
-        mSpeakerTwitterLabelView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_label_textview);
+        mSpeakerWebsiteView  = (TextView) rootView.findViewById(R.id.detail_speaker_website_textview);
+        mSpeakerTwitterView = (TextView) rootView.findViewById(R.id.detail_speaker_twitter_textview);
+        mSpeakerIdenticaView = (TextView) rootView.findViewById(R.id.detail_speaker_identica_textview);
+        mSpeakerBlog_urlView = (TextView) rootView.findViewById(R.id.detail_speaker_blog_url_textview);
 
         return rootView;
     }
@@ -187,10 +197,29 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         String speakerBio = data.getString(COL_SPEAKER_BIO);
         mSpeakerBioView.setText(speakerBio);
 
-        String speakerTwitter = data.getString(COL_SPEAKER_TWITTER);
-        mSpeakerTwitterLabelView.setText("Twitter: ");
-        mSpeakerTwitterView.setText(speakerTwitter);
+        String speakerWebsite = data.getString(COL_SPEAKER_WEBSITE);
+        if(!speakerWebsite.equals(""))
+            mSpeakerWebsiteView.setText("Website : " +speakerWebsite);
+        else
+            mSpeakerWebsiteView.setVisibility(View.GONE);
 
+        String speakerTwitter = data.getString(COL_SPEAKER_TWITTER);
+        if(!speakerTwitter.equals(""))
+            mSpeakerTwitterView.setText("Twitter : " +speakerTwitter);
+        else
+            mSpeakerTwitterView.setVisibility(View.GONE);
+
+        String speakerIdentica = data.getString(COL_SPEAKER_IDENTICA);
+        if(!speakerIdentica.equals(""))
+            mSpeakerIdenticaView.setText("Identica : " +speakerIdentica);
+        else
+            mSpeakerIdenticaView.setVisibility(View.GONE);
+
+        String speakerBlog_url = data.getString(COL_SPEAKER_BLOG_URL);
+        if(!speakerBlog_url.equals(""))
+            mSpeakerBlog_urlView.setText("Blog Url : " +speakerBlog_url);
+        else
+            mSpeakerBlog_urlView.setVisibility(View.GONE);
 
         String eventTrackId =
                 data.getString(COL_TRACK_ID);
@@ -200,7 +229,8 @@ public class EventDetailFragment extends Fragment implements LoaderManager.Loade
         int trackColor = 0;
         trackColor = data.getInt(COL_TRACK_COLOR);
         if(trackColor == 0) {
-            trackColor = 999999999;
+            trackColor = getActivity().getResources().
+                    getColor(android.R.color.holo_blue_dark);
         }
 
         Log.d(LOG_TAG, ""+trackColor);
