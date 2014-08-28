@@ -190,7 +190,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mScheduleAdapter.swapCursor(data);
+        mScheduleAdapter.changeCursor(data);
         if(mPosition != ListView.INVALID_POSITION) {
             mListView.setSelection(mPosition);
         }
@@ -198,7 +198,7 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mScheduleAdapter.swapCursor(null);
+        mScheduleAdapter.changeCursor(null);
     }
 
     /**

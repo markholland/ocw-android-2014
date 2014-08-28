@@ -76,6 +76,29 @@ public class OCWService extends IntentService {
             ArrayList<String> scheduleDays = new ArrayList<String>();
             String currentDay;
 
+            Vector<ContentValues> tracksVector = new Vector<ContentValues>(tracks.size());
+
+            for (Track track : tracks) {
+
+                ContentValues trackValues = new ContentValues();
+
+                trackValues.put(ProviderContract.TrackEntry.COLUMN_TRACK_ID, track.getId());
+                trackValues.put(ProviderContract.TrackEntry.COLUMN_TITLE, track.getTitle());
+                trackValues.put(ProviderContract.TrackEntry.COLUMN_DESCRIPTION, track.getDescription());
+                trackValues.put(ProviderContract.TrackEntry.COLUMN_COLOR, track.getStringColor());
+                trackValues.put(ProviderContract.TrackEntry.COLUMN_EXCERPT, track.getExcerpt());
+
+                tracksVector.add(trackValues);
+            }
+
+            if (tracksVector.size() > 0) {
+                ContentValues[] cvArray = new ContentValues[tracksVector.size()];
+                tracksVector.toArray(cvArray);
+                int rowsInserted = this.getContentResolver()
+                        .bulkInsert(ProviderContract.TrackEntry.CONTENT_URI, cvArray);
+                Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of track data");
+            }
+
             Vector<ContentValues> eventsVector = new Vector<ContentValues>(events.size());
 
             for (Event event : events) {
@@ -174,28 +197,7 @@ public class OCWService extends IntentService {
                 Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of speaks_at data");
             }
 
-            Vector<ContentValues> tracksVector = new Vector<ContentValues>(tracks.size());
 
-            for (Track track : tracks) {
-
-                ContentValues trackValues = new ContentValues();
-
-                trackValues.put(ProviderContract.TrackEntry.COLUMN_TRACK_ID, track.getId());
-                trackValues.put(ProviderContract.TrackEntry.COLUMN_TITLE, track.getTitle());
-                trackValues.put(ProviderContract.TrackEntry.COLUMN_DESCRIPTION, track.getDescription());
-                trackValues.put(ProviderContract.TrackEntry.COLUMN_COLOR, track.getStringColor());
-                trackValues.put(ProviderContract.TrackEntry.COLUMN_EXCERPT, track.getExcerpt());
-
-                tracksVector.add(trackValues);
-            }
-
-            if (tracksVector.size() > 0) {
-                ContentValues[] cvArray = new ContentValues[tracksVector.size()];
-                tracksVector.toArray(cvArray);
-                int rowsInserted = this.getContentResolver()
-                        .bulkInsert(ProviderContract.TrackEntry.CONTENT_URI, cvArray);
-                Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of track data");
-            }
 
         } catch (RetrofitError e) {
             e.printStackTrace();
