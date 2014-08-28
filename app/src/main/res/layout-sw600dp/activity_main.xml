@@ -12,14 +12,23 @@
         android:orientation="horizontal"
         tools:context="com.partiallogic.ocw_android_2014.app.MainActivity">
 
-        <fragment
-            android:id="@+id/fragment_schedule"
-            android:name="com.partiallogic.ocw_android_2014.ScheduleFragment"
+
+        <FrameLayout
+            android:id="@+id/content_frame"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            tools:layout="@android:layout/list_content" />
-
+            tools:layout="@android:layout/list_content"  >
+            <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/fragment_schedule"
+                android:name="com.partiallogic.ocw_android_2014.ScheduleFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ScheduleFragment"
+                tools:layout="@android:layout/list_content" />
+            -->
+        </FrameLayout>
         <View
             android:id="@+id/separator"
             android:layout_width="2dip"

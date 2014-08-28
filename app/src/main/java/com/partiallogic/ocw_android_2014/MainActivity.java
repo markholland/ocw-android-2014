@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,6 +28,8 @@ import com.partiallogic.ocw_android_2014.service.OCWService;
 
 public class MainActivity extends ActionBarActivity implements ScheduleFragment.Callback
         , LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private boolean mTwoPane;
 
@@ -51,7 +54,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         //DownloadDataTask dl = new DownloadDataTask(this);
         //dl.execute();
         Intent intent = new Intent(this, OCWService.class);
-      //  this.startService(intent);
+//        this.startService(intent);
 
 
         mTitle = mDrawerTitle = getTitle();
@@ -78,6 +81,9 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         });
         mDrawerList.setAdapter(mDrawerAdapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        View footer = getLayoutInflater().inflate(R.layout.drawer_footer, null);
+        mDrawerList.addFooterView(footer);
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -184,7 +190,8 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
         Fragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
 
-        Cursor c = ((SimpleCursorAdapter)mDrawerList.getAdapter()).getCursor();
+        Cursor c = ((SimpleCursorAdapter)
+                ((HeaderViewListAdapter)mDrawerList.getAdapter()).getWrappedAdapter()).getCursor();
         c.moveToPosition(position);
         String date = c.getString(c.getColumnIndex(ProviderContract.DatesEntry.COLUMN_DATE));
 
@@ -197,7 +204,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
 
         // update selected item and title, then close the drawer
         mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
+        setTitle(date);
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
@@ -246,6 +253,7 @@ public class MainActivity extends ActionBarActivity implements ScheduleFragment.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDrawerAdapter.swapCursor(data);
+       // selectItem(0);
     }
 
     @Override

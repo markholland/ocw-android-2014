@@ -135,8 +135,12 @@ public class ScheduleFragment extends Fragment implements LoaderManager.LoaderCa
         String sortOrder = EventEntry.COLUMN_START_TIME + " ASC";
 
         //TODO
-        String date = getArguments().getString(DATE_KEY);
-        Log.d(LOG_TAG, date);
+        String date = "2014-06-26";
+
+        if(getArguments() != null) {
+            date = getArguments().getString(DATE_KEY);
+            Log.d(LOG_TAG, date);
+        }
 
         return new CursorLoader(
                 getActivity(),
